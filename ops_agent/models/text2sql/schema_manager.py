@@ -32,6 +32,10 @@ class SchemaManager:
         db = self._get_datasource()
         try:
             tables = db.get_tables()
+            # 如果数据源配置了 selected_tables，只使用选中的表
+            selected = db.config.get("selected_tables", [])
+            if selected:
+                tables = [t for t in tables if t in selected]
             schema_info = []
             for table in tables:
                 columns = db.get_columns(table)
@@ -46,7 +50,7 @@ class SchemaManager:
         except Exception as e:
             raise DatabaseConnectionError(f"Schema 内省失败: {e}") from e
 
-    def get_schema_prompt(self) -> str:
+    def get_schema_prompt(self, include_samples: bool = True) -> str:
         """生成 Text2SQL 用的 Schema 提示文本"""
         if self._cache is None:
             self.refresh()
@@ -64,14 +68,15 @@ class SchemaManager:
                     f"{col['comment'] or '-'} |"
                 )
 
-            samples = table_info["sample_rows"]
-            if samples:
-                parts.append(f"\n示例数据（前3行）:")
-                keys = list(samples[0].keys())
-                parts.append("| " + " | ".join(keys) + " |")
-                parts.append("|" + "|".join(["------"] * len(keys)) + "|")
-                for row in samples:
-                    parts.append("| " + " | ".join(str(row.get(k, "")) for k in keys) + " |")
+            if include_samples:
+                samples = table_info["sample_rows"]
+                if samples:
+                    parts.append(f"\n示例数据（前3行）:")
+                    keys = list(samples[0].keys())
+                    parts.append("| " + " | ".join(keys) + " |")
+                    parts.append("|" + "|".join(["------"] * len(keys)) + "|")
+                    for row in samples:
+                        parts.append("| " + " | ".join(str(row.get(k, "")) for k in keys) + " |")
             parts.append("")
 
         return "\n".join(parts)

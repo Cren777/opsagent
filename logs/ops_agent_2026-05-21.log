@@ -1,0 +1,1557 @@
+2026-05-21 14:41:23.016 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 14:41:35.179 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 14:41:35.179 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 14:42:51.972 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-21 14:42:51.973 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 14:42:52.434 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='你是' → 0 条结果
+2026-05-21 14:42:52.475 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='你是' → 0 条结果
+2026-05-21 14:44:50.962 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 14:45:41.377 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.DATA_ANALYSIS (置信度: 1.0)
+2026-05-21 14:45:41.378 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.DATA_ANALYSIS → _handle_data_analysis
+2026-05-21 14:45:41.412 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 14:45:41.441 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 14:45:41.727 | INFO     | ops_agent.models.text2sql.schema_manager:refresh:45 | Schema 缓存已更新: 26 张表 (方言: clickhouse)
+2026-05-21 14:45:41.730 | WARNING  | ops_agent.models.llm.client:_init_engines:148 | DeepSeek API Key 未配置，跳过主引擎
+2026-05-21 14:45:41.731 | WARNING  | ops_agent.models.llm.client:_init_engines:155 | 百炼 API Key 未配置，跳过备引擎
+2026-05-21 14:45:41.731 | WARNING  | ops_agent.models.llm.client:_init_engines:158 | 未配置任何 LLM API Key，系统将无法回答问题
+2026-05-21 14:45:41.731 | ERROR    | ops_agent.api.routes.chat:event_generator:56 | Stream 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 66, in generate
+    response = await client.chat(
+                     │      └ <function UnifiedLLMClient.chat at 0x74c19c9be5c0>
+                     └ <ops_agent.models.llm.client.UnifiedLLMClient object at 0x74bf40118a50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 163, in chat
+    raise LLMError("无可用 LLM 引擎")
+          └ <class 'ops_agent.utils.exceptions.LLMError'>
+
+ops_agent.utils.exceptions.LLMError: 无可用 LLM 引擎
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x74c19e8ffb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x74c19f720590>
+         │    └ <function Command.invoke at 0x74c19e8ff7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x74c19f720590>
+           │   │      │    └ <function main at 0x74c19e7285e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x74c19e8fea20>
+           └ <click.core.Context object at 0x74c19f720590>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x74c19e7285e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x74c19e79ca40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x74c19e79c2c0>
+    └ <uvicorn.server.Server object at 0x74bf587bd2d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x74c19e8b45e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x74c19f722890>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x74bf587bd2d0>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x74c19e79c360>
+           │           └ <uvicorn.server.Server object at 0x74bf587bd2d0>
+           └ <function asyncio_run at 0x74c19eaa8ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x74bf58635300>
+           │      └ <function Runner.run at 0x74c19eb120c0>
+           └ <asyncio.runners.Runner object at 0x74c19f5d3950>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x74bf586a4b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x74c19f5d3950>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x74bf4...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x74bf581dbef0>
+              │        └ <starlette.responses.StreamingResponse object at 0x74bf4071d790>
+              └ b'event: intent\ndata: {"type": "data_analysis"}\n\n'
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 51, in event_generator
+    async for event in _orchestrator.process_stream(req.query):
+              │        │             │              │   └ '帮我查询一下hawkeye数据库中有哪些表'
+              │        │             │              └ ChatRequest(query='帮我查询一下hawkeye数据库中有哪些表', history=[])
+              │        │             └ <function Orchestrator.process_stream at 0x74c0eb3acfe0>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>
+              └ {'event': 'intent', 'data': {'type': 'data_analysis'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 57, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x74c19c9bed40>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x74bf74d05810>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '帮我查询一下hawkeye数据库中有哪些表'
+                   └ <bound method Orchestrator._handle_data_analysis of <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 101, in _handle_data_analysis
+    sql = await self.text2sql.generate(query)
+                │    │        │        └ '帮我查询一下hawkeye数据库中有哪些表'
+                │    │        └ <function Text2SQLGenerator.generate at 0x74bf7698ad40>
+                │    └ <ops_agent.models.text2sql.generator.Text2SQLGenerator object at 0x74bf7095bb90>
+                └ <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 72, in generate
+    raise SQLError(f"Text2SQL 生成失败: {e}") from e
+          └ <class 'ops_agent.utils.exceptions.SQLError'>
+
+ops_agent.utils.exceptions.SQLError: Text2SQL 生成失败: 无可用 LLM 引擎
+2026-05-21 14:46:21.558 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.KNOWLEDGE_QUERY (置信度: 1.0)
+2026-05-21 14:46:21.559 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 14:46:21.631 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率' → 0 条结果
+2026-05-21 14:46:21.679 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率' → 0 条结果
+2026-05-21 14:48:10.142 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.KNOWLEDGE_QUERY (置信度: 1.0)
+2026-05-21 14:48:10.142 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 14:48:10.223 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率？' → 0 条结果
+2026-05-21 14:48:10.277 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率？' → 0 条结果
+2026-05-21 14:48:49.235 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.DATA_ANALYSIS (置信度: 1.0)
+2026-05-21 14:48:49.235 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.DATA_ANALYSIS → _handle_data_analysis
+2026-05-21 14:48:49.269 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 14:48:49.273 | ERROR    | ops_agent.api.routes.chat:event_generator:56 | Stream 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 66, in generate
+    response = await client.chat(
+                     │      └ <function UnifiedLLMClient.chat at 0x74c19c9be5c0>
+                     └ <ops_agent.models.llm.client.UnifiedLLMClient object at 0x74bf40118a50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 163, in chat
+    raise LLMError("无可用 LLM 引擎")
+          └ <class 'ops_agent.utils.exceptions.LLMError'>
+
+ops_agent.utils.exceptions.LLMError: 无可用 LLM 引擎
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x74c19e8ffb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x74c19f720590>
+         │    └ <function Command.invoke at 0x74c19e8ff7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x74c19f720590>
+           │   │      │    └ <function main at 0x74c19e7285e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x74c19e8fea20>
+           └ <click.core.Context object at 0x74c19f720590>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x74c19e7285e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x74c19e79ca40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x74c19e79c2c0>
+    └ <uvicorn.server.Server object at 0x74bf587bd2d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x74c19e8b45e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x74c19f722890>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x74bf587bd2d0>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x74c19e79c360>
+           │           └ <uvicorn.server.Server object at 0x74bf587bd2d0>
+           └ <function asyncio_run at 0x74c19eaa8ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x74bf58635300>
+           │      └ <function Runner.run at 0x74c19eb120c0>
+           └ <asyncio.runners.Runner object at 0x74c19f5d3950>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x74bf586a4b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x74c19f5d3950>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x74bf5...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x74bf581dbef0>
+              │        └ <starlette.responses.StreamingResponse object at 0x74bf5807ad10>
+              └ b'event: intent\ndata: {"type": "data_analysis"}\n\n'
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 51, in event_generator
+    async for event in _orchestrator.process_stream(req.query):
+              │        │             │              │   └ '最近一周有哪些critical告警？'
+              │        │             │              └ ChatRequest(query='最近一周有哪些critical告警？', history=[])
+              │        │             └ <function Orchestrator.process_stream at 0x74c0eb3acfe0>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>
+              └ {'event': 'intent', 'data': {'type': 'data_analysis'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 57, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x74c19c9bed40>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x74bf74d05810>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '最近一周有哪些critical告警？'
+                   └ <bound method Orchestrator._handle_data_analysis of <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 101, in _handle_data_analysis
+    sql = await self.text2sql.generate(query)
+                │    │        │        └ '最近一周有哪些critical告警？'
+                │    │        └ <function Text2SQLGenerator.generate at 0x74bf7698ad40>
+                │    └ <ops_agent.models.text2sql.generator.Text2SQLGenerator object at 0x74bf7095bb90>
+                └ <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 72, in generate
+    raise SQLError(f"Text2SQL 生成失败: {e}") from e
+          └ <class 'ops_agent.utils.exceptions.SQLError'>
+
+ops_agent.utils.exceptions.SQLError: Text2SQL 生成失败: 无可用 LLM 引擎
+2026-05-21 14:48:53.728 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.FAULT_TROUBLESHOOTING (置信度: 1.0)
+2026-05-21 14:48:53.728 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.FAULT_TROUBLESHOOTING → _handle_fault_troubleshooting
+2026-05-21 14:48:53.736 | INFO     | ops_agent.models.tools.script_executor:execute:37 | 执行脚本: /mnt/data/home/czr/OpsAgent/scripts/approved/check_disk.sh
+2026-05-21 14:48:53.759 | INFO     | ops_agent.models.tools.script_executor:execute:37 | 执行脚本: /mnt/data/home/czr/OpsAgent/scripts/approved/check_memory.sh
+2026-05-21 14:48:53.822 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='web-01服务器CPU使用率100%，帮我排查' → 0 条结果
+2026-05-21 14:48:53.823 | ERROR    | ops_agent.api.routes.chat:event_generator:56 | Stream 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x74c19e8ffb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x74c19f720590>
+         │    └ <function Command.invoke at 0x74c19e8ff7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x74c19f720590>
+           │   │      │    └ <function main at 0x74c19e7285e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x74c19e8fea20>
+           └ <click.core.Context object at 0x74c19f720590>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x74c19e7285e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x74c19e79ca40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x74c19e79c2c0>
+    └ <uvicorn.server.Server object at 0x74bf587bd2d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x74c19e8b45e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x74c19f722890>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x74bf587bd2d0>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x74c19e79c360>
+           │           └ <uvicorn.server.Server object at 0x74bf587bd2d0>
+           └ <function asyncio_run at 0x74c19eaa8ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x74bf58635300>
+           │      └ <function Runner.run at 0x74c19eb120c0>
+           └ <asyncio.runners.Runner object at 0x74c19f5d3950>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x74bf586a4b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x74c19f5d3950>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x74bf5...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x74bf581dbef0>
+              │        └ <starlette.responses.StreamingResponse object at 0x74bf580636d0>
+              └ b'event: intent\ndata: {"type": "fault_troubleshooting"}\n\n'
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 51, in event_generator
+    async for event in _orchestrator.process_stream(req.query):
+              │        │             │              │   └ 'web-01服务器CPU使用率100%，帮我排查'
+              │        │             │              └ ChatRequest(query='web-01服务器CPU使用率100%，帮我排查', history=[])
+              │        │             └ <function Orchestrator.process_stream at 0x74c0eb3acfe0>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>
+              └ {'event': 'intent', 'data': {'type': 'fault_troubleshooting'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 57, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x74c19c9bed40>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x74bf74d05810>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {'hostname': ['web-01']}
+                   │       └ 'web-01服务器CPU使用率100%，帮我排查'
+                   └ <bound method Orchestrator._handle_fault_troubleshooting of <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 128, in _handle_fault_troubleshooting
+    answer = await self.fusion.fuse_for_troubleshooting(
+                   │    │      └ <function ResponseFusion.fuse_for_troubleshooting at 0x74c19c9bee80>
+                   │    └ <ops_agent.core.fusion.response_fusion.ResponseFusion object at 0x74bf74d05310>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x74bf80016590>
+
+TypeError: ResponseFusion.fuse_for_troubleshooting() got multiple values for argument 'question'
+2026-05-21 14:48:58.132 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-21 14:48:58.133 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 14:48:58.193 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='数据库连接数满了怎么处理？' → 0 条结果
+2026-05-21 14:48:58.239 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='数据库连接数满了怎么处理？' → 0 条结果
+2026-05-21 14:56:58.886 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 14:57:12.521 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.KNOWLEDGE_QUERY (置信度: 1.0)
+2026-05-21 14:57:12.522 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 14:57:12.652 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 14:57:12.652 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 14:57:24.237 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 14:57:24.545 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率？' → 0 条结果
+2026-05-21 14:57:24.577 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率？' → 0 条结果
+2026-05-21 15:00:23.534 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-21 15:00:23.534 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 15:00:23.601 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='nginx服务无法启动怎么排查？' → 0 条结果
+2026-05-21 15:00:23.655 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='nginx服务无法启动怎么排查？' → 0 条结果
+2026-05-21 15:05:08.182 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.KNOWLEDGE_QUERY (置信度: 1.0)
+2026-05-21 15:05:08.183 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 15:05:08.246 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率？' → 0 条结果
+2026-05-21 15:05:08.292 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率？' → 0 条结果
+2026-05-21 15:14:36.199 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 15:14:48.510 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 15:14:48.510 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 15:15:02.969 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.KNOWLEDGE_QUERY (置信度: 1.0)
+2026-05-21 15:15:02.969 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 15:15:03.302 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率？' → 0 条结果
+2026-05-21 15:15:03.344 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看磁盘使用率？' → 0 条结果
+2026-05-21 15:16:11.363 | INFO     | ops_agent.api.services.config_service:activate_datasource:132 | Activated datasource: 3279eb32-0a22-4180-b3ec-632838d11078
+2026-05-21 15:16:12.174 | INFO     | ops_agent.api.services.config_service:activate_datasource:132 | Activated datasource: 2f6bd374-b4ee-4b9d-b45c-0c9d23435319
+2026-05-21 15:16:25.887 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.FAULT_TROUBLESHOOTING (置信度: 1.0)
+2026-05-21 15:16:25.888 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.FAULT_TROUBLESHOOTING → _handle_fault_troubleshooting
+2026-05-21 15:16:25.897 | INFO     | ops_agent.models.tools.script_executor:execute:37 | 执行脚本: /mnt/data/home/czr/OpsAgent/scripts/approved/check_disk.sh
+2026-05-21 15:16:25.917 | INFO     | ops_agent.models.tools.script_executor:execute:37 | 执行脚本: /mnt/data/home/czr/OpsAgent/scripts/approved/check_memory.sh
+2026-05-21 15:16:25.983 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='系统日志中出现大量Permission denied错误' → 0 条结果
+2026-05-21 15:16:25.989 | ERROR    | ops_agent.api.routes.chat:event_generator:56 | Stream 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x76845e0ffb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x76845ef20550>
+         │    └ <function Command.invoke at 0x76845e0ff7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x76845ef20550>
+           │   │      │    └ <function main at 0x76845df005e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x76845e0fea20>
+           └ <click.core.Context object at 0x76845ef20550>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x76845df005e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x76845df90a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x76845df902c0>
+    └ <uvicorn.server.Server object at 0x76845df07210>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x76845e0b45e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x76845ef22850>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x76845df07210>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x76845df90360>
+           │           └ <uvicorn.server.Server object at 0x76845df07210>
+           └ <function asyncio_run at 0x76845e2a8ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x76820c639300>
+           │      └ <function Runner.run at 0x76845e3160c0>
+           └ <asyncio.runners.Runner object at 0x768234325f90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x76820c6a8b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x768234325f90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x76820...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x7681e8762bd0>
+              │        └ <starlette.responses.StreamingResponse object at 0x76820c109190>
+              └ b'event: intent\ndata: {"type": "fault_troubleshooting"}\n\n'
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 51, in event_generator
+    async for event in _orchestrator.process_stream(req.query):
+              │        │             │              │   └ '系统日志中出现大量Permission denied错误'
+              │        │             │              └ ChatRequest(query='系统日志中出现大量Permission denied错误', history=[])
+              │        │             └ <function Orchestrator.process_stream at 0x7683aabf0fe0>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>
+              └ {'event': 'intent', 'data': {'type': 'fault_troubleshooting'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 57, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x76845c1c2d40>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x7682345054d0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '系统日志中出现大量Permission denied错误'
+                   └ <bound method Orchestrator._handle_fault_troubleshooting of <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 128, in _handle_fault_troubleshooting
+    answer = await self.fusion.fuse_for_troubleshooting(
+                   │    │      └ <function ResponseFusion.fuse_for_troubleshooting at 0x76845c1c2e80>
+                   │    └ <ops_agent.core.fusion.response_fusion.ResponseFusion object at 0x768234505450>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>
+
+TypeError: ResponseFusion.fuse_for_troubleshooting() got multiple values for argument 'question'
+2026-05-21 15:16:29.388 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.DATA_ANALYSIS (置信度: 1.0)
+2026-05-21 15:16:29.389 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.DATA_ANALYSIS → _handle_data_analysis
+2026-05-21 15:16:29.494 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 15:16:29.524 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 15:16:29.817 | INFO     | ops_agent.models.text2sql.schema_manager:refresh:45 | Schema 缓存已更新: 26 张表 (方言: clickhouse)
+2026-05-21 15:16:29.820 | WARNING  | ops_agent.models.llm.client:_init_engines:148 | DeepSeek API Key 未配置，跳过主引擎
+2026-05-21 15:16:29.821 | WARNING  | ops_agent.models.llm.client:_init_engines:155 | 百炼 API Key 未配置，跳过备引擎
+2026-05-21 15:16:29.821 | WARNING  | ops_agent.models.llm.client:_init_engines:158 | 未配置任何 LLM API Key，系统将无法回答问题
+2026-05-21 15:16:29.821 | ERROR    | ops_agent.api.routes.chat:event_generator:56 | Stream 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 66, in generate
+    response = await client.chat(
+                     │      └ <function UnifiedLLMClient.chat at 0x76845c1c25c0>
+                     └ <ops_agent.models.llm.client.UnifiedLLMClient object at 0x7681e8156050>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 163, in chat
+    raise LLMError("无可用 LLM 引擎")
+          └ <class 'ops_agent.utils.exceptions.LLMError'>
+
+ops_agent.utils.exceptions.LLMError: 无可用 LLM 引擎
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x76845e0ffb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x76845ef20550>
+         │    └ <function Command.invoke at 0x76845e0ff7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x76845ef20550>
+           │   │      │    └ <function main at 0x76845df005e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x76845e0fea20>
+           └ <click.core.Context object at 0x76845ef20550>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x76845df005e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x76845df90a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x76845df902c0>
+    └ <uvicorn.server.Server object at 0x76845df07210>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x76845e0b45e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x76845ef22850>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x76845df07210>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x76845df90360>
+           │           └ <uvicorn.server.Server object at 0x76845df07210>
+           └ <function asyncio_run at 0x76845e2a8ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x76820c639300>
+           │      └ <function Runner.run at 0x76845e3160c0>
+           └ <asyncio.runners.Runner object at 0x768234325f90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x76820c6a8b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x768234325f90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x7681e...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x7681e8762bd0>
+              │        └ <starlette.responses.StreamingResponse object at 0x7681e87304d0>
+              └ b'event: intent\ndata: {"type": "data_analysis"}\n\n'
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 51, in event_generator
+    async for event in _orchestrator.process_stream(req.query):
+              │        │             │              │   └ '最近一周有哪些critical告警？'
+              │        │             │              └ ChatRequest(query='最近一周有哪些critical告警？', history=[])
+              │        │             └ <function Orchestrator.process_stream at 0x7683aabf0fe0>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>
+              └ {'event': 'intent', 'data': {'type': 'data_analysis'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 57, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x76845c1c2d40>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x7682345054d0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '最近一周有哪些critical告警？'
+                   └ <bound method Orchestrator._handle_data_analysis of <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 101, in _handle_data_analysis
+    sql = await self.text2sql.generate(query)
+                │    │        │        └ '最近一周有哪些critical告警？'
+                │    │        └ <function Text2SQLGenerator.generate at 0x7682361a2d40>
+                │    └ <ops_agent.models.text2sql.generator.Text2SQLGenerator object at 0x76823015fe50>
+                └ <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 72, in generate
+    raise SQLError(f"Text2SQL 生成失败: {e}") from e
+          └ <class 'ops_agent.utils.exceptions.SQLError'>
+
+ops_agent.utils.exceptions.SQLError: Text2SQL 生成失败: 无可用 LLM 引擎
+2026-05-21 15:17:35.448 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-21 15:17:35.448 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 15:17:35.507 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='hawkeye表中有哪些表' → 0 条结果
+2026-05-21 15:17:35.560 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='hawkeye表中有哪些表' → 0 条结果
+2026-05-21 15:18:34.100 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.DATA_ANALYSIS (置信度: 1.0)
+2026-05-21 15:18:34.101 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.DATA_ANALYSIS → _handle_data_analysis
+2026-05-21 15:18:34.136 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 15:18:34.140 | ERROR    | ops_agent.api.routes.chat:event_generator:56 | Stream 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 66, in generate
+    response = await client.chat(
+                     │      └ <function UnifiedLLMClient.chat at 0x76845c1c25c0>
+                     └ <ops_agent.models.llm.client.UnifiedLLMClient object at 0x7681e8156050>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 163, in chat
+    raise LLMError("无可用 LLM 引擎")
+          └ <class 'ops_agent.utils.exceptions.LLMError'>
+
+ops_agent.utils.exceptions.LLMError: 无可用 LLM 引擎
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x76845e0ffb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x76845ef20550>
+         │    └ <function Command.invoke at 0x76845e0ff7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x76845ef20550>
+           │   │      │    └ <function main at 0x76845df005e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x76845e0fea20>
+           └ <click.core.Context object at 0x76845ef20550>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x76845df005e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x76845df90a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x76845df902c0>
+    └ <uvicorn.server.Server object at 0x76845df07210>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x76845e0b45e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x76845ef22850>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x76845df07210>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x76845df90360>
+           │           └ <uvicorn.server.Server object at 0x76845df07210>
+           └ <function asyncio_run at 0x76845e2a8ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x76820c639300>
+           │      └ <function Runner.run at 0x76845e3160c0>
+           └ <asyncio.runners.Runner object at 0x768234325f90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x76820c6a8b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x768234325f90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x76820...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x7681e8762bd0>
+              │        └ <starlette.responses.StreamingResponse object at 0x76820c093690>
+              └ b'event: intent\ndata: {"type": "data_analysis"}\n\n'
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 51, in event_generator
+    async for event in _orchestrator.process_stream(req.query):
+              │        │             │              │   └ '帮我查询一下数据源中hawkeye数据库中有哪些表格'
+              │        │             │              └ ChatRequest(query='帮我查询一下数据源中hawkeye数据库中有哪些表格', history=[])
+              │        │             └ <function Orchestrator.process_stream at 0x7683aabf0fe0>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>
+              └ {'event': 'intent', 'data': {'type': 'data_analysis'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 57, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x76845c1c2d40>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x7682345054d0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '帮我查询一下数据源中hawkeye数据库中有哪些表格'
+                   └ <bound method Orchestrator._handle_data_analysis of <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 101, in _handle_data_analysis
+    sql = await self.text2sql.generate(query)
+                │    │        │        └ '帮我查询一下数据源中hawkeye数据库中有哪些表格'
+                │    │        └ <function Text2SQLGenerator.generate at 0x7682361a2d40>
+                │    └ <ops_agent.models.text2sql.generator.Text2SQLGenerator object at 0x76823015fe50>
+                └ <ops_agent.core.orchestrator.Orchestrator object at 0x768234326110>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 72, in generate
+    raise SQLError(f"Text2SQL 生成失败: {e}") from e
+          └ <class 'ops_agent.utils.exceptions.SQLError'>
+
+ops_agent.utils.exceptions.SQLError: Text2SQL 生成失败: 无可用 LLM 引擎
+2026-05-21 15:43:31.942 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 15:43:49.083 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 15:43:49.083 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 15:44:22.150 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.KNOWLEDGE_QUERY (置信度: 1.0)
+2026-05-21 15:44:22.150 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 15:44:22.151 | ERROR    | ops_agent.api.routes.chat:event_generator:61 | Stream 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x7fb0de9fbb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x7fb0e0124610>
+         │    └ <function Command.invoke at 0x7fb0de9fb7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x7fb0e0124610>
+           │   │      │    └ <function main at 0x7fb0de83c5e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x7fb0de9faa20>
+           └ <click.core.Context object at 0x7fb0e0124610>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x7fb0de83c5e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x7fb0dea94a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x7fb0dea942c0>
+    └ <uvicorn.server.Server object at 0x7fb0e01b39d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x7fb0de9b05e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x7fb0e0126910>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x7fb0e01b39d0>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x7fb0dea94360>
+           │           └ <uvicorn.server.Server object at 0x7fb0e01b39d0>
+           └ <function asyncio_run at 0x7fb0deba4ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x7fae9872d4e0>
+           │      └ <function Runner.run at 0x7fb0dec0e0c0>
+           └ <asyncio.runners.Runner object at 0x7fb0e0126fd0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x7fae987a8b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x7fb0e0126fd0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x7fae8...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x7fae984ca790>
+              │        └ <starlette.responses.StreamingResponse object at 0x7fae8065da90>
+              └ b'event: intent\ndata: {"type": "knowledge_query"}\n\n'
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 56, in event_generator
+    async for event in _orchestrator.process_stream(req.query, datasource_id=req.datasource_id):
+              │        │             │              │   │                    │   └ '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'
+              │        │             │              │   │                    └ ChatRequest(query='帮我查看一下test数据源中有哪些表', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9d23435319')
+              │        │             │              │   └ '帮我查看一下test数据源中有哪些表'
+              │        │             │              └ ChatRequest(query='帮我查看一下test数据源中有哪些表', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9d23435319')
+              │        │             └ <function Orchestrator.process_stream at 0x7fb02b4f5440>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x7faeb4ff1e10>
+              └ {'event': 'intent', 'data': {'type': 'knowledge_query'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 58, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x7fb0dcaeee80>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x7faeb4ff1dd0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x7faeb4ff1e10>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities, **kwargs)
+                   │       │      │           └ {'datasource_id': '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'}
+                   │       │      └ {}
+                   │       └ '帮我查看一下test数据源中有哪些表'
+                   └ <bound method Orchestrator._handle_knowledge of <ops_agent.core.orchestrator.Orchestrator object at 0x7faeb4ff1e10>>
+
+TypeError: Orchestrator._handle_knowledge() got an unexpected keyword argument 'datasource_id'
+2026-05-21 15:44:55.770 | INFO     | ops_agent.api.services.config_service:delete_datasource:119 | Deleted datasource: 3279eb32-0a22-4180-b3ec-632838d11078
+2026-05-21 15:45:24.198 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-21 15:45:24.199 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 15:45:24.199 | ERROR    | ops_agent.api.routes.chat:event_generator:61 | Stream 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x7fb0de9fbb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x7fb0e0124610>
+         │    └ <function Command.invoke at 0x7fb0de9fb7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x7fb0e0124610>
+           │   │      │    └ <function main at 0x7fb0de83c5e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x7fb0de9faa20>
+           └ <click.core.Context object at 0x7fb0e0124610>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x7fb0de83c5e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x7fb0dea94a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x7fb0dea942c0>
+    └ <uvicorn.server.Server object at 0x7fb0e01b39d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x7fb0de9b05e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x7fb0e0126910>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x7fb0e01b39d0>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x7fb0dea94360>
+           │           └ <uvicorn.server.Server object at 0x7fb0e01b39d0>
+           └ <function asyncio_run at 0x7fb0deba4ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x7fae9872d4e0>
+           │      └ <function Runner.run at 0x7fb0dec0e0c0>
+           └ <asyncio.runners.Runner object at 0x7fb0e0126fd0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x7fae987a8b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x7fb0e0126fd0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x7fae8...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x7fae982f0370>
+              │        └ <starlette.responses.StreamingResponse object at 0x7fae80500610>
+              └ b'event: intent\ndata: {"type": "knowledge_query"}\n\n'
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 56, in event_generator
+    async for event in _orchestrator.process_stream(req.query, datasource_id=req.datasource_id):
+              │        │             │              │   │                    │   └ '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'
+              │        │             │              │   │                    └ ChatRequest(query='帮我查一下hawkeye数据库中有哪些表格', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9d23435319')
+              │        │             │              │   └ '帮我查一下hawkeye数据库中有哪些表格'
+              │        │             │              └ ChatRequest(query='帮我查一下hawkeye数据库中有哪些表格', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9d23435319')
+              │        │             └ <function Orchestrator.process_stream at 0x7fb02b4f5440>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x7faeb4ff1e10>
+              └ {'event': 'intent', 'data': {'type': 'knowledge_query'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 58, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x7fb0dcaeee80>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x7faeb4ff1dd0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x7faeb4ff1e10>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities, **kwargs)
+                   │       │      │           └ {'datasource_id': '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'}
+                   │       │      └ {}
+                   │       └ '帮我查一下hawkeye数据库中有哪些表格'
+                   └ <bound method Orchestrator._handle_knowledge of <ops_agent.core.orchestrator.Orchestrator object at 0x7faeb4ff1e10>>
+
+TypeError: Orchestrator._handle_knowledge() got an unexpected keyword argument 'datasource_id'
+2026-05-21 15:48:04.098 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 15:48:08.346 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 16:02:25.560 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 16:02:39.192 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 16:02:39.192 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 16:02:51.500 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-21 16:02:51.500 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-21 16:02:51.837 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='帮我查一下hawkeye数据库中有哪些表格' → 0 条结果
+2026-05-21 16:02:51.877 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='帮我查一下hawkeye数据库中有哪些表格' → 0 条结果
+2026-05-21 16:03:36.182 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.DATA_ANALYSIS (置信度: 1.0)
+2026-05-21 16:03:36.183 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.DATA_ANALYSIS → _handle_data_analysis
+2026-05-21 16:03:36.290 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:03:36.327 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:03:36.615 | INFO     | ops_agent.models.text2sql.schema_manager:refresh:49 | Schema 缓存已更新: 26 张表 (方言: clickhouse)
+2026-05-21 16:03:36.618 | WARNING  | ops_agent.models.llm.client:_init_engines:148 | DeepSeek API Key 未配置，跳过主引擎
+2026-05-21 16:03:36.618 | WARNING  | ops_agent.models.llm.client:_init_engines:155 | 百炼 API Key 未配置，跳过备引擎
+2026-05-21 16:03:36.618 | WARNING  | ops_agent.models.llm.client:_init_engines:158 | 未配置任何 LLM API Key，系统将无法回答问题
+2026-05-21 16:03:36.619 | ERROR    | ops_agent.core.orchestrator:_handle_data_analysis:116 | 数据分析处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 66, in generate
+    response = await client.chat(
+                     │      └ <function UnifiedLLMClient.chat at 0x7daa89c36700>
+                     └ <ops_agent.models.llm.client.UnifiedLLMClient object at 0x7da84c3183d0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 163, in chat
+    raise LLMError(
+          └ <class 'ops_agent.utils.exceptions.LLMError'>
+
+ops_agent.utils.exceptions.LLMError: 无可用 LLM 引擎。请先在「大模型配置」页面添加一个 LLM 提供商 (OpenAI 兼容接口或 DashScope)，或配置 .env 环境变量中的 API Key。
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x7daa8bb63b00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x7daa8c920590>
+         │    └ <function Command.invoke at 0x7daa8bb637e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x7daa8c920590>
+           │   │      │    └ <function main at 0x7daa8b96c5e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x7daa8bb62a20>
+           └ <click.core.Context object at 0x7daa8c920590>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x7daa8b96c5e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x7daa8bbfca40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x7daa8bbfc2c0>
+    └ <uvicorn.server.Server object at 0x7daa8d3f25d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x7daa8bb185e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x7daa8c922890>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x7daa8d3f25d0>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x7daa8bbfc360>
+           │           └ <uvicorn.server.Server object at 0x7daa8d3f25d0>
+           └ <function asyncio_run at 0x7daa8bca8ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x7da85c1114e0>
+           │      └ <function Runner.run at 0x7daa8bd120c0>
+           └ <asyncio.runners.Runner object at 0x7da85c2c7550>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x7da85c190b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x7da85c2c7550>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x7da84...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x7da84c5a68a0>
+              │        └ <starlette.responses.StreamingResponse object at 0x7da84c5b7d10>
+              └ b'event: intent\ndata: {"type": "data_analysis"}\n\n'
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 56, in event_generator
+    async for event in _orchestrator.process_stream(req.query, datasource_id=req.datasource_id):
+              │        │             │              │   │                    │   └ '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'
+              │        │             │              │   │                    └ ChatRequest(query='帮我查询一下数据源test中hawkeye数据库中有哪些表', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9d23435319')
+              │        │             │              │   └ '帮我查询一下数据源test中hawkeye数据库中有哪些表'
+              │        │             │              └ ChatRequest(query='帮我查询一下数据源test中hawkeye数据库中有哪些表', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9d23435319')
+              │        │             └ <function Orchestrator.process_stream at 0x7da86360d440>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x7da862cade90>
+              └ {'event': 'intent', 'data': {'type': 'data_analysis'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 58, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x7daa89c36e80>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x7da862cad850>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x7da862cade90>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities, **kwargs)
+                   │       │      │           └ {'datasource_id': '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'}
+                   │       │      └ {}
+                   │       └ '帮我查询一下数据源test中hawkeye数据库中有哪些表'
+                   └ <bound method Orchestrator._handle_data_analysis of <ops_agent.core.orchestrator.Orchestrator object at 0x7da862cade90>>
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 110, in _handle_data_analysis
+    sql = await self.text2sql.generate(query)
+                │    │        │        └ '帮我查询一下数据源test中hawkeye数据库中有哪些表'
+                │    │        └ <function Text2SQLGenerator.generate at 0x7da863b6efc0>
+                │    └ <ops_agent.models.text2sql.generator.Text2SQLGenerator object at 0x7da861aa5490>
+                └ <ops_agent.core.orchestrator.Orchestrator object at 0x7da862cade90>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 72, in generate
+    raise SQLError(f"Text2SQL 生成失败: {e}") from e
+          └ <class 'ops_agent.utils.exceptions.SQLError'>
+
+ops_agent.utils.exceptions.SQLError: Text2SQL 生成失败: 无可用 LLM 引擎。请先在「大模型配置」页面添加一个 LLM 提供商 (OpenAI 兼容接口或 DashScope)，或配置 .env 环境变量中的 API Key。
+2026-05-21 16:03:57.514 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:04:02.057 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 16:23:43.021 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 16:23:56.778 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 16:23:56.778 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 16:31:54.520 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.DATA_ANALYSIS (置信度: 1.0)
+2026-05-21 16:31:54.521 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.DATA_ANALYSIS → _handle_data_analysis
+2026-05-21 16:31:54.623 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:31:54.663 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:31:54.963 | INFO     | ops_agent.models.text2sql.schema_manager:refresh:49 | Schema 缓存已更新: 26 张表 (方言: clickhouse)
+2026-05-21 16:31:59.426 | ERROR    | ops_agent.models.llm.client:chat:175 | 引擎错误: 百炼调用失败: Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/error-code#inappropriate-content
+2026-05-21 16:31:59.427 | ERROR    | ops_agent.core.orchestrator:_handle_data_analysis:116 | 数据分析处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 67, in generate
+    response = await client.chat(
+                     │      └ <function UnifiedLLMClient.chat at 0x702d592ee700>
+                     └ <ops_agent.models.llm.client.UnifiedLLMClient object at 0x702b332ccb50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 177, in chat
+    raise last_error or LLMError("所有 LLM 引擎均失败")
+          │             └ <class 'ops_agent.utils.exceptions.LLMError'>
+          └ LLMError('百炼调用失败: Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/err...
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 170, in chat
+    return await engine.chat(messages, **kwargs)
+                 │      │    │           └ {'temperature': 0.0, 'max_tokens': 1024}
+                 │      │    └ [{'role': 'user', 'content': '你是一个MySQL专家。根据以下数据库Schema，将用户的自然语言问题转换为MySQL SELECT语句。\n\n## 数据库 Schema\n\n### 表: hawkeye_ads_a...
+                 │      └ <function BailianEngine.chat at 0x702d592ee480>
+                 └ <ops_agent.models.llm.client.BailianEngine object at 0x702b32d0fb10>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 92, in chat
+    raise LLMError(f"百炼调用失败: {response.message}")
+          └ <class 'ops_agent.utils.exceptions.LLMError'>
+
+ops_agent.utils.exceptions.LLMError: 百炼调用失败: Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/error-code#inappropriate-content
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x702d5b1fbb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x702d5c920550>
+         │    └ <function Command.invoke at 0x702d5b1fb7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x702d5c920550>
+           │   │      │    └ <function main at 0x702d5b03c5e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x702d5b1faa20>
+           └ <click.core.Context object at 0x702d5c920550>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x702d5b03c5e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x702d5b294a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x702d5b2942c0>
+    └ <uvicorn.server.Server object at 0x702d5b043410>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x702d5b1b05e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x702d5c922890>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x702d5b043410>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x702d5b294360>
+           │           └ <uvicorn.server.Server object at 0x702d5b043410>
+           └ <function asyncio_run at 0x702d5b3a4ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x702b247054e0>
+           │      └ <function Runner.run at 0x702d5b40e0c0>
+           └ <asyncio.runners.Runner object at 0x702d5c922c50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x702b24780b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x702d5c922c50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x702b2...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x702b2408bde0>
+              │        └ <starlette.responses.StreamingResponse object at 0x702b2432c710>
+              └ b'event: intent\ndata: {"type": "data_analysis"}\n\n'
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 56, in event_generator
+    async for event in _orchestrator.process_stream(req.query, datasource_id=req.datasource_id):
+              │        │             │              │   │                    │   └ '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'
+              │        │             │              │   │                    └ ChatRequest(query='帮我查询一下数据源test中hawkeye数据库中有哪些表', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9d23435319')
+              │        │             │              │   └ '帮我查询一下数据源test中hawkeye数据库中有哪些表'
+              │        │             │              └ ChatRequest(query='帮我查询一下数据源test中hawkeye数据库中有哪些表', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9d23435319')
+              │        │             └ <function Orchestrator.process_stream at 0x702b32d09440>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x702b324b92d0>
+              └ {'event': 'intent', 'data': {'type': 'data_analysis'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 58, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x702d592eee80>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x702b315fa250>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x702b324b92d0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities, **kwargs)
+                   │       │      │           └ {'datasource_id': '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'}
+                   │       │      └ {}
+                   │       └ '帮我查询一下数据源test中hawkeye数据库中有哪些表'
+                   └ <bound method Orchestrator._handle_data_analysis of <ops_agent.core.orchestrator.Orchestrator object at 0x702b324b92d0>>
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 110, in _handle_data_analysis
+    sql = await self.text2sql.generate(query)
+                │    │        │        └ '帮我查询一下数据源test中hawkeye数据库中有哪些表'
+                │    │        └ <function Text2SQLGenerator.generate at 0x702b3326f060>
+                │    └ <ops_agent.models.text2sql.generator.Text2SQLGenerator object at 0x702b2d52fe10>
+                └ <ops_agent.core.orchestrator.Orchestrator object at 0x702b324b92d0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 73, in generate
+    raise SQLError(f"Text2SQL 生成失败: {e}") from e
+          └ <class 'ops_agent.utils.exceptions.SQLError'>
+
+ops_agent.utils.exceptions.SQLError: Text2SQL 生成失败: 百炼调用失败: Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/error-code#inappropriate-content
+2026-05-21 16:35:18.440 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:35:22.570 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 16:35:25.021 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:35:30.405 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:35:33.227 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 16:35:35.664 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:35:38.094 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:35:40.108 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:35:58.027 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:36:03.920 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:36:51.792 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:40:11.891 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:40:13.341 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:40:17.452 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:40:20.801 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:40:27.407 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:40:32.536 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:44:15.767 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:45:01.453 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.DATA_ANALYSIS (置信度: 1.0)
+2026-05-21 16:45:01.453 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.DATA_ANALYSIS → _handle_data_analysis
+2026-05-21 16:45:01.487 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:45:01.519 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 16:45:01.805 | INFO     | ops_agent.models.text2sql.schema_manager:refresh:49 | Schema 缓存已更新: 26 张表 (方言: clickhouse)
+2026-05-21 16:45:07.984 | ERROR    | ops_agent.models.llm.client:chat:175 | 引擎错误: 百炼调用失败: Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/error-code#inappropriate-content
+2026-05-21 16:45:07.985 | ERROR    | ops_agent.core.orchestrator:_handle_data_analysis:116 | 数据分析处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 67, in generate
+    response = await client.chat(
+                     │      └ <function UnifiedLLMClient.chat at 0x702d592ee700>
+                     └ <ops_agent.models.llm.client.UnifiedLLMClient object at 0x702b332ccb50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 177, in chat
+    raise last_error or LLMError("所有 LLM 引擎均失败")
+          │             └ <class 'ops_agent.utils.exceptions.LLMError'>
+          └ LLMError('百炼调用失败: Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/err...
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 170, in chat
+    return await engine.chat(messages, **kwargs)
+                 │      │    │           └ {'temperature': 0.0, 'max_tokens': 1024}
+                 │      │    └ [{'role': 'user', 'content': '你是一个MySQL专家。根据以下数据库Schema，将用户的自然语言问题转换为MySQL SELECT语句。\n\n## 数据库 Schema\n\n### 表: hawkeye_ads_a...
+                 │      └ <function BailianEngine.chat at 0x702d592ee480>
+                 └ <ops_agent.models.llm.client.BailianEngine object at 0x702b32d0fb10>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/llm/client.py", line 92, in chat
+    raise LLMError(f"百炼调用失败: {response.message}")
+          └ <class 'ops_agent.utils.exceptions.LLMError'>
+
+ops_agent.utils.exceptions.LLMError: 百炼调用失败: Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/error-code#inappropriate-content
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x702d5b1fbb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x702d5c920550>
+         │    └ <function Command.invoke at 0x702d5b1fb7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x702d5c920550>
+           │   │      │    └ <function main at 0x702d5b03c5e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x702d5b1faa20>
+           └ <click.core.Context object at 0x702d5c920550>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x702d5b03c5e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x702d5b294a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x702d5b2942c0>
+    └ <uvicorn.server.Server object at 0x702d5b043410>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x702d5b1b05e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x702d5c922890>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x702d5b043410>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x702d5b294360>
+           │           └ <uvicorn.server.Server object at 0x702d5b043410>
+           └ <function asyncio_run at 0x702d5b3a4ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x702b247054e0>
+           │      └ <function Runner.run at 0x702d5b40e0c0>
+           └ <asyncio.runners.Runner object at 0x702d5c922c50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x702b24780b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x702d5c922c50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x702b2...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x702b2408a790>
+              │        └ <starlette.responses.StreamingResponse object at 0x702b240bfd10>
+              └ b'event: intent\ndata: {"type": "data_analysis"}\n\n'
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 56, in event_generator
+    async for event in _orchestrator.process_stream(req.query, datasource_id=req.datasource_id):
+              │        │             │              │   │                    │   └ '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'
+              │        │             │              │   │                    └ ChatRequest(query='帮我查一下hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9...
+              │        │             │              │   └ '帮我查一下hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+              │        │             │              └ ChatRequest(query='帮我查一下hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据', history=[], datasource_id='2f6bd374-b4ee-4b9d-b45c-0c9...
+              │        │             └ <function Orchestrator.process_stream at 0x702b32d09440>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x702b324b92d0>
+              └ {'event': 'intent', 'data': {'type': 'data_analysis'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 58, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x702d592eee80>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x702b315fa250>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x702b324b92d0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities, **kwargs)
+                   │       │      │           └ {'datasource_id': '2f6bd374-b4ee-4b9d-b45c-0c9d23435319'}
+                   │       │      └ {}
+                   │       └ '帮我查一下hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+                   └ <bound method Orchestrator._handle_data_analysis of <ops_agent.core.orchestrator.Orchestrator object at 0x702b324b92d0>>
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 110, in _handle_data_analysis
+    sql = await self.text2sql.generate(query)
+                │    │        │        └ '帮我查一下hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+                │    │        └ <function Text2SQLGenerator.generate at 0x702b3326f060>
+                │    └ <ops_agent.models.text2sql.generator.Text2SQLGenerator object at 0x702b2d52fe10>
+                └ <ops_agent.core.orchestrator.Orchestrator object at 0x702b324b92d0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/text2sql/generator.py", line 73, in generate
+    raise SQLError(f"Text2SQL 生成失败: {e}") from e
+          └ <class 'ops_agent.utils.exceptions.SQLError'>
+
+ops_agent.utils.exceptions.SQLError: Text2SQL 生成失败: 百炼调用失败: Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/error-code#inappropriate-content
+2026-05-21 16:46:45.248 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:04:08.724 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 17:04:23.492 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 17:04:23.492 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 17:04:25.732 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:04:28.872 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:04:30.209 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 17:04:37.004 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:04:39.535 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:04:44.749 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 17:05:08.474 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:05:10.026 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:05:12.549 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:05:35.662 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:05:38.728 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:05:42.713 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 17:05:46.428 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:05:48.100 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 17:05:50.290 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:05:56.363 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:05:57.544 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 17:06:25.708 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.DATA_ANALYSIS (置信度: 1.0)
+2026-05-21 17:06:25.709 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.DATA_ANALYSIS → _handle_data_analysis
+2026-05-21 17:06:25.744 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:06:26.039 | INFO     | ops_agent.models.text2sql.schema_manager:refresh:49 | Schema 缓存已更新: 26 张表 (方言: clickhouse)
+2026-05-21 17:06:30.640 | ERROR    | ops_agent.models.llm.client:chat:175 | 引擎错误: 百炼调用失败: Input data may contain inappropriate content. For details, see: https://help.aliyun.com/zh/model-studio/error-code#inappropriate-content
+2026-05-21 17:06:30.640 | INFO     | ops_agent.models.text2sql.generator:generate:76 | Schema 含样本数据被拦截，用精简 Schema 重试
+2026-05-21 17:06:32.593 | INFO     | ops_agent.models.text2sql.generator:generate:93 | Text2SQL: 'hawkeye_dwd_intel_content表中有多少条数据' → SELECT COUNT(*) AS 数据条数 FROM hawkeye_dwd_intel_content LIMIT 100
+2026-05-21 17:06:32.603 | ERROR    | ops_agent.core.orchestrator:_handle_data_analysis:116 | 数据分析处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x70ddffe63b00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x70de01524390>
+         │    └ <function Command.invoke at 0x70ddffe637e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x70de01524390>
+           │   │      │    └ <function main at 0x70ddffc6c5e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x70ddffe62a20>
+           └ <click.core.Context object at 0x70de01524390>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x70ddffc6c5e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x70ddffefca40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x70ddffefc2c0>
+    └ <uvicorn.server.Server object at 0x70de019b65d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x70ddffe185e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x70de015268d0>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x70de019b65d0>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x70ddffefc360>
+           │           └ <uvicorn.server.Server object at 0x70de019b65d0>
+           └ <function asyncio_run at 0x70ddfffa8ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x70dbd04314e0>
+           │      └ <function Runner.run at 0x70de000120c0>
+           └ <asyncio.runners.Runner object at 0x70dbd05cfd90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x70dbd04b0dc0>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x70dbd05cfd90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x70dbc...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x70dbd01d3010>
+              │        └ <starlette.responses.StreamingResponse object at 0x70dbc050d210>
+              └ b'event: intent\ndata: {"type": "data_analysis"}\n\n'
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 56, in event_generator
+    async for event in _orchestrator.process_stream(req.query, datasource_id=req.datasource_id):
+              │        │             │              │   │                    │   └ None
+              │        │             │              │   │                    └ ChatRequest(query='hawkeye_dwd_intel_content表中有多少条数据', history=[], datasource_id=None)
+              │        │             │              │   └ 'hawkeye_dwd_intel_content表中有多少条数据'
+              │        │             │              └ ChatRequest(query='hawkeye_dwd_intel_content表中有多少条数据', history=[], datasource_id=None)
+              │        │             └ <function Orchestrator.process_stream at 0x70dbd79713a0>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x70dbd7012410>
+              └ {'event': 'intent', 'data': {'type': 'data_analysis'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 58, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x70ddfdeeede0>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x70dbd7011e90>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x70dbd7012410>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities, **kwargs)
+                   │       │      │           └ {'datasource_id': None}
+                   │       │      └ {}
+                   │       └ 'hawkeye_dwd_intel_content表中有多少条数据'
+                   └ <bound method Orchestrator._handle_data_analysis of <ops_agent.core.orchestrator.Orchestrator object at 0x70dbd7012410>>
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 111, in _handle_data_analysis
+    rows = ds.execute_query(sql)
+           │  │             └ 'SELECT COUNT(*) AS 数据条数 FROM hawkeye_dwd_intel_content LIMIT 100'
+           │  └ <function ClickHouseDataSource.execute_query at 0x70dbd7970900>
+           └ <ops_agent.models.tools.clickhouse_source.ClickHouseDataSource object at 0x70dbc066b610>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/tools/clickhouse_source.py", line 28, in execute_query
+    result = self.client.query(sql)
+             │    │      │     └ 'SELECT COUNT(*) AS 数据条数 FROM hawkeye_dwd_intel_content LIMIT 100'
+             │    │      └ <function Client.query at 0x70dbc06bb920>
+             │    └ <clickhouse_connect.driver.httpclient.HttpClient object at 0x70dbd05ceb10>
+             └ <ops_agent.models.tools.clickhouse_source.ClickHouseDataSource object at 0x70dbc066b610>
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/clickhouse_connect/driver/client.py", line 382, in query
+    return self._query_with_context(query_context)
+           │    │                   └ <clickhouse_connect.driver.query.QueryContext object at 0x70dbc0513650>
+           │    └ <function HttpClient._query_with_context at 0x70dbc06f63e0>
+           └ <clickhouse_connect.driver.httpclient.HttpClient object at 0x70dbd05ceb10>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/clickhouse_connect/driver/httpclient.py", line 321, in _query_with_context
+    response = self._raw_request(
+               │    └ <function HttpClient._raw_request at 0x70dbc06f67a0>
+               └ <clickhouse_connect.driver.httpclient.HttpClient object at 0x70dbd05ceb10>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/clickhouse_connect/driver/httpclient.py", line 599, in _raw_request
+    self._error_handler(response)
+    │    │              └ <urllib3.response.HTTPResponse object at 0x70dbc0618340>
+    │    └ <function HttpClient._error_handler at 0x70dbc06f6700>
+    └ <clickhouse_connect.driver.httpclient.HttpClient object at 0x70dbd05ceb10>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/clickhouse_connect/driver/httpclient.py", line 511, in _error_handler
+    raise OperationalError(err_str) if retried else DatabaseError(err_str) from None
+          │                │           │            │             └ 'Received ClickHouse exception, code: 62, server response: Code: 62. DB::Exception: Unrecognized token: Syntax error: failed ...
+          │                │           │            └ <class 'clickhouse_connect.driver.exceptions.DatabaseError'>
+          │                │           └ False
+          │                └ 'Received ClickHouse exception, code: 62, server response: Code: 62. DB::Exception: Unrecognized token: Syntax error: failed ...
+          └ <class 'clickhouse_connect.driver.exceptions.OperationalError'>
+
+clickhouse_connect.driver.exceptions.DatabaseError: Received ClickHouse exception, code: 62, server response: Code: 62. DB::Exception: Unrecognized token: Syntax error: failed at position 20 (数) (line 1, col 20): 数据条数 FROM hawkeye_dwd_intel_content LIMIT 100
+ FORMAT Native. . (SYNTAX_ERROR) (for url http://172.23.216.106:8123)
+2026-05-21 17:09:44.617 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:09:48.788 | INFO     | ops_agent.api.services.config_service:create_datasource:88 | Created datasource: test02 (f1775cd3-e3e4-4a56-8ed3-95aa1f8d18fa)
+2026-05-21 17:09:58.558 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:10:54.557 | INFO     | ops_agent.api.services.config_service:activate_datasource:132 | Activated datasource: f1775cd3-e3e4-4a56-8ed3-95aa1f8d18fa
+2026-05-21 17:10:55.579 | INFO     | ops_agent.api.services.config_service:activate_datasource:132 | Activated datasource: 2f6bd374-b4ee-4b9d-b45c-0c9d23435319
+2026-05-21 17:10:59.301 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:12:41.685 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:13:18.672 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:14:06.939 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:19:52.988 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:20:12.477 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:20:14.953 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:20:17.509 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:20:20.905 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:20:24.910 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:20:28.468 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 17:20:32.647 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 19:40:44.482 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 19:40:59.058 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 19:40:59.058 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 19:41:11.386 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 19:41:16.131 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 19:41:20.895 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 19:42:16.335 | INFO     | ops_agent.api.services.config_service:update_llm_provider:232 | Updated LLM provider: Qwen (dd5309a5-6c85-4e7e-a90f-301ffb86b5f1)
+2026-05-21 19:50:18.931 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 19:51:56.635 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 19:52:04.664 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 19:52:07.253 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 20:08:47.348 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 20:09:03.037 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 20:09:03.038 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 20:09:19.561 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:09:22.246 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 20:09:25.536 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123

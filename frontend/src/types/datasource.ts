@@ -7,6 +7,8 @@ export interface MySQLConfig {
   password: string
   database: string
   charset: string
+  selected_tables?: string[]
+  total_tables?: number
 }
 
 export interface ClickHouseConfig {
@@ -15,6 +17,8 @@ export interface ClickHouseConfig {
   user: string
   password: string
   database: string
+  selected_tables?: string[]
+  total_tables?: number
 }
 
 export interface ExcelCSVConfig {

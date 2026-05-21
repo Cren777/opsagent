@@ -24,7 +24,7 @@ class Orchestrator:
         self.fusion = ResponseFusion(llm_client)
 
         self.kb = get_knowledge_base()
-        self.text2sql = Text2SQLGenerator()
+        self.text2sql = Text2SQLGenerator(llm_client=llm_client)
         self.log_indexer = LogIndexer()
         self.script_executor = ScriptExecutor()
 
@@ -36,18 +36,19 @@ class Orchestrator:
         self.router.register(IntentType.DATA_ANALYSIS, self._handle_data_analysis)
         self.router.register(IntentType.FAULT_TROUBLESHOOTING, self._handle_fault_troubleshooting)
 
-    async def process(self, query: str) -> Dict[str, Any]:
+    async def process(self, query: str, datasource_id: str = None) -> Dict[str, Any]:
         """非流式处理用户查询"""
         intent_result = await self.classifier.classify(query)
         result = await self.router.route(
             intent_result.intent,
             query,
             intent_result.entities,
+            datasource_id=datasource_id,
         )
         result["intent"] = intent_result.intent.value
         return result
 
-    async def process_stream(self, query: str) -> AsyncGenerator[Dict[str, Any], None]:
+    async def process_stream(self, query: str, datasource_id: str = None) -> AsyncGenerator[Dict[str, Any], None]:
         """流式处理用户查询，通过 SSE 事件逐步返回"""
         # Step 1: 意图识别
         intent_result = await self.classifier.classify(query)
@@ -58,6 +59,7 @@ class Orchestrator:
             intent_result.intent,
             query,
             intent_result.entities,
+            datasource_id=datasource_id,
         )
 
         # Step 3: 流式输出响应
@@ -83,7 +85,7 @@ class Orchestrator:
             }
         }
 
-    async def _handle_knowledge(self, query: str, entities: dict) -> Dict[str, Any]:
+    async def _handle_knowledge(self, query: str, entities: dict, **kwargs) -> Dict[str, Any]:
         """处理知识查询"""
         context = self.kb.query(query)
         sources = self.kb.search(query, top_k=3)
@@ -93,22 +95,43 @@ class Orchestrator:
             "sources": [{"title": s["title"], "file": s["source_file"]} for s in sources],
         }
 
-    async def _handle_data_analysis(self, query: str, entities: dict) -> Dict[str, Any]:
+    async def _handle_data_analysis(self, query: str, entities: dict, datasource_id: str = None) -> Dict[str, Any]:
         """处理数据分析查询"""
-        ds = get_active_datasource()
-        if ds is None:
-            return {"answer": "错误：数据源未配置或连接失败，请在数据源配置页面检查。", "rows": []}
-        sql = await self.text2sql.generate(query)
-        rows = ds.execute_query(sql)
-        results_text = self._format_rows(rows)
-        answer = await self.fusion.fuse_for_data(query, results_text)
-        return {
-            "answer": answer,
-            "sql": sql,
-            "rows": rows,
-        }
+        try:
+            ds = get_active_datasource()
+            if ds is None:
+                return {"answer": "错误：数据源未配置或连接失败，请在数据源配置页面检查。", "rows": []}
 
-    async def _handle_fault_troubleshooting(self, query: str, entities: dict) -> Dict[str, Any]:
+            if datasource_id:
+                from ops_agent.models.tools.datasource_factory import get_datasource_by_id
+                ds = get_datasource_by_id(datasource_id) or ds
+
+            self.text2sql.schema_manager.set_datasource(ds)
+            sql = await self.text2sql.generate(query)
+            rows = ds.execute_query(sql)
+            results_text = self._format_rows(rows)
+            answer = await self.fusion.fuse_for_data(query, results_text)
+            return {"answer": answer, "sql": sql, "rows": rows}
+        except Exception as e:
+            logger.exception("数据分析处理失败")
+            msg = str(e)
+            if "inappropriate" in msg.lower():
+                return {
+                    "answer": (
+                        "Text2SQL 请求被 LLM 内容审核拦截。"
+                        "数据库 Schema 中的列名或样本数据可能触发了百炼的内容安全策略。\n\n"
+                        "**建议**：请在「大模型配置」页面添加 DeepSeek 或其他 OpenAI 兼容接口作为主力模型。"
+                    ),
+                    "sql": "",
+                    "rows": [],
+                }
+            return {
+                "answer": f"数据分析处理失败: {msg}",
+                "sql": "",
+                "rows": [],
+            }
+
+    async def _handle_fault_troubleshooting(self, query: str, entities: dict, **kwargs) -> Dict[str, Any]:
         """处理故障排查"""
         # 并行获取多源信息
         knowledge_task = asyncio.create_task(

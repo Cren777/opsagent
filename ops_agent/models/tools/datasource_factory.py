@@ -58,3 +58,26 @@ def invalidate_datasource_cache():
     """Invalidate cached data source so next call re-reads config."""
     global _data_source_cache
     _data_source_cache = None
+
+
+def get_datasource_by_id(ds_id: str) -> Optional[BaseDataSource]:
+    """Create a data source from a specific config DB entry by ID (no cache)."""
+    try:
+        from ops_agent.api.services.config_service import get_datasource
+        ds_config = get_datasource(ds_id)
+        if not ds_config:
+            logger.warning("数据源不存在: {}", ds_id)
+            return None
+        config = ds_config["config"]
+        ds_type = ds_config["type"]
+        if ds_type == "mysql":
+            return MySQLDataSource(config)
+        elif ds_type == "clickhouse":
+            return ClickHouseDataSource(config)
+        elif ds_type == "excel_csv":
+            return ExcelCSVDataSource(config)
+        logger.warning("不支持的数据源类型: {}", ds_type)
+        return None
+    except Exception as e:
+        logger.error("创建数据源失败: {}", e)
+        return None

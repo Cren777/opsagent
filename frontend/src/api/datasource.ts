@@ -28,3 +28,11 @@ export function testNewDataSource(data: DataSourceFormData) {
 export function activateDataSource(id: string) {
   return client.post(`/api/config/datasources/${id}/activate`)
 }
+
+export function fetchTables(id: string) {
+  return client.get<{ tables: string[] }>(`/api/config/datasources/${id}/tables`)
+}
+
+export function fetchNewTables(data: DataSourceFormData) {
+  return client.post<{ tables: string[] }>('/api/config/datasources/tables', data)
+}

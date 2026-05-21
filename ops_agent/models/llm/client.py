@@ -160,7 +160,10 @@ class UnifiedLLMClient:
     async def chat(self, messages: list[dict], **kwargs) -> str:
         """非流式对话，按引擎列表顺序自动 fallback"""
         if not self.engines:
-            raise LLMError("无可用 LLM 引擎")
+            raise LLMError(
+                "无可用 LLM 引擎。请先在「大模型配置」页面添加一个 LLM 提供商 "
+                "(OpenAI 兼容接口或 DashScope)，或配置 .env 环境变量中的 API Key。"
+            )
         last_error = None
         for engine in self.engines:
             try:
@@ -176,7 +179,10 @@ class UnifiedLLMClient:
     async def chat_stream(self, messages: list[dict], **kwargs) -> AsyncGenerator[str, None]:
         """流式对话，按引擎列表顺序自动 fallback"""
         if not self.engines:
-            raise LLMError("无可用 LLM 引擎")
+            raise LLMError(
+                "无可用 LLM 引擎。请先在「大模型配置」页面添加一个 LLM 提供商 "
+                "(OpenAI 兼容接口或 DashScope)，或配置 .env 环境变量中的 API Key。"
+            )
         last_error = None
         for engine in self.engines:
             try:

@@ -16,7 +16,7 @@ class TaskRouter:
         self._handlers[intent] = handler
         logger.info("注册处理器: {} → {}", intent, handler.__name__)
 
-    async def route(self, intent: IntentType, query: str, entities: Dict[str, Any] = None) -> Dict[str, Any]:
+    async def route(self, intent: IntentType, query: str, entities: Dict[str, Any] = None, **kwargs) -> Dict[str, Any]:
         """路由到对应处理器并执行"""
         entities = entities or {}
         handler = self._handlers.get(intent)
@@ -28,6 +28,6 @@ class TaskRouter:
             return {"answer": "抱歉，系统未配置任何处理器。", "type": "error"}
 
         logger.info("路由: {} → {}", intent, handler.__name__)
-        result = await handler(query, entities)
+        result = await handler(query, entities, **kwargs)
         result["intent"] = intent
         return result

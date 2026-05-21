@@ -1,6 +1,7 @@
 export interface ChatRequest {
   query: string
   history?: { role: string; content: string }[]
+  datasource_id?: string
 }
 
 export interface ChatResponse {
@@ -18,4 +19,12 @@ export interface ChatMessage {
   sources?: { title: string; content: string; score: number }[]
   sql?: string | null
   timestamp: number
+}
+
+export interface ChatSession {
+  id: string
+  title: string
+  messages: ChatMessage[]
+  createdAt: number
+  updatedAt: number
 }

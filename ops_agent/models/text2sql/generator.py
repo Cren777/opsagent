@@ -37,9 +37,10 @@ SQL："""
 class Text2SQLGenerator:
     """Text2SQL 生成器"""
 
-    def __init__(self):
+    def __init__(self, llm_client = None):
         self.schema_manager = SchemaManager()
         self.validator = SQLValidator()
+        self._llm_client = llm_client
 
     async def generate(self, question: str) -> str:
         """根据自然语言问题生成 SQL
@@ -50,7 +51,10 @@ class Text2SQLGenerator:
         Returns:
             生成的 SQL 语句
         """
-        schema_prompt = self.schema_manager.get_schema_prompt()
+        client = self._llm_client or get_llm_client()
+
+        # 首次尝试：带样本数据的完整 Schema
+        schema_prompt = self.schema_manager.get_schema_prompt(include_samples=True)
         join_hints = self.schema_manager.get_join_hints()
 
         prompt = _TEXT2SQL_PROMPT.format(
@@ -59,23 +63,47 @@ class Text2SQLGenerator:
             question=question,
         )
 
-        messages = [{"role": "user", "content": prompt}]
-        client = get_llm_client()
-
         try:
             response = await client.chat(
-                messages,
+                [{"role": "user", "content": prompt}],
                 temperature=0.0,
                 max_tokens=1024,
             )
         except LLMError as e:
-            raise SQLError(f"Text2SQL 生成失败: {e}") from e
+            msg = str(e)
+            if "inappropriate" in msg.lower():
+                # 百炼等内容审核误判样本数据，用精简 Schema 重试
+                logger.info("Schema 含样本数据被拦截，用精简 Schema 重试")
+                try:
+                    lean_prompt = self._build_prompt(question, include_samples=False)
+                    response = await client.chat(
+                        [{"role": "user", "content": lean_prompt}],
+                        temperature=0.0,
+                        max_tokens=1024,
+                    )
+                except LLMError as e2:
+                    raise SQLError(
+                        f"Text2SQL 生成失败: {e2}。"
+                        "提示：百炼大模型可能对 Schema 内容敏感，建议在「大模型配置」中切换为 DeepSeek 或其他 OpenAI 兼容接口。"
+                    ) from e2
+            else:
+                raise SQLError(f"Text2SQL 生成失败: {e}") from e
 
         sql = self._extract_sql(response)
         logger.info("Text2SQL: '{}' → {}", question[:50], sql[:100])
 
         self.validator.validate(sql)
         return sql
+
+    def _build_prompt(self, question: str, include_samples: bool = True) -> str:
+        """构建 Text2SQL prompt"""
+        schema_prompt = self.schema_manager.get_schema_prompt(include_samples=include_samples)
+        join_hints = self.schema_manager.get_join_hints()
+        return _TEXT2SQL_PROMPT.format(
+            db_schema=schema_prompt,
+            join_hints=join_hints,
+            question=question,
+        )
 
     def _extract_sql(self, response: str) -> str:
         """从 LLM 响应中提取 SQL 语句"""

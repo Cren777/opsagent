@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { LLMProviderItem, LLMProviderFormData, LLMTestResult } from '@/types/llm'
 import { useConfigStore } from '@/stores/config'
 
 const configStore = useConfigStore()
+
+onMounted(() => {
+  configStore.fetchLLMProviders()
+})
 const formVisible = ref(false)
 const editingId = ref<string | undefined>()
 const testVisible = ref<string | null>(null)

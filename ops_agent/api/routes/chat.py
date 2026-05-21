@@ -1,5 +1,6 @@
 """聊天接口"""
 import json
+from typing import Optional
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
@@ -14,6 +15,7 @@ router = APIRouter()
 class ChatRequest(BaseModel):
     query: str
     history: list[dict] = []
+    datasource_id: Optional[str] = None
 
 
 class ChatResponse(BaseModel):
@@ -31,7 +33,7 @@ _orchestrator = Orchestrator(llm_client=get_dynamic_llm_client())
 async def chat(req: ChatRequest):
     """非流式对话接口"""
     try:
-        result = await _orchestrator.process(req.query)
+        result = await _orchestrator.process(req.query, datasource_id=req.datasource_id)
         return ChatResponse(
             answer=result.get("answer", ""),
             intent=result.get("intent", ""),
@@ -40,7 +42,10 @@ async def chat(req: ChatRequest):
         )
     except Exception as e:
         logger.exception("Chat 处理失败")
-        raise HTTPException(status_code=500, detail=str(e))
+        return ChatResponse(
+            answer=f"系统处理失败: {str(e)}。请稍后重试或检查系统配置。",
+            intent="error",
+        )
 
 
 @router.post("/chat/stream")
@@ -48,7 +53,7 @@ async def chat_stream(req: ChatRequest):
     """SSE 流式对话接口"""
     async def event_generator():
         try:
-            async for event in _orchestrator.process_stream(req.query):
+            async for event in _orchestrator.process_stream(req.query, datasource_id=req.datasource_id):
                 event_type = event.get("event", "message")
                 data = event.get("data", {})
                 yield f"event: {event_type}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"

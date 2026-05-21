@@ -2,7 +2,7 @@
 import type { DataSourceItem } from '@/types/datasource'
 import StatusBadge from '@/components/shared/StatusBadge.vue'
 
-const props = defineProps<{ source: DataSourceItem }>()
+const props = defineProps<{ source: DataSourceItem; testing?: boolean }>()
 const emit = defineEmits<{
   edit: [id: string]
   delete: [id: string]
@@ -27,6 +27,20 @@ function getSummary(source: DataSourceItem): string {
   if (source.type === 'excel_csv') return (c.file_path as string) || ''
   return `${c.host || ''}:${c.port || ''}/${c.database || ''}`
 }
+
+function getSelectedTables(source: DataSourceItem): string[] {
+  if (source.type === 'excel_csv') return []
+  const c = source.config as unknown as Record<string, unknown>
+  const tables = c.selected_tables as string[] | undefined
+  return tables || []
+}
+
+function getTableCount(source: DataSourceItem): { selected: number; total: number } {
+  const c = source.config as unknown as Record<string, unknown>
+  const total = (c.total_tables as number) || 0
+  const selected = getSelectedTables(source).length
+  return { selected, total }
+}
 </script>
 
 <template>
@@ -44,8 +58,26 @@ function getSummary(source: DataSourceItem): string {
 
     <div class="card-summary">{{ getSummary(source) }}</div>
 
+    <div v-if="getTableCount(source).total > 0" class="card-tables">
+      <div class="table-count-badge">
+        <el-icon :size="14"><Grid /></el-icon>
+        <span>{{ getTableCount(source).selected }}/{{ getTableCount(source).total }}</span>
+      </div>
+      <div class="table-names">
+        <el-tag
+          v-for="t in getSelectedTables(source).slice(0, 3)"
+          :key="t"
+          size="small"
+          class="table-chip"
+        >{{ t }}</el-tag>
+        <span v-if="getSelectedTables(source).length > 3" class="tables-more">
+          +{{ getSelectedTables(source).length - 3 }} 张
+        </span>
+      </div>
+    </div>
+
     <div class="card-actions">
-      <el-button size="small" text :icon="'Connection'" @click="emit('test', source.id)">测试</el-button>
+      <el-button size="small" text :icon="'Connection'" :loading="testing" @click="emit('test', source.id)">测试</el-button>
       <el-button size="small" text :icon="'Edit'" @click="emit('edit', source.id)">编辑</el-button>
       <el-popconfirm title="确定删除此数据源？" @confirm="emit('delete', source.id)">
         <template #reference>
@@ -107,8 +139,46 @@ function getSummary(source: DataSourceItem): string {
   padding: 8px;
   background: #f5f7fa;
   border-radius: 6px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   word-break: break-all;
+}
+
+.card-tables {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.table-count-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: #f0f2f5;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #606266;
+  flex-shrink: 0;
+}
+
+.table-names {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.table-chip {
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.tables-more {
+  font-size: 12px;
+  color: #909399;
 }
 
 .card-actions {

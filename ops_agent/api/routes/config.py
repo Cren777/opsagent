@@ -101,6 +101,45 @@ def test_datasource(ds_id: str):
     return _test_connection(ds["type"], ds["config"])
 
 
+class TablesForNewDataSource(BaseModel):
+    type: str
+    config: DataSourceConfigSchema
+
+
+@router.post("/datasources/tables")
+def list_new_datasource_tables(data: TablesForNewDataSource):
+    """List tables for an unsaved connection config."""
+    return _list_tables(data.type, data.config.model_dump(exclude_none=True))
+
+
+@router.get("/datasources/{ds_id}/tables")
+def list_datasource_tables(ds_id: str):
+    """List tables for a saved datasource."""
+    ds = config_service.get_datasource(ds_id)
+    if not ds:
+        raise HTTPException(404, "数据源不存在")
+    return _list_tables(ds["type"], ds["config"])
+
+
+def _list_tables(ds_type: str, config: dict) -> dict:
+    """Helper to get table list from a datasource config."""
+    try:
+        if ds_type == "mysql":
+            from ops_agent.models.tools.mysql_source import MySQLDataSource
+            ds = MySQLDataSource(config)
+        elif ds_type == "clickhouse":
+            from ops_agent.models.tools.clickhouse_source import ClickHouseDataSource
+            ds = ClickHouseDataSource(config)
+        elif ds_type == "excel_csv":
+            return {"tables": []}
+        else:
+            return {"tables": []}
+        tables = ds.get_tables()
+        return {"tables": tables}
+    except Exception as e:
+        raise HTTPException(400, f"获取表列表失败: {e}")
+
+
 @router.post("/datasources/test")
 def test_new_datasource(data: DataSourceCreate):
     """Test connection with provided config (no save)."""

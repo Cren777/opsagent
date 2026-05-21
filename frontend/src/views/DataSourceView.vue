@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
 import { useConfigStore } from '@/stores/config'
 import DataSourceTypeCard from '@/components/datasource/DataSourceTypeCard.vue'
 import DataSourceForm from '@/components/datasource/DataSourceForm.vue'
@@ -7,6 +8,7 @@ import DataSourceForm from '@/components/datasource/DataSourceForm.vue'
 const configStore = useConfigStore()
 const formRef = ref<InstanceType<typeof DataSourceForm> | null>(null)
 const editingId = ref<string | undefined>()
+const testingId = ref<string | null>(null)
 
 onMounted(() => {
   configStore.fetchDataSources()
@@ -30,7 +32,19 @@ async function handleDelete(id: string) {
 }
 
 async function handleTest(id: string) {
-  await configStore.testConnection(id)
+  testingId.value = id
+  try {
+    const result = await configStore.testConnection(id)
+    if (result.ok) {
+      ElMessage.success(result.message || '连接成功')
+    } else {
+      ElMessage.error(result.message || '连接失败')
+    }
+  } catch (e: unknown) {
+    ElMessage.error('连接测试失败')
+  } finally {
+    testingId.value = null
+  }
 }
 
 async function handleActivate(id: string) {
@@ -63,6 +77,7 @@ function handleSaved() {
         v-for="source in configStore.dataSources"
         :key="source.id"
         :source="source"
+        :testing="testingId === source.id"
         @edit="handleEdit"
         @delete="handleDelete"
         @test="handleTest"

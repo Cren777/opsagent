@@ -64,22 +64,19 @@ function onKeydown(e: KeyboardEvent) {
 
 <style scoped>
 .chat-input-area {
-  border-top: 1px solid #e4e7ed;
   background: #fff;
-  padding: 16px 20px;
+  padding: 12px 16px;
 }
 
 .input-wrapper {
-  max-width: 900px;
-  margin: 0 auto;
   display: flex;
   align-items: flex-end;
   gap: 12px;
   background: #f5f7fa;
   border-radius: 12px;
   padding: 10px 14px;
-  border: 1px solid #e4e7ed;
-  transition: border-color 0.2s;
+  border: 1px solid #e5e6eb;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 .input-wrapper:focus-within {
@@ -100,7 +97,7 @@ function onKeydown(e: KeyboardEvent) {
 }
 
 .input-textarea::placeholder {
-  color: #c0c4cc;
+  color: #c9cdd4;
 }
 
 .input-actions {

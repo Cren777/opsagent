@@ -29,6 +29,10 @@ const checkAll = computed(() => {
   return tables.value.length > 0 && selectedTables.value.length === tables.value.length
 })
 
+const readonlyTables = computed(() => {
+  return tables.value.length > 0 ? tables.value : selectedTables.value
+})
+
 function handleCheckAllChange(val: boolean) {
   selectedTables.value = val ? [...tables.value] : []
 }
@@ -60,6 +64,13 @@ async function open(source?: DataSourceFormData & { id?: string }) {
       selectedTables.value = [...saved]
     }
     savedTotalTables.value = (config.total_tables as number) || 0
+    const allTables = config.all_tables as string[] | undefined
+    if (allTables && allTables.length > 0) {
+      tables.value = [...allTables]
+    } else if (selectedTables.value.length > 0 && form.type !== 'excel_csv') {
+      // 旧数据源缺 all_tables，尝试连接获取全量表名
+      fetchTableList(selectedTables.value)
+    }
   } else {
     form.name = ''
     form.type = 'mysql'
@@ -103,6 +114,7 @@ async function handleSave() {
     const payload = JSON.parse(JSON.stringify(form))
     if (form.type !== 'excel_csv') {
       payload.config.selected_tables = selectedTables.value
+      payload.config.all_tables = tables.value
     }
     if (tables.value.length > 0) {
       payload.config.total_tables = tables.value.length
@@ -265,17 +277,17 @@ defineExpose({ open })
         />
       </div>
 
-      <!-- 未测试但有已保存的表：只读标签展示 -->
-      <div v-if="!connectionTested && selectedTables.length > 0 && form.type !== 'excel_csv'" class="table-section">
+      <!-- 未测试但有已保存的表：只读复选框展示全部表 -->
+      <div v-if="!connectionTested && readonlyTables.length > 0 && form.type !== 'excel_csv'" class="table-section">
         <el-divider />
         <div class="section-label">已选择的表（测试连接后可修改）</div>
-        <div class="table-readonly-tags">
-          <el-tag
-            v-for="t in selectedTables"
+        <div class="table-checkbox-group">
+          <el-checkbox
+            v-for="t in readonlyTables"
             :key="t"
-            size="small"
-            class="saved-table-tag"
-          >{{ t }}</el-tag>
+            :model-value="selectedTables.includes(t)"
+            disabled
+          >{{ t }}</el-checkbox>
         </div>
         <div class="table-count-hint">
           已选 {{ selectedTables.length }}{{ savedTotalTables > 0 ? ` / ${savedTotalTables}` : '' }} 张表
@@ -337,17 +349,6 @@ defineExpose({ open })
   font-weight: 600;
   color: #303133;
   margin-bottom: 10px;
-}
-
-.table-readonly-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.saved-table-tag {
-  font-family: monospace;
-  font-size: 12px;
 }
 
 .table-count-hint {

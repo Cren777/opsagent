@@ -8,6 +8,7 @@ export interface MySQLConfig {
   database: string
   charset: string
   selected_tables?: string[]
+  all_tables?: string[]
   total_tables?: number
 }
 
@@ -18,6 +19,7 @@ export interface ClickHouseConfig {
   password: string
   database: string
   selected_tables?: string[]
+  all_tables?: string[]
   total_tables?: number
 }
 

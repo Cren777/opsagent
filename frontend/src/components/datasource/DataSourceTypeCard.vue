@@ -63,17 +63,6 @@ function getTableCount(source: DataSourceItem): { selected: number; total: numbe
         <el-icon :size="14"><Grid /></el-icon>
         <span>{{ getTableCount(source).selected }}/{{ getTableCount(source).total }}</span>
       </div>
-      <div class="table-names">
-        <el-tag
-          v-for="t in getSelectedTables(source).slice(0, 3)"
-          :key="t"
-          size="small"
-          class="table-chip"
-        >{{ t }}</el-tag>
-        <span v-if="getSelectedTables(source).length > 3" class="tables-more">
-          +{{ getSelectedTables(source).length - 3 }} 张
-        </span>
-      </div>
     </div>
 
     <div class="card-actions">
@@ -162,23 +151,6 @@ function getTableCount(source: DataSourceItem): { selected: number; total: numbe
   font-weight: 600;
   color: #606266;
   flex-shrink: 0;
-}
-
-.table-names {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
-}
-
-.table-chip {
-  font-family: monospace;
-  font-size: 11px;
-}
-
-.tables-more {
-  font-size: 12px;
-  color: #909399;
 }
 
 .card-actions {

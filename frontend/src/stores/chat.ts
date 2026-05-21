@@ -16,7 +16,11 @@ function loadSessions(): ChatSession[] {
 
 function saveSessions(sessions: ChatSession[]) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions))
+    // Only persist sessions with actual user messages — skip sessions that
+    // only contain the auto-generated welcome message (avoid saving empty
+    // conversations from users who just browsed and left).
+    const persisted = sessions.filter((s) => s.messages.some((m) => m.role === 'user'))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(persisted))
   } catch {
     // localStorage full or unavailable
   }
@@ -55,6 +59,11 @@ export const useChatStore = defineStore('chat', () => {
       }
     },
   })
+
+  // ── Computed: only sessions with actual user messages (excludes placeholders) ──
+  const displaySessions = computed(() =>
+    sessions.value.filter((s) => s.messages.some((m) => m.role === 'user'))
+  )
 
   // ── Persist on change ──
   watch(sessions, (val) => saveSessions(val), { deep: true })
@@ -244,6 +253,7 @@ export const useChatStore = defineStore('chat', () => {
 
   return {
     sessions,
+    displaySessions,
     activeSessionId,
     messages,
     isLoading,

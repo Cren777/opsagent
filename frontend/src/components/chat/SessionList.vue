@@ -44,7 +44,7 @@ function handleDelete(e: MouseEvent, id: string) {
 
     <div class="session-list">
       <div
-        v-for="session in chatStore.sessions"
+        v-for="session in chatStore.displaySessions"
         :key="session.id"
         class="session-item"
         :class="{ active: session.id === chatStore.activeSessionId }"
@@ -64,7 +64,7 @@ function handleDelete(e: MouseEvent, id: string) {
         </div>
       </div>
 
-      <div v-if="chatStore.sessions.length === 0" class="empty-hint">
+      <div v-if="chatStore.displaySessions.length === 0" class="empty-hint">
         暂无会话记录
       </div>
     </div>

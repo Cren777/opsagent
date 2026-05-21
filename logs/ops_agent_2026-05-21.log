@@ -1555,3 +1555,26 @@ clickhouse_connect.driver.exceptions.DatabaseError: Received ClickHouse exceptio
 2026-05-21 20:09:19.561 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
 2026-05-21 20:09:22.246 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
 2026-05-21 20:09:25.536 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:27:40.516 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 20:27:54.812 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 20:27:54.813 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 20:28:14.718 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:28:17.533 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test02 (f1775cd3-e3e4-4a56-8ed3-95aa1f8d18fa)
+2026-05-21 20:29:22.797 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:31:23.271 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:36:10.348 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:40:58.724 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:45:23.361 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:48:42.456 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:48:44.952 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:48:47.101 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test02 (f1775cd3-e3e4-4a56-8ed3-95aa1f8d18fa)
+2026-05-21 20:48:49.146 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:48:54.854 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:49:00.084 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-21 20:49:01.512 | INFO     | ops_agent.models.tools.clickhouse_source:__init__:23 | ClickHouse 数据源已连接: 172.23.216.106:8123
+2026-05-21 20:58:03.386 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 20:58:19.055 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 20:58:19.056 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-21 21:15:16.037 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-21 21:15:34.903 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-21 21:15:34.903 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成

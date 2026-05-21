@@ -19,6 +19,8 @@ class DataSourceConfigSchema(BaseModel):
     charset: Optional[str] = None
     file_path: Optional[str] = None
     sheet_name: Optional[str] = None
+    selected_tables: Optional[list[str]] = None
+    total_tables: Optional[int] = None
 
 
 class DataSourceCreate(BaseModel):

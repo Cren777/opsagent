@@ -18,6 +18,8 @@ const selectedTables = ref<string[]>([])
 const fetchingTables = ref(false)
 const connectionTested = ref(false)
 const savedTotalTables = ref(0)
+const editingSourceId = ref<string | undefined>()
+const initializing = ref(false)
 
 const isIndeterminate = computed(() => {
   return selectedTables.value.length > 0 && selectedTables.value.length < tables.value.length
@@ -38,6 +40,8 @@ const form = reactive<DataSourceFormData>({
 })
 
 async function open(source?: DataSourceFormData & { id?: string }) {
+  initializing.value = true
+  editingSourceId.value = source?.id
   // 重置状态
   testResult.value = null
   tables.value = []
@@ -63,6 +67,7 @@ async function open(source?: DataSourceFormData & { id?: string }) {
   }
 
   await nextTick()
+  initializing.value = false
   visible.value = true
 }
 
@@ -76,7 +81,15 @@ function resetConfig() {
   }
 }
 
-watch(() => form.type, resetConfig)
+watch(() => form.type, () => {
+  if (initializing.value) return
+  resetConfig()
+  testResult.value = null
+  tables.value = []
+  selectedTables.value = []
+  connectionTested.value = false
+  savedTotalTables.value = 0
+})
 
 const canTest = computed(() => {
   if (form.type === 'excel_csv') return !!(form.config as { file_path: string }).file_path
@@ -88,7 +101,7 @@ async function handleSave() {
   saving.value = true
   try {
     const payload = JSON.parse(JSON.stringify(form))
-    if (selectedTables.value.length > 0) {
+    if (form.type !== 'excel_csv') {
       payload.config.selected_tables = selectedTables.value
     }
     if (tables.value.length > 0) {
@@ -96,7 +109,7 @@ async function handleSave() {
     } else if (savedTotalTables.value > 0) {
       payload.config.total_tables = savedTotalTables.value
     }
-    await configStore.saveDataSource(payload, props.sourceId)
+    await configStore.saveDataSource(payload, editingSourceId.value || props.sourceId)
     ElMessage.success('保存成功')
     visible.value = false
     emit('saved')
@@ -150,7 +163,7 @@ defineExpose({ open })
 <template>
   <el-drawer
     v-model="visible"
-    :title="sourceId ? '编辑数据源' : '添加数据源'"
+    :title="editingSourceId ? '编辑数据源' : '添加数据源'"
     size="480px"
     destroy-on-close
   >

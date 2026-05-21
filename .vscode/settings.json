@@ -1,0 +1,9 @@
+{
+  "typescript.tsdk": "./frontend/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "js/ts.tsdk.path": "./frontend/node_modules/typescript/lib",
+  "python.defaultInterpreterPath": "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python-envs.defaultEnvManager": "ms-python.python:conda",
+  "python-envs.defaultPackageManager": "ms-python.python:conda"
+}

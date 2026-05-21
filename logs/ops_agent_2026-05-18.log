@@ -1,0 +1,1406 @@
+2026-05-18 14:38:05.340 | INFO     | ops_agent.api.main:<module>:47 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 14:39:15.666 | INFO     | ops_agent.core.intent.classifier:classify:74 | 规则分类: IntentType.KNOWLEDGE_QUERY (置信度: 1.0)
+2026-05-18 14:39:15.666 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 14:43:53.321 | INFO     | ops_agent.api.main:<module>:47 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 14:46:54.535 | INFO     | ops_agent.api.services.config_service:create_datasource:80 | Created datasource: test (ea5667c8-f0c3-48f0-b9b9-06576f56cdc1)
+2026-05-18 14:47:19.523 | INFO     | ops_agent.api.services.config_service:create_datasource:80 | Created datasource: test (540c3a9b-4c93-48cd-a110-cec66f50ee85)
+2026-05-18 14:47:41.975 | INFO     | ops_agent.api.services.config_service:create_datasource:80 | Created datasource: test (6d59db29-a983-4565-8f29-467155b10bfd)
+2026-05-18 14:53:47.402 | INFO     | ops_agent.api.main:<module>:47 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 14:54:09.172 | INFO     | ops_agent.api.services.config_service:delete_datasource:119 | Deleted datasource: ccbda3c6-bbcb-4a82-9c8d-87da274b016e
+2026-05-18 14:54:17.540 | INFO     | ops_agent.api.services.config_service:update_datasource:108 | Updated datasource: test (ea5667c8-f0c3-48f0-b9b9-06576f56cdc1)
+2026-05-18 14:54:19.964 | INFO     | ops_agent.api.services.config_service:delete_datasource:119 | Deleted datasource: ea5667c8-f0c3-48f0-b9b9-06576f56cdc1
+2026-05-18 14:54:22.089 | INFO     | ops_agent.api.services.config_service:delete_datasource:119 | Deleted datasource: 6d59db29-a983-4565-8f29-467155b10bfd
+2026-05-18 14:54:23.767 | INFO     | ops_agent.api.services.config_service:delete_datasource:119 | Deleted datasource: 540c3a9b-4c93-48cd-a110-cec66f50ee85
+2026-05-18 14:55:02.560 | INFO     | ops_agent.api.services.config_service:create_datasource:88 | Created datasource: test (2f6bd374-b4ee-4b9d-b45c-0c9d23435319)
+2026-05-18 14:55:06.097 | INFO     | ops_agent.api.services.config_service:activate_datasource:132 | Activated datasource: 2f6bd374-b4ee-4b9d-b45c-0c9d23435319
+2026-05-18 15:03:09.613 | INFO     | ops_agent.api.services.config_service:create_llm_provider:205 | Created LLM provider: Qwen (dd5309a5-6c85-4e7e-a90f-301ffb86b5f1)
+2026-05-18 15:03:59.335 | INFO     | ops_agent.api.services.config_service:update_llm_provider:232 | Updated LLM provider: Qwen (dd5309a5-6c85-4e7e-a90f-301ffb86b5f1)
+2026-05-18 15:05:33.309 | INFO     | ops_agent.api.services.config_service:set_primary_llm:256 | Set primary LLM: dd5309a5-6c85-4e7e-a90f-301ffb86b5f1
+2026-05-18 15:07:24.459 | WARNING  | ops_agent.models.llm.client:_init_engines:129 | DeepSeek API Key 未配置，跳过主引擎
+2026-05-18 15:07:24.459 | WARNING  | ops_agent.models.llm.client:_init_engines:135 | 百炼 API Key 未配置，跳过备引擎
+2026-05-18 15:07:24.459 | WARNING  | ops_agent.models.llm.client:_init_engines:138 | 未配置任何 LLM API Key，系统将无法回答问题
+2026-05-18 15:07:24.460 | WARNING  | ops_agent.core.intent.classifier:classify:83 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 15:07:24.460 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 15:08:35.581 | ERROR    | ops_agent.api.routes.chat:event_generator:54 | Stream 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x7e391e6ffb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x7e391f520690>
+         │    └ <function Command.invoke at 0x7e391e6ff7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x7e391f520690>
+           │   │      │    └ <function main at 0x7e391e51c5e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x7e391e6fea20>
+           └ <click.core.Context object at 0x7e391f520690>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x7e391e51c5e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x7e391e59ca40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x7e391e59c2c0>
+    └ <uvicorn.server.Server object at 0x7e391e523510>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x7e391e6b45e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x7e391f522990>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x7e391e523510>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x7e391e59c360>
+           │           └ <uvicorn.server.Server object at 0x7e391e523510>
+           └ <function asyncio_run at 0x7e391e8acae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x7e36e84f36a0>
+           │      └ <function Runner.run at 0x7e391e9120c0>
+           └ <asyncio.runners.Runner object at 0x7e391e52d310>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x7e36e83e4b80>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x7e391e52d310>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 273, in wrap
+    await func()
+          └ functools.partial(<bound method StreamingResponse.stream_response of <starlette.responses.StreamingResponse object at 0x7e36e...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/responses.py", line 253, in stream_response
+    async for chunk in self.body_iterator:
+              │        │    └ <async_generator object chat_stream.<locals>.event_generator at 0x7e36e37f1e00>
+              │        └ <starlette.responses.StreamingResponse object at 0x7e36e0534350>
+              └ b'event: intent\ndata: {"type": "knowledge_query"}\n\n'
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 49, in event_generator
+    async for event in _orchestrator.process_stream(req.query):
+              │        │             │              │   └ '帮我查看一下clickhouse中hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+              │        │             │              └ ChatRequest(query='帮我查看一下clickhouse中hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据', history=[])
+              │        │             └ <function Orchestrator.process_stream at 0x7e36fe1fe2a0>
+              │        └ <ops_agent.core.orchestrator.Orchestrator object at 0x7e370d2a01d0>
+              └ {'event': 'intent', 'data': {'type': 'knowledge_query'}}
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 57, in process_stream
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x7e391c7aeca0>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x7e36fe1faf90>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x7e370d2a01d0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '帮我查看一下clickhouse中hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+                   └ <bound method Orchestrator._handle_knowledge of <ops_agent.core.orchestrator.Orchestrator object at 0x7e370d2a01d0>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 88, in _handle_knowledge
+    context = self.kb.query(query)
+              │    │  │     └ '帮我查看一下clickhouse中hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+              │    │  └ <function KnowledgeBase.query at 0x7e386b117060>
+              │    └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x7e36fe1fb0d0>
+              └ <ops_agent.core.orchestrator.Orchestrator object at 0x7e370d2a01d0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/knowledge_base.py", line 49, in query
+    return self.retriever.retrieve_context(question, top_k)
+           │    │         │                │         └ None
+           │    │         │                └ '帮我查看一下clickhouse中hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+           │    │         └ <function Retriever.retrieve_context at 0x7e386b116fc0>
+           │    └ <ops_agent.models.rag.retriever.Retriever object at 0x7e36fe271b90>
+           └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x7e36fe1fb0d0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 37, in retrieve_context
+    results = self.retrieve(query, top_k)
+              │    │        │      └ None
+              │    │        └ '帮我查看一下clickhouse中hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+              │    └ <function Retriever.retrieve at 0x7e386b116f20>
+              └ <ops_agent.models.rag.retriever.Retriever object at 0x7e36fe271b90>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 28, in retrieve
+    query_vec = self.embedder.encode(query, is_query=True)
+                │    │        │      └ '帮我查看一下clickhouse中hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+                │    │        └ <function Embedder.encode at 0x7e386b253c40>
+                │    └ <ops_agent.models.embedding.embedder.Embedder object at 0x7e36fa3c3f10>
+                └ <ops_agent.models.rag.retriever.Retriever object at 0x7e36fe271b90>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/embedding/embedder.py", line 40, in encode
+    embedding = self.model.encode(text, normalize_embeddings=True)
+                │    │            └ '为这个句子生成表示以用于检索相关文章：帮我查看一下clickhouse中hawkeye数据库中hawkeye_dwd_intel_content表中有多少条数据'
+                │    └ <property object at 0x7e386bf63290>
+                └ <ops_agent.models.embedding.embedder.Embedder object at 0x7e36fa3c3f10>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/embedding/embedder.py", line 24, in model
+    self._model = SentenceTransformer(
+    │    │        └ <class 'sentence_transformers.sentence_transformer.model.SentenceTransformer'>
+    │    └ None
+    └ <ops_agent.models.embedding.embedder.Embedder object at 0x7e36fa3c3f10>
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/util/decorators.py", line 41, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'device': 'cuda:0'}
+           │     └ <unprintable tuple object>
+           └ <function SentenceTransformer.__init__ at 0x7e386b233060>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/sentence_transformer/model.py", line 184, in __init__
+    super().__init__(
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/base/model.py", line 204, in __init__
+    modules, self.module_kwargs = self._load_modules(
+    │        │    │               │    └ <function BaseModel._load_modules at 0x7e36fef53600>
+    │        │    │               └ <unprintable SentenceTransformer object>
+    │        │    └ None
+    │        └ <unprintable SentenceTransformer object>
+    └ None
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/base/model.py", line 972, in _load_modules
+    modules_json_path = load_file_path(
+                        └ <function load_file_path at 0x7e37b427f7e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/util/file_io.py", line 116, in load_file_path
+    return hf_hub_download(
+           └ <function hf_hub_download at 0x7e386b8d34c0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           │   │       └ {'filename': 'modules.json', 'subfolder': '.', 'revision': None, 'library_name': 'sentence-transformers', 'token': None, 'cac...
+           │   └ ('BAAI/bge-large-zh-v1.5',)
+           └ <function hf_hub_download at 0x7e386b8d3380>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 997, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+           └ <function _hf_hub_download_to_cache_dir at 0x7e386b8d3420>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1130, in _hf_hub_download_to_cache_dir
+    _get_metadata_or_catch_error(
+    └ <function _get_metadata_or_catch_error at 0x7e386b8d37e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1669, in _get_metadata_or_catch_error
+    metadata = get_hf_file_metadata(
+               └ <function get_hf_file_metadata at 0x7e386b8d3880>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           │   │       └ {'url': 'https://huggingface.co/BAAI/bge-large-zh-v1.5/resolve/main/./modules.json', 'timeout': 60, 'headers': {'user-agent':...
+           │   └ ()
+           └ <function get_hf_file_metadata at 0x7e386b8d36a0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1591, in get_hf_file_metadata
+    response = _httpx_follow_relative_redirects_with_backoff(
+               └ <function _httpx_follow_relative_redirects_with_backoff at 0x7e386b9dc4a0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 685, in _httpx_follow_relative_redirects_with_backoff
+    response = http_backoff(
+               └ <function http_backoff at 0x7e386b9dc2c0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 559, in http_backoff
+    return next(
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 467, in _http_backoff_base
+    response = client.request(method=method, url=url, **kwargs)
+               │      │              │           │      └ {'headers': {'user-agent': 'sentence-transformers/None; hf_hub/1.15.0; python/3.11.15; torch/2.11.0', 'Accept-Encoding': 'ide...
+               │      │              │           └ 'https://huggingface.co/BAAI/bge-large-zh-v1.5/resolve/main/./modules.json'
+               │      │              └ 'HEAD'
+               │      └ <function Client.request at 0x7e391d0dfb00>
+               └ <httpx.Client object at 0x7e36e053e3d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           │    │    │             │                      └ False
+           │    │    │             └ <httpx._client.UseClientDefault object at 0x7e391d3aa3d0>
+           │    │    └ <Request('HEAD', 'https://huggingface.co/BAAI/bge-large-zh-v1.5/resolve/main/modules.json')>
+           │    └ <function Client.send at 0x7e391d0dfce0>
+           └ <httpx.Client object at 0x7e36e053e3d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/httpx/_client.py", line 901, in send
+    raise RuntimeError("Cannot send a request, as the client has been closed.")
+
+RuntimeError: Cannot send a request, as the client has been closed.
+2026-05-18 15:15:54.149 | INFO     | ops_agent.api.main:<module>:47 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 15:16:08.803 | WARNING  | ops_agent.models.llm.client:_init_engines:148 | DeepSeek API Key 未配置，跳过主引擎
+2026-05-18 15:16:08.804 | WARNING  | ops_agent.models.llm.client:_init_engines:155 | 百炼 API Key 未配置，跳过备引擎
+2026-05-18 15:16:08.804 | WARNING  | ops_agent.models.llm.client:_init_engines:158 | 未配置任何 LLM API Key，系统将无法回答问题
+2026-05-18 15:16:08.804 | WARNING  | ops_agent.core.intent.classifier:classify:83 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 15:16:08.804 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 15:17:19.982 | ERROR    | ops_agent.api.routes.chat:chat:42 | Chat 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x7cbdf595fb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x7cbdf6720a90>
+         │    └ <function Command.invoke at 0x7cbdf595f7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x7cbdf6720a90>
+           │   │      │    └ <function main at 0x7cbdf57985e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x7cbdf595ea20>
+           └ <click.core.Context object at 0x7cbdf6720a90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x7cbdf57985e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x7cbdf59f8a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x7cbdf59f82c0>
+    └ <uvicorn.server.Server object at 0x7cbdf579f550>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x7cbdf59145e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x7cbdf6722dd0>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x7cbdf579f550>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x7cbdf59f8360>
+           │           └ <uvicorn.server.Server object at 0x7cbdf579f550>
+           └ <function asyncio_run at 0x7cbdf5aa4ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x7cbbac333d30>
+           │      └ <function Runner.run at 0x7cbdf5b0e0c0>
+           └ <asyncio.runners.Runner object at 0x7cbbaeb80d90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x7cbbac1f0940>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x7cbbaeb80d90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 421, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+                   └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x7cbbac1fdb50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+                 │    │   │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0ad7...
+                 │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+                 │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+                 │    └ <fastapi.applications.FastAPI object at 0x7cbbac34afd0>
+                 └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x7cbbac1fdb50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+                           │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0ad7...
+                           │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+                           └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0ad7...
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x7cbbaeb809d0>
+          └ <fastapi.applications.FastAPI object at 0x7cbbac34afd0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+          │    │   │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x7cbbac0a6a20>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.cors.CORSMiddleware object at 0x7cbbac0acbd0>
+          └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x7cbbaeb809d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/cors.py", line 87, in __call__
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x7cbbac0a6a20>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x7cbbac316f50>
+          └ <starlette.middleware.cors.CORSMiddleware object at 0x7cbbac0acbd0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+          │                            │    │    │     │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x7cbbac0a6a20>
+          │                            │    │    │     │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │                            │    │    │     └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │                            │    │    └ <starlette.requests.Request object at 0x7cbbac0ada50>
+          │                            │    └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x7cbbac0acb90>
+          │                            └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x7cbbac316f50>
+          └ <function wrap_app_handling_exceptions at 0x7cbdf49323e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x7cbbac0acb90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <fastapi.routing.APIRouter object at 0x7cbbaeb437d0>
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x7cbbac0acb90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <bound method Router.app of <fastapi.routing.APIRouter object at 0x7cbbaeb437d0>>
+          └ <fastapi.routing.APIRouter object at 0x7cbbaeb437d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+          │     │      │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │     │      │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │     │      └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │     └ <function Route.handle at 0x7cbdf4933ba0>
+          └ APIRoute(path='/api/chat', name='chat', methods=['POST'])
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <function request_response.<locals>.app at 0x7cbbac358ae0>
+          └ APIRoute(path='/api/chat', name='chat', methods=['POST'])
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+          │                            │    │        │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │                            │    │        │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │                            │    │        └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │                            │    └ <starlette.requests.Request object at 0x7cbbac0ae2d0>
+          │                            └ <function request_response.<locals>.app.<locals>.app at 0x7cbbac0a6c00>
+          └ <function wrap_app_handling_exceptions at 0x7cbdf49323e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6d40>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          └ <function request_response.<locals>.app.<locals>.app at 0x7cbbac0a6c00>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 120, in app
+    response = await f(request)
+                     │ └ <starlette.requests.Request object at 0x7cbbac0ae2d0>
+                     └ <function get_request_handler.<locals>.app at 0x7cbbac358b80>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                         └ <function run_endpoint_function at 0x7cbdf495e020>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+                 │         │      └ {'req': ChatRequest(query='你好，请用中文回复，介绍一下你自己', history=[])}
+                 │         └ <function chat at 0x7cbbaeb59bc0>
+                 └ Dependant(path_params=[], query_params=[], header_params=[], cookie_params=[], body_params=[ModelField(field_info=Body(Pydant...
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 34, in chat
+    result = await _orchestrator.process(req.query)
+                   │             │       │   └ '你好，请用中文回复，介绍一下你自己'
+                   │             │       └ ChatRequest(query='你好，请用中文回复，介绍一下你自己', history=[])
+                   │             └ <function Orchestrator.process at 0x7cbbb3f7a2a0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x7cbbb3a1ca50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 42, in process
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x7cbdf3a72c00>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x7cbbb3a1fdd0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x7cbbb3a1ca50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '你好，请用中文回复，介绍一下你自己'
+                   └ <bound method Orchestrator._handle_knowledge of <ops_agent.core.orchestrator.Orchestrator object at 0x7cbbb3a1ca50>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 88, in _handle_knowledge
+    context = self.kb.query(query)
+              │    │  │     └ '你好，请用中文回复，介绍一下你自己'
+              │    │  └ <function KnowledgeBase.query at 0x7cbd31707100>
+              │    └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x7cbbb2a7f290>
+              └ <ops_agent.core.orchestrator.Orchestrator object at 0x7cbbb3a1ca50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/knowledge_base.py", line 49, in query
+    return self.retriever.retrieve_context(question, top_k)
+           │    │         │                │         └ None
+           │    │         │                └ '你好，请用中文回复，介绍一下你自己'
+           │    │         └ <function Retriever.retrieve_context at 0x7cbd31707060>
+           │    └ <ops_agent.models.rag.retriever.Retriever object at 0x7cbbb3b97ed0>
+           └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x7cbbb2a7f290>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 37, in retrieve_context
+    results = self.retrieve(query, top_k)
+              │    │        │      └ None
+              │    │        └ '你好，请用中文回复，介绍一下你自己'
+              │    └ <function Retriever.retrieve at 0x7cbd31706fc0>
+              └ <ops_agent.models.rag.retriever.Retriever object at 0x7cbbb3b97ed0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 28, in retrieve
+    query_vec = self.embedder.encode(query, is_query=True)
+                │    │        │      └ '你好，请用中文回复，介绍一下你自己'
+                │    │        └ <function Embedder.encode at 0x7cbd31643ce0>
+                │    └ <ops_agent.models.embedding.embedder.Embedder object at 0x7cbbaeb10550>
+                └ <ops_agent.models.rag.retriever.Retriever object at 0x7cbbb3b97ed0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/embedding/embedder.py", line 40, in encode
+    embedding = self.model.encode(text, normalize_embeddings=True)
+                │    │            └ '为这个句子生成表示以用于检索相关文章：你好，请用中文回复，介绍一下你自己'
+                │    └ <property object at 0x7cbd325530b0>
+                └ <ops_agent.models.embedding.embedder.Embedder object at 0x7cbbaeb10550>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/embedding/embedder.py", line 24, in model
+    self._model = SentenceTransformer(
+    │    │        └ <class 'sentence_transformers.sentence_transformer.model.SentenceTransformer'>
+    │    └ None
+    └ <ops_agent.models.embedding.embedder.Embedder object at 0x7cbbaeb10550>
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/util/decorators.py", line 41, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'device': 'cuda:0'}
+           │     └ <unprintable tuple object>
+           └ <function SentenceTransformer.__init__ at 0x7cbd3161b100>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/sentence_transformer/model.py", line 184, in __init__
+    super().__init__(
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/base/model.py", line 204, in __init__
+    modules, self.module_kwargs = self._load_modules(
+    │        │    │               │    └ <function BaseModel._load_modules at 0x7cbbb4ccf6a0>
+    │        │    │               └ <unprintable SentenceTransformer object>
+    │        │    └ None
+    │        └ <unprintable SentenceTransformer object>
+    └ None
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/base/model.py", line 972, in _load_modules
+    modules_json_path = load_file_path(
+                        └ <function load_file_path at 0x7cbc7a87f880>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/util/file_io.py", line 116, in load_file_path
+    return hf_hub_download(
+           └ <function hf_hub_download at 0x7cbd31e4f4c0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           │   │       └ {'filename': 'modules.json', 'subfolder': '.', 'revision': None, 'library_name': 'sentence-transformers', 'token': None, 'cac...
+           │   └ ('BAAI/bge-large-zh-v1.5',)
+           └ <function hf_hub_download at 0x7cbd31e4f380>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 997, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+           └ <function _hf_hub_download_to_cache_dir at 0x7cbd31e4f420>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1130, in _hf_hub_download_to_cache_dir
+    _get_metadata_or_catch_error(
+    └ <function _get_metadata_or_catch_error at 0x7cbd31e4f7e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1669, in _get_metadata_or_catch_error
+    metadata = get_hf_file_metadata(
+               └ <function get_hf_file_metadata at 0x7cbd31e4f880>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           │   │       └ {'url': 'https://huggingface.co/BAAI/bge-large-zh-v1.5/resolve/main/./modules.json', 'timeout': 60, 'headers': {'user-agent':...
+           │   └ ()
+           └ <function get_hf_file_metadata at 0x7cbd31e4f6a0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1591, in get_hf_file_metadata
+    response = _httpx_follow_relative_redirects_with_backoff(
+               └ <function _httpx_follow_relative_redirects_with_backoff at 0x7cbd31f504a0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 685, in _httpx_follow_relative_redirects_with_backoff
+    response = http_backoff(
+               └ <function http_backoff at 0x7cbd31f502c0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 559, in http_backoff
+    return next(
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 467, in _http_backoff_base
+    response = client.request(method=method, url=url, **kwargs)
+               │      │              │           │      └ {'headers': {'user-agent': 'sentence-transformers/None; hf_hub/1.15.0; python/3.11.15; torch/2.11.0; agent/unknown', 'Accept-...
+               │      │              │           └ 'https://huggingface.co/BAAI/bge-large-zh-v1.5/resolve/main/./modules.json'
+               │      │              └ 'HEAD'
+               │      └ <function Client.request at 0x7cbdf439bb00>
+               └ <httpx.Client object at 0x7cbbac1094d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           │    │    │             │                      └ False
+           │    │    │             └ <httpx._client.UseClientDefault object at 0x7cbdf4666d50>
+           │    │    └ <Request('HEAD', 'https://huggingface.co/BAAI/bge-large-zh-v1.5/resolve/main/modules.json')>
+           │    └ <function Client.send at 0x7cbdf439bce0>
+           └ <httpx.Client object at 0x7cbbac1094d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/httpx/_client.py", line 901, in send
+    raise RuntimeError("Cannot send a request, as the client has been closed.")
+
+RuntimeError: Cannot send a request, as the client has been closed.
+2026-05-18 15:17:31.211 | WARNING  | ops_agent.core.intent.classifier:classify:83 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 15:17:31.211 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 15:18:42.368 | ERROR    | ops_agent.api.routes.chat:chat:42 | Chat 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x7cbdf595fb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x7cbdf6720a90>
+         │    └ <function Command.invoke at 0x7cbdf595f7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x7cbdf6720a90>
+           │   │      │    └ <function main at 0x7cbdf57985e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x7cbdf595ea20>
+           └ <click.core.Context object at 0x7cbdf6720a90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x7cbdf57985e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x7cbdf59f8a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x7cbdf59f82c0>
+    └ <uvicorn.server.Server object at 0x7cbdf579f550>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x7cbdf59145e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x7cbdf6722dd0>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x7cbdf579f550>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x7cbdf59f8360>
+           │           └ <uvicorn.server.Server object at 0x7cbdf579f550>
+           └ <function asyncio_run at 0x7cbdf5aa4ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x7cbbac333d30>
+           │      └ <function Runner.run at 0x7cbdf5b0e0c0>
+           └ <asyncio.runners.Runner object at 0x7cbbaeb80d90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x7cbbac1f0940>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x7cbbaeb80d90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 421, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+                   └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x7cbbac1fdb50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+                 │    │   │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0ac5...
+                 │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+                 │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+                 │    └ <fastapi.applications.FastAPI object at 0x7cbbac34afd0>
+                 └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x7cbbac1fdb50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+                           │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0ac5...
+                           │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+                           └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0ac5...
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x7cbbaeb809d0>
+          └ <fastapi.applications.FastAPI object at 0x7cbbac34afd0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+          │    │   │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x7cbbac0a6a20>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.cors.CORSMiddleware object at 0x7cbbac0acbd0>
+          └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x7cbbaeb809d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/cors.py", line 87, in __call__
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x7cbbac0a6a20>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x7cbbac316f50>
+          └ <starlette.middleware.cors.CORSMiddleware object at 0x7cbbac0acbd0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+          │                            │    │    │     │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x7cbbac0a6a20>
+          │                            │    │    │     │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │                            │    │    │     └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │                            │    │    └ <starlette.requests.Request object at 0x7cbbac0ad8d0>
+          │                            │    └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x7cbbac0acb90>
+          │                            └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x7cbbac316f50>
+          └ <function wrap_app_handling_exceptions at 0x7cbdf49323e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x7cbbac0acb90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <fastapi.routing.APIRouter object at 0x7cbbaeb437d0>
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x7cbbac0acb90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <bound method Router.app of <fastapi.routing.APIRouter object at 0x7cbbaeb437d0>>
+          └ <fastapi.routing.APIRouter object at 0x7cbbaeb437d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+          │     │      │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │     │      │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │     │      └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │     └ <function Route.handle at 0x7cbdf4933ba0>
+          └ APIRoute(path='/api/chat', name='chat', methods=['POST'])
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <function request_response.<locals>.app at 0x7cbbac358ae0>
+          └ APIRoute(path='/api/chat', name='chat', methods=['POST'])
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+          │                            │    │        │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6b60>
+          │                            │    │        │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │                            │    │        └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │                            │    └ <starlette.requests.Request object at 0x7cbbac0ac850>
+          │                            └ <function request_response.<locals>.app.<locals>.app at 0x7cbbac0a6c00>
+          └ <function wrap_app_handling_exceptions at 0x7cbdf49323e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x7cbbac0a6d40>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x7cbbac0...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          └ <function request_response.<locals>.app.<locals>.app at 0x7cbbac0a6c00>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 120, in app
+    response = await f(request)
+                     │ └ <starlette.requests.Request object at 0x7cbbac0ac850>
+                     └ <function get_request_handler.<locals>.app at 0x7cbbac358b80>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                         └ <function run_endpoint_function at 0x7cbdf495e020>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+                 │         │      └ {'req': ChatRequest(query='你好', history=[])}
+                 │         └ <function chat at 0x7cbbaeb59bc0>
+                 └ Dependant(path_params=[], query_params=[], header_params=[], cookie_params=[], body_params=[ModelField(field_info=Body(Pydant...
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 34, in chat
+    result = await _orchestrator.process(req.query)
+                   │             │       │   └ '你好'
+                   │             │       └ ChatRequest(query='你好', history=[])
+                   │             └ <function Orchestrator.process at 0x7cbbb3f7a2a0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x7cbbb3a1ca50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 42, in process
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x7cbdf3a72c00>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x7cbbb3a1fdd0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x7cbbb3a1ca50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '你好'
+                   └ <bound method Orchestrator._handle_knowledge of <ops_agent.core.orchestrator.Orchestrator object at 0x7cbbb3a1ca50>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 88, in _handle_knowledge
+    context = self.kb.query(query)
+              │    │  │     └ '你好'
+              │    │  └ <function KnowledgeBase.query at 0x7cbd31707100>
+              │    └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x7cbbb2a7f290>
+              └ <ops_agent.core.orchestrator.Orchestrator object at 0x7cbbb3a1ca50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/knowledge_base.py", line 49, in query
+    return self.retriever.retrieve_context(question, top_k)
+           │    │         │                │         └ None
+           │    │         │                └ '你好'
+           │    │         └ <function Retriever.retrieve_context at 0x7cbd31707060>
+           │    └ <ops_agent.models.rag.retriever.Retriever object at 0x7cbbb3b97ed0>
+           └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x7cbbb2a7f290>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 37, in retrieve_context
+    results = self.retrieve(query, top_k)
+              │    │        │      └ None
+              │    │        └ '你好'
+              │    └ <function Retriever.retrieve at 0x7cbd31706fc0>
+              └ <ops_agent.models.rag.retriever.Retriever object at 0x7cbbb3b97ed0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 28, in retrieve
+    query_vec = self.embedder.encode(query, is_query=True)
+                │    │        │      └ '你好'
+                │    │        └ <function Embedder.encode at 0x7cbd31643ce0>
+                │    └ <ops_agent.models.embedding.embedder.Embedder object at 0x7cbbaeb10550>
+                └ <ops_agent.models.rag.retriever.Retriever object at 0x7cbbb3b97ed0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/embedding/embedder.py", line 40, in encode
+    embedding = self.model.encode(text, normalize_embeddings=True)
+                │    │            └ '为这个句子生成表示以用于检索相关文章：你好'
+                │    └ <property object at 0x7cbd325530b0>
+                └ <ops_agent.models.embedding.embedder.Embedder object at 0x7cbbaeb10550>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/embedding/embedder.py", line 24, in model
+    self._model = SentenceTransformer(
+    │    │        └ <class 'sentence_transformers.sentence_transformer.model.SentenceTransformer'>
+    │    └ None
+    └ <ops_agent.models.embedding.embedder.Embedder object at 0x7cbbaeb10550>
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/util/decorators.py", line 41, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'device': 'cuda:0'}
+           │     └ <unprintable tuple object>
+           └ <function SentenceTransformer.__init__ at 0x7cbd3161b100>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/sentence_transformer/model.py", line 184, in __init__
+    super().__init__(
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/base/model.py", line 204, in __init__
+    modules, self.module_kwargs = self._load_modules(
+    │        │    │               │    └ <function BaseModel._load_modules at 0x7cbbb4ccf6a0>
+    │        │    │               └ <unprintable SentenceTransformer object>
+    │        │    └ None
+    │        └ <unprintable SentenceTransformer object>
+    └ None
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/base/model.py", line 972, in _load_modules
+    modules_json_path = load_file_path(
+                        └ <function load_file_path at 0x7cbc7a87f880>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/util/file_io.py", line 116, in load_file_path
+    return hf_hub_download(
+           └ <function hf_hub_download at 0x7cbd31e4f4c0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           │   │       └ {'filename': 'modules.json', 'subfolder': '.', 'revision': None, 'library_name': 'sentence-transformers', 'token': None, 'cac...
+           │   └ ('BAAI/bge-large-zh-v1.5',)
+           └ <function hf_hub_download at 0x7cbd31e4f380>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 997, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+           └ <function _hf_hub_download_to_cache_dir at 0x7cbd31e4f420>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1130, in _hf_hub_download_to_cache_dir
+    _get_metadata_or_catch_error(
+    └ <function _get_metadata_or_catch_error at 0x7cbd31e4f7e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1669, in _get_metadata_or_catch_error
+    metadata = get_hf_file_metadata(
+               └ <function get_hf_file_metadata at 0x7cbd31e4f880>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           │   │       └ {'url': 'https://huggingface.co/BAAI/bge-large-zh-v1.5/resolve/main/./modules.json', 'timeout': 60, 'headers': {'user-agent':...
+           │   └ ()
+           └ <function get_hf_file_metadata at 0x7cbd31e4f6a0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/file_download.py", line 1591, in get_hf_file_metadata
+    response = _httpx_follow_relative_redirects_with_backoff(
+               └ <function _httpx_follow_relative_redirects_with_backoff at 0x7cbd31f504a0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 685, in _httpx_follow_relative_redirects_with_backoff
+    response = http_backoff(
+               └ <function http_backoff at 0x7cbd31f502c0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 559, in http_backoff
+    return next(
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/huggingface_hub/utils/_http.py", line 467, in _http_backoff_base
+    response = client.request(method=method, url=url, **kwargs)
+               │      │              │           │      └ {'headers': {'user-agent': 'sentence-transformers/None; hf_hub/1.15.0; python/3.11.15; torch/2.11.0; agent/unknown', 'Accept-...
+               │      │              │           └ 'https://huggingface.co/BAAI/bge-large-zh-v1.5/resolve/main/./modules.json'
+               │      │              └ 'HEAD'
+               │      └ <function Client.request at 0x7cbdf439bb00>
+               └ <httpx.Client object at 0x7cbb8c2861d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/httpx/_client.py", line 825, in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           │    │    │             │                      └ False
+           │    │    │             └ <httpx._client.UseClientDefault object at 0x7cbdf4666d50>
+           │    │    └ <Request('HEAD', 'https://huggingface.co/BAAI/bge-large-zh-v1.5/resolve/main/modules.json')>
+           │    └ <function Client.send at 0x7cbdf439bce0>
+           └ <httpx.Client object at 0x7cbb8c2861d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/httpx/_client.py", line 901, in send
+    raise RuntimeError("Cannot send a request, as the client has been closed.")
+
+RuntimeError: Cannot send a request, as the client has been closed.
+2026-05-18 16:05:41.757 | INFO     | ops_agent.api.main:<module>:47 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 16:05:47.268 | WARNING  | ops_agent.models.llm.client:_init_engines:148 | DeepSeek API Key 未配置，跳过主引擎
+2026-05-18 16:05:47.268 | WARNING  | ops_agent.models.llm.client:_init_engines:155 | 百炼 API Key 未配置，跳过备引擎
+2026-05-18 16:05:47.268 | WARNING  | ops_agent.models.llm.client:_init_engines:158 | 未配置任何 LLM API Key，系统将无法回答问题
+2026-05-18 16:05:47.269 | WARNING  | ops_agent.core.intent.classifier:classify:83 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 16:05:47.269 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 16:33:57.053 | INFO     | ops_agent.api.main:<module>:47 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 16:35:44.664 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 16:35:44.665 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 16:35:56.180 | ERROR    | ops_agent.api.routes.chat:chat:42 | Chat 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x73a3d3ed7b00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x73a3d4d24a50>
+         │    └ <function Command.invoke at 0x73a3d3ed77e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x73a3d4d24a50>
+           │   │      │    └ <function main at 0x73a3d3cd45e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x73a3d3ed6a20>
+           └ <click.core.Context object at 0x73a3d4d24a50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x73a3d3cd45e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x73a3d3d68a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x73a3d3d682c0>
+    └ <uvicorn.server.Server object at 0x73a3d4ab7290>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x73a3d3e8c5e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x73a3d4d26d50>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x73a3d4ab7290>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x73a3d3d68360>
+           │           └ <uvicorn.server.Server object at 0x73a3d4ab7290>
+           └ <function asyncio_run at 0x73a3d407cae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x73a18837bd30>
+           │      └ <function Runner.run at 0x73a3d41160c0>
+           └ <asyncio.runners.Runner object at 0x73a18835b390>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x73a1882307c0>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x73a18835b390>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 421, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+                   └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x73a188226810>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+                 │    │   │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2214...
+                 │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+                 │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+                 │    └ <fastapi.applications.FastAPI object at 0x73a188392d50>
+                 └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x73a188226810>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+                           │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2214...
+                           │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+                           └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2214...
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x73a190fa5dd0>
+          └ <fastapi.applications.FastAPI object at 0x73a188392d50>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+          │    │   │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x73a17c21ac00>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.cors.CORSMiddleware object at 0x73a188429150>
+          └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x73a190fa5dd0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/cors.py", line 87, in __call__
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x73a17c21ac00>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x73a17c220750>
+          └ <starlette.middleware.cors.CORSMiddleware object at 0x73a188429150>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+          │                            │    │    │     │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x73a17c21ac00>
+          │                            │    │    │     │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │                            │    │    │     └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │                            │    │    └ <starlette.requests.Request object at 0x73a17c2215d0>
+          │                            │    └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x73a17c220710>
+          │                            └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x73a17c220750>
+          └ <function wrap_app_handling_exceptions at 0x73a3d2e723e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x73a17c21ad40>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x73a17c220710>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x73a17c21ad40>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <fastapi.routing.APIRouter object at 0x73a188392ed0>
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x73a17c220710>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x73a17c21ad40>
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <bound method Router.app of <fastapi.routing.APIRouter object at 0x73a188392ed0>>
+          └ <fastapi.routing.APIRouter object at 0x73a188392ed0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+          │     │      │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x73a17c21ad40>
+          │     │      │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │     │      └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │     └ <function Route.handle at 0x73a3d2e73ba0>
+          └ APIRoute(path='/api/chat', name='chat', methods=['POST'])
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x73a17c21ad40>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <function request_response.<locals>.app at 0x73a1883a0ae0>
+          └ APIRoute(path='/api/chat', name='chat', methods=['POST'])
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+          │                            │    │        │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x73a17c21ad40>
+          │                            │    │        │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │                            │    │        └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │                            │    └ <starlette.requests.Request object at 0x73a17c2216d0>
+          │                            └ <function request_response.<locals>.app.<locals>.app at 0x73a17c21ade0>
+          └ <function wrap_app_handling_exceptions at 0x73a3d2e723e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x73a17c21af20>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x73a17c2...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          └ <function request_response.<locals>.app.<locals>.app at 0x73a17c21ade0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 120, in app
+    response = await f(request)
+                     │ └ <starlette.requests.Request object at 0x73a17c2216d0>
+                     └ <function get_request_handler.<locals>.app at 0x73a1883a0b80>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                         └ <function run_endpoint_function at 0x73a3d2e9a020>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+                 │         │      └ {'req': ChatRequest(query='你好', history=[])}
+                 │         └ <function chat at 0x73a188401d00>
+                 └ Dependant(path_params=[], query_params=[], header_params=[], cookie_params=[], body_params=[ModelField(field_info=Body(Pydant...
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 34, in chat
+    result = await _orchestrator.process(req.query)
+                   │             │       │   └ '你好'
+                   │             │       └ ChatRequest(query='你好', history=[])
+                   │             └ <function Orchestrator.process at 0x73a19246a3e0>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x73a1913a0990>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 42, in process
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x73a3d1f96d40>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x73a1913a0410>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x73a1913a0990>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '你好'
+                   └ <bound method Orchestrator._handle_knowledge of <ops_agent.core.orchestrator.Orchestrator object at 0x73a1913a0990>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 88, in _handle_knowledge
+    context = self.kb.query(query)
+              │    │  │     └ '你好'
+              │    │  └ <function KnowledgeBase.query at 0x73a30fbef240>
+              │    └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x73a190fa49d0>
+              └ <ops_agent.core.orchestrator.Orchestrator object at 0x73a1913a0990>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/knowledge_base.py", line 49, in query
+    return self.retriever.retrieve_context(question, top_k)
+           │    │         │                │         └ None
+           │    │         │                └ '你好'
+           │    │         └ <function Retriever.retrieve_context at 0x73a30fbef1a0>
+           │    └ <ops_agent.models.rag.retriever.Retriever object at 0x73a190fa6050>
+           └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x73a190fa49d0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 37, in retrieve_context
+    results = self.retrieve(query, top_k)
+              │    │        │      └ None
+              │    │        └ '你好'
+              │    └ <function Retriever.retrieve at 0x73a30fbef100>
+              └ <ops_agent.models.rag.retriever.Retriever object at 0x73a190fa6050>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 28, in retrieve
+    query_vec = self.embedder.encode(query, is_query=True)
+                │    │        │      └ '你好'
+                │    │        └ <function Embedder.encode at 0x73a30fb2be20>
+                │    └ <ops_agent.models.embedding.embedder.Embedder object at 0x73a1883eb610>
+                └ <ops_agent.models.rag.retriever.Retriever object at 0x73a190fa6050>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/embedding/embedder.py", line 40, in encode
+    embedding = self.model.encode(text, normalize_embeddings=True)
+                │    │            └ '为这个句子生成表示以用于检索相关文章：你好'
+                │    └ <property object at 0x73a193164b30>
+                └ <ops_agent.models.embedding.embedder.Embedder object at 0x73a1883eb610>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/embedding/embedder.py", line 24, in model
+    self._model = SentenceTransformer(
+    │    │        └ <class 'sentence_transformers.sentence_transformer.model.SentenceTransformer'>
+    │    └ None
+    └ <ops_agent.models.embedding.embedder.Embedder object at 0x73a1883eb610>
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/util/decorators.py", line 41, in wrapper
+    return func(*args, **kwargs)
+           │     │       └ {'device': 'cuda:0'}
+           │     └ (SentenceTransformer(
+           │         (0): Transformer({'transformer_task': 'feature-extraction', 'modality_config': {'text': {'method': 'f...
+           └ <function SentenceTransformer.__init__ at 0x73a30fb0f240>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/sentence_transformer/model.py", line 184, in __init__
+    super().__init__(
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/sentence_transformers/base/model.py", line 236, in __init__
+    self.to(device)
+    │    │  └ 'cuda:0'
+    │    └ <function Module.to at 0x73a289708fe0>
+    └ SentenceTransformer(
+        (0): Transformer({'transformer_task': 'feature-extraction', 'modality_config': {'text': {'method': 'fo...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1384, in to
+    return self._apply(convert)
+           │    │      └ <function Module.to.<locals>.convert at 0x73a17c259580>
+           │    └ <function Module._apply at 0x73a289708540>
+           └ SentenceTransformer(
+               (0): Transformer({'transformer_task': 'feature-extraction', 'modality_config': {'text': {'method': 'fo...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/torch/nn/modules/module.py", line 934, in _apply
+    module._apply(fn)
+    │      │      └ <function Module.to.<locals>.convert at 0x73a17c259580>
+    │      └ <function Module._apply at 0x73a289708540>
+    └ Transformer({'transformer_task': 'feature-extraction', 'modality_config': {'text': {'method': 'forward', 'method_output_name'...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/torch/nn/modules/module.py", line 934, in _apply
+    module._apply(fn)
+    │      │      └ <function Module.to.<locals>.convert at 0x73a17c259580>
+    │      └ <function Module._apply at 0x73a289708540>
+    └ BertModel(
+        (embeddings): BertEmbeddings(
+          (word_embeddings): Embedding(21128, 1024, padding_idx=0)
+          (position_embeddi...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/torch/nn/modules/module.py", line 934, in _apply
+    module._apply(fn)
+    │      │      └ <function Module.to.<locals>.convert at 0x73a17c259580>
+    │      └ <function Module._apply at 0x73a289708540>
+    └ BertEmbeddings(
+        (word_embeddings): Embedding(21128, 1024, padding_idx=0)
+        (position_embeddings): Embedding(512, 1024)
+        (t...
+  [Previous line repeated 1 more time]
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/torch/nn/modules/module.py", line 965, in _apply
+    param_applied = fn(param)
+                    │  └ Parameter containing:
+                    │    tensor([[ 1.6861e-02,  6.3049e-02,  5.5923e-03,  ...,  6.0791e-02,
+                    │              3.5522e-02, -3.1799e-02],
+                    │    ...
+                    └ <function Module.to.<locals>.convert at 0x73a17c259580>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1370, in convert
+    return t.to(
+           │ └ <method 'to' of 'torch._C.TensorBase' objects>
+           └ Parameter containing:
+             tensor([[ 1.6861e-02,  6.3049e-02,  5.5923e-03,  ...,  6.0791e-02,
+                       3.5522e-02, -3.1799e-02],
+             ...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/torch/cuda/__init__.py", line 478, in _lazy_init
+    torch._C._cuda_init()
+    │     │  └ <built-in function _cuda_init>
+    │     └ <module 'torch._C' from '/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/torch/_C.cpython-311-x86_64...
+    └ <module 'torch' from '/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/torch/__init__.py'>
+
+RuntimeError: The NVIDIA driver on your system is too old (found version 12080). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver.
+2026-05-18 16:53:07.899 | INFO     | ops_agent.api.main:<module>:47 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 16:53:33.372 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 16:53:33.372 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 16:58:11.960 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 17:00:10.207 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 17:00:10.208 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 17:05:17.029 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 17:05:17.255 | INFO     | ops_agent.models.embedding.embedder:model:34 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-18 17:05:17.256 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-18 17:05:26.624 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 17:05:26.625 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 17:05:26.765 | ERROR    | ops_agent.api.routes.chat:chat:42 | Chat 处理失败
+Traceback (most recent call last):
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/bin/uvicorn", line 6, in <module>
+    sys.exit(main())
+    │   │    └ <Command main>
+    │   └ <built-in function exit>
+    └ <module 'sys' (built-in)>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1514, in __call__
+    return self.main(*args, **kwargs)
+           │    │     │       └ {}
+           │    │     └ ()
+           │    └ <function Command.main at 0x72b3736fbb00>
+           └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1435, in main
+    rv = self.invoke(ctx)
+         │    │      └ <click.core.Context object at 0x72b374520ad0>
+         │    └ <function Command.invoke at 0x72b3736fb7e0>
+         └ <Command main>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 1298, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           │   │      │    │           │   └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │   │      │    │           └ <click.core.Context object at 0x72b374520ad0>
+           │   │      │    └ <function main at 0x72b37353c5e0>
+           │   │      └ <Command main>
+           │   └ <function Context.invoke at 0x72b3736faa20>
+           └ <click.core.Context object at 0x72b374520ad0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/click/core.py", line 853, in invoke
+    return callback(*args, **kwargs)
+           │         │       └ {'host': '0.0.0.0', 'port': 8080, 'app': 'ops_agent.api.main:app', 'uds': None, 'fd': None, 'reload': False, 'reload_dirs': (...
+           │         └ ()
+           └ <function main at 0x72b37353c5e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 441, in main
+    run(
+    └ <function run at 0x72b373794a40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/main.py", line 620, in run
+    server.run()
+    │      └ <function Server.run at 0x72b3737942c0>
+    └ <uvicorn.server.Server object at 0x72b373543490>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/server.py", line 75, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           │           │    │             │                      │    │      └ <function Config.get_loop_factory at 0x72b3736b05e0>
+           │           │    │             │                      │    └ <uvicorn.config.Config object at 0x72b374522e10>
+           │           │    │             │                      └ <uvicorn.server.Server object at 0x72b373543490>
+           │           │    │             └ None
+           │           │    └ <function Server.serve at 0x72b373794360>
+           │           └ <uvicorn.server.Server object at 0x72b373543490>
+           └ <function asyncio_run at 0x72b3738a4ae0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           │      │   └ <coroutine object Server.serve at 0x72b1288b7e20>
+           │      └ <function Runner.run at 0x72b37390e0c0>
+           └ <asyncio.runners.Runner object at 0x72b1288baa90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           │    │     │                  └ <Task pending name='Task-1' coro=<Server.serve() running at /mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-p...
+           │    │     └ <cyfunction Loop.run_until_complete at 0x72b12877c940>
+           │    └ <uvloop.Loop running=True closed=False debug=False>
+           └ <asyncio.runners.Runner object at 0x72b1288baa90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/protocols/http/httptools_impl.py", line 421, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+                   └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x72b12c944910>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/uvicorn/middleware/proxy_headers.py", line 56, in __call__
+    return await self.app(scope, receive, send)
+                 │    │   │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280ff9...
+                 │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+                 │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+                 │    └ <fastapi.applications.FastAPI object at 0x72b1308175d0>
+                 └ <uvicorn.middleware.proxy_headers.ProxyHeadersMiddleware object at 0x72b12c944910>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/applications.py", line 1159, in __call__
+    await super().__call__(scope, receive, send)
+                           │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280ff9...
+                           │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+                           └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <bound method RequestResponseCycle.send of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280ff9...
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x72b128494a10>
+          └ <fastapi.applications.FastAPI object at 0x72b1308175d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+          │    │   │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x72b1285323e0>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.cors.CORSMiddleware object at 0x72b128494950>
+          └ <starlette.middleware.errors.ServerErrorMiddleware object at 0x72b128494a10>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/cors.py", line 87, in __call__
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x72b1285323e0>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x72b128487610>
+          └ <starlette.middleware.cors.CORSMiddleware object at 0x72b128494950>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+          │                            │    │    │     │      │        └ <function ServerErrorMiddleware.__call__.<locals>._send at 0x72b1285323e0>
+          │                            │    │    │     │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │                            │    │    │     └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │                            │    │    └ <starlette.requests.Request object at 0x72b1280ff890>
+          │                            │    └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x72b1284877d0>
+          │                            └ <starlette.middleware.exceptions.ExceptionMiddleware object at 0x72b128487610>
+          └ <function wrap_app_handling_exceptions at 0x72b3726763e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x72b128532fc0>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x72b1284877d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x72b128532fc0>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <fastapi.routing.APIRouter object at 0x72b1288df290>
+          └ <fastapi.middleware.asyncexitstack.AsyncExitStackMiddleware object at 0x72b1284877d0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+          │    │                │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x72b128532fc0>
+          │    │                │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │    │                └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <bound method Router.app of <fastapi.routing.APIRouter object at 0x72b1288df290>>
+          └ <fastapi.routing.APIRouter object at 0x72b1288df290>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+          │     │      │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x72b128532fc0>
+          │     │      │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │     │      └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │     └ <function Route.handle at 0x72b372677ba0>
+          └ APIRoute(path='/api/chat', name='chat', methods=['POST'])
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+          │    │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x72b128532fc0>
+          │    │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │    │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │    └ <function request_response.<locals>.app at 0x72b1288e9ee0>
+          └ APIRoute(path='/api/chat', name='chat', methods=['POST'])
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+          │                            │    │        │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x72b128532fc0>
+          │                            │    │        │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │                            │    │        └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          │                            │    └ <starlette.requests.Request object at 0x72b1280ff7d0>
+          │                            └ <function request_response.<locals>.app.<locals>.app at 0x72b128533740>
+          └ <function wrap_app_handling_exceptions at 0x72b3726763e0>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+          │   │      │        └ <function wrap_app_handling_exceptions.<locals>.wrapped_app.<locals>.sender at 0x72b128533880>
+          │   │      └ <bound method RequestResponseCycle.receive of <uvicorn.protocols.http.httptools_impl.RequestResponseCycle object at 0x72b1280...
+          │   └ {'type': 'http', 'asgi': {'version': '3.0', 'spec_version': '2.3'}, 'http_version': '1.1', 'server': ('127.0.0.1', 8080), 'cl...
+          └ <function request_response.<locals>.app.<locals>.app at 0x72b128533740>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 120, in app
+    response = await f(request)
+                     │ └ <starlette.requests.Request object at 0x72b1280ff7d0>
+                     └ <function get_request_handler.<locals>.app at 0x72b1288e9e40>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                         └ <function run_endpoint_function at 0x72b37269e020>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/fastapi/routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+                 │         │      └ {'req': ChatRequest(query='你好', history=[])}
+                 │         └ <function chat at 0x72b12c955f80>
+                 └ Dependant(path_params=[], query_params=[], header_params=[], cookie_params=[], body_params=[ModelField(field_info=Body(Pydant...
+
+> File "/mnt/data/home/czr/OpsAgent/ops_agent/api/routes/chat.py", line 34, in chat
+    result = await _orchestrator.process(req.query)
+                   │             │       │   └ '你好'
+                   │             │       └ ChatRequest(query='你好', history=[])
+                   │             └ <function Orchestrator.process at 0x72b131c6a520>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x72b130ba0bd0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 42, in process
+    result = await self.router.route(
+                   │    │      └ <function TaskRouter.route at 0x72b3717f2d40>
+                   │    └ <ops_agent.core.scheduler.task_router.TaskRouter object at 0x72b130ba0610>
+                   └ <ops_agent.core.orchestrator.Orchestrator object at 0x72b130ba0bd0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/scheduler/task_router.py", line 31, in route
+    result = await handler(query, entities)
+                   │       │      └ {}
+                   │       └ '你好'
+                   └ <bound method Orchestrator._handle_knowledge of <ops_agent.core.orchestrator.Orchestrator object at 0x72b130ba0bd0>>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/core/orchestrator.py", line 88, in _handle_knowledge
+    context = self.kb.query(query)
+              │    │  │     └ '你好'
+              │    │  └ <function KnowledgeBase.query at 0x72b2af45b2e0>
+              │    └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x72b130817d50>
+              └ <ops_agent.core.orchestrator.Orchestrator object at 0x72b130ba0bd0>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/knowledge_base.py", line 49, in query
+    return self.retriever.retrieve_context(question, top_k)
+           │    │         │                │         └ None
+           │    │         │                └ '你好'
+           │    │         └ <function Retriever.retrieve_context at 0x72b2af45b240>
+           │    └ <ops_agent.models.rag.retriever.Retriever object at 0x72b130b1da50>
+           └ <ops_agent.models.rag.knowledge_base.KnowledgeBase object at 0x72b130817d50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 37, in retrieve_context
+    results = self.retrieve(query, top_k)
+              │    │        │      └ None
+              │    │        └ '你好'
+              │    └ <function Retriever.retrieve at 0x72b2af45b1a0>
+              └ <ops_agent.models.rag.retriever.Retriever object at 0x72b130b1da50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/models/rag/retriever.py", line 30, in retrieve
+    results = self.store.search(query_vec, top_k=k)
+              │    │     │      │                └ 5
+              │    │     │      └ [0.025317998602986336, -0.024701258167624474, -0.040502648800611496, 0.03130339831113815, 0.026658372953534126, -0.0087179336...
+              │    │     └ <function VectorStore.search at 0x72b2b4314540>
+              │    └ <ops_agent.data.vector_store.VectorStore object at 0x72b130814ad0>
+              └ <ops_agent.models.rag.retriever.Retriever object at 0x72b130b1da50>
+
+  File "/mnt/data/home/czr/OpsAgent/ops_agent/data/vector_store.py", line 104, in search
+    results = self.client.search(
+              │    │      └ <function MilvusClient.search at 0x72b2b42db100>
+              │    └ <pymilvus.milvus_client.milvus_client.MilvusClient object at 0x72b130bbd710>
+              └ <ops_agent.data.vector_store.VectorStore object at 0x72b130814ad0>
+
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/pymilvus/milvus_client/milvus_client.py", line 464, in search
+    return conn.search(
+           │    └ <function GrpcHandler.search at 0x72b2b444c2c0>
+           └ <pymilvus.client.grpc_handler.GrpcHandler object at 0x72b13006fc90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/pymilvus/decorators.py", line 521, in handler
+    raise e from e
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/pymilvus/decorators.py", line 518, in handler
+    return func(*args, **kwargs)
+           │     │       └ {'collection_name': 'ops_knowledge', 'data': [[0.025317998602986336, -0.024701258167624474, -0.040502648800611496, 0.03130339...
+           │     └ (<pymilvus.client.grpc_handler.GrpcHandler object at 0x72b13006fc90>,)
+           └ <function retry_on_rpc_failure.<locals>.wrapper.<locals>.handler at 0x72b2b444c400>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/pymilvus/decorators.py", line 565, in handler
+    return func(self, *args, **kwargs)
+           │    │      │       └ {'collection_name': 'ops_knowledge', 'data': [[0.025317998602986336, -0.024701258167624474, -0.040502648800611496, 0.03130339...
+           │    │      └ ()
+           │    └ <pymilvus.client.grpc_handler.GrpcHandler object at 0x72b13006fc90>
+           └ <function retry_on_rpc_failure.<locals>.wrapper.<locals>.handler at 0x72b2b444c360>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/pymilvus/decorators.py", line 456, in handler
+    raise e from e
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/pymilvus/decorators.py", line 419, in handler
+    return func(*args, **kwargs)
+           │     │       └ {'collection_name': 'ops_knowledge', 'data': [[0.025317998602986336, -0.024701258167624474, -0.040502648800611496, 0.03130339...
+           │     └ (<pymilvus.client.grpc_handler.GrpcHandler object at 0x72b13006fc90>,)
+           └ <function GrpcHandler.search at 0x72b2b444c180>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/pymilvus/client/grpc_handler.py", line 1298, in search
+    return self._execute_search(
+           │    └ <function GrpcHandler._execute_search at 0x72b2b444ba60>
+           └ <pymilvus.client.grpc_handler.GrpcHandler object at 0x72b13006fc90>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/pymilvus/client/grpc_handler.py", line 1190, in _execute_search
+    check_status(response.status)
+    │            └ status {
+    │                error_code: 101
+    │                reason: "Collection \'ops_knowledge\' is in state \'released\'; call load() before search/get/qu...
+    └ <function check_status at 0x72b371012700>
+  File "/mnt/data/home/czr/miniconda3/envs/opsagent/lib/python3.11/site-packages/pymilvus/client/utils.py", line 77, in check_status
+    raise MilvusException(status.code, status.reason, status.error_code)
+          │               │            │              └ error_code: 101
+          │               │            │                reason: "Collection \'ops_knowledge\' is in state \'released\'; call load() before search/get/query"
+          │               │            │                code: 101
+          │               │            │                
+          │               │            └ error_code: 101
+          │               │              reason: "Collection \'ops_knowledge\' is in state \'released\'; call load() before search/get/query"
+          │               │              code: 101
+          │               │              
+          │               └ error_code: 101
+          │                 reason: "Collection \'ops_knowledge\' is in state \'released\'; call load() before search/get/query"
+          │                 code: 101
+          │                 
+          └ <class 'pymilvus.exceptions.MilvusException'>
+
+pymilvus.exceptions.MilvusException: <MilvusException: (code=101, message=Collection 'ops_knowledge' is in state 'released'; call load() before search/get/query)>
+2026-05-18 17:06:01.857 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 17:06:02.084 | INFO     | ops_agent.models.embedding.embedder:model:34 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-18 17:06:02.084 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-18 17:07:56.027 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 17:07:56.028 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 17:07:56.174 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='你好' → 0 条结果
+2026-05-18 17:07:56.231 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='你好' → 0 条结果
+2026-05-18 17:08:27.720 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 17:08:27.721 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 17:08:27.792 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='你好' → 0 条结果
+2026-05-18 17:08:27.847 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='你好' → 0 条结果
+2026-05-18 17:08:42.422 | INFO     | ops_agent.core.intent.classifier:classify:77 | 规则分类: IntentType.KNOWLEDGE_QUERY (置信度: 1.0)
+2026-05-18 17:08:42.422 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 17:08:42.496 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看服务器磁盘使用情况' → 0 条结果
+2026-05-18 17:08:42.553 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='如何查看服务器磁盘使用情况' → 0 条结果
+2026-05-18 17:29:56.072 | INFO     | ops_agent.api.main:<module>:68 | Vue 前端已挂载: /mnt/data/home/czr/OpsAgent/ops_agent/api/static/dist
+2026-05-18 17:30:10.896 | INFO     | ops_agent.models.embedding.embedder:model:33 | Embedding 模型已加载: BAAI/bge-large-zh-v1.5 -> 1024d
+2026-05-18 17:30:10.897 | INFO     | ops_agent.api.main:_load_embedder:33 | Embedding 模型预加载完成
+2026-05-18 17:32:29.568 | WARNING  | ops_agent.core.intent.classifier:classify:86 | LLM分类失败: '\n  "intent"'，使用规则分类兜底
+2026-05-18 17:32:29.568 | INFO     | ops_agent.core.scheduler.task_router:route:30 | 路由: IntentType.KNOWLEDGE_QUERY → _handle_knowledge
+2026-05-18 17:32:29.880 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='你好' → 0 条结果
+2026-05-18 17:32:29.914 | INFO     | ops_agent.models.rag.retriever:retrieve:32 | 检索完成: query='你好' → 0 条结果

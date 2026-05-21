@@ -1,0 +1,66 @@
+May 15 23:58:01 web-01 systemd[1]: Started Cleanup of Temporary Directories.
+May 15 23:59:00 web-01 CRON[8921]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1)
+May 16 00:00:00 web-01 systemd[1]: Starting Rotate log files...
+May 16 00:00:01 web-01 systemd[1]: logrotate.service: Succeeded.
+May 16 00:05:12 web-01 sshd[9123]: Accepted publickey for zhangsan from 192.168.1.100 port 54321
+May 16 00:10:33 web-01 nginx[2345]: 192.168.1.150 - - [16/May/2026:00:10:33 +0800] "GET /api/users HTTP/1.1" 200 1234 "-" "curl/7.68.0"
+May 16 00:15:00 web-01 CRON[9150]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1)
+May 16 00:30:45 web-01 kernel: [123456.789] TCP: request_sock_TCP: Possible SYN flooding on port 80. Sending cookies.
+May 16 00:30:46 web-01 kernel: [123457.123] net_ratelimit: 15 callbacks suppressed
+May 16 01:00:00 db-master mysqld[10234]: [Note] InnoDB: Buffer pool size set to 40G
+May 16 01:00:01 db-master mysqld[10234]: [Note] InnoDB: Using Linux native AIO
+May 16 02:00:00 db-master CRON[11234]: (mysql) CMD (mysqldump --single-transaction ops_agent > /backup/daily.sql)
+May 16 03:00:00 db-master mysqld[10234]: [Note] InnoDB: page_cleaner: 1000ms intended loop took 5000ms. The settings might not be optimal.
+May 16 03:10:05 db-master mysqld[10234]: [Warning] InnoDB: Difficult to find free blocks in the buffer pool (5000 search iterations)! Consider increasing innodb_buffer_pool_size.
+May 16 03:30:00 db-master mysqld[10234]: [ERROR] InnoDB: Operating system error number 28 in a file operation. (No space left on device)
+May 16 03:30:01 db-master mysqld[10234]: [ERROR] InnoDB: File ./ops_agent/alerts.ibd: No space left on device
+May 16 03:30:02 db-master mysqld[10234]: [ERROR] InnoDB: Unable to extend tablespace ops_agent/alerts
+May 16 03:31:00 db-master kernel: Out of memory: Kill process 10234 (mysqld) score 898 or sacrifice child
+May 16 03:31:01 db-master kernel: Killed process 10234 (mysqld) total-vm:45432112kB, anon-rss:40432100kB, file-rss:0kB, shmem-rss:0kB
+May 16 03:31:02 db-master systemd[1]: mysql.service: Main process exited, code=killed, status=9/KILL
+May 16 03:31:02 db-master systemd[1]: mysql.service: Failed with result 'signal'.
+May 16 04:00:00 web-01 nginx[2345]: 192.168.1.150 - - [16/May/2026:04:00:00 +0800] "GET /api/health HTTP/1.1" 200 45 "-" "monitoring/1.0"
+May 16 04:30:12 web-01 CRON[12034]: (root) CMD (test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily ))
+May 16 05:00:00 web-01 systemd[1]: Starting Daily apt upgrade and clean activities...
+May 16 05:00:45 web-01 systemd[1]: apt-daily-upgrade.service: Succeeded.
+May 16 06:00:00 app-01 java_app[5678]: [WARN] GC overhead limit exceeded - Full GC taking too long
+May 16 06:00:05 app-01 java_app[5678]: [ERROR] java.lang.OutOfMemoryError: GC overhead limit exceeded
+May 16 06:00:10 app-01 java_app[5678]: [FATAL] JVM terminating due to OutOfMemoryError
+May 16 06:00:11 app-01 systemd[1]: java_app.service: Main process exited, code=exited, status=1/FAILURE
+May 16 06:00:11 app-01 systemd[1]: java_app.service: Failed with result 'exit-code'.
+May 16 06:01:00 app-01 systemd[1]: java_app.service: Scheduled restart job, restart counter is at 1.
+May 16 06:01:10 app-01 java_app[6789]: [INFO] Starting Java Application v1.5.0
+May 16 06:01:15 app-01 java_app[6789]: [INFO] Application started successfully on port 8081
+May 16 07:00:00 web-01 nginx[2345]: 192.168.1.200 - - [16/May/2026:07:00:00 +0800] "GET / HTTP/1.1" 200 5678 "-" "Mozilla/5.0"
+May 16 07:30:00 web-02 CRON[12345]: (root) CMD (certbot renew --quiet)
+May 16 07:30:05 web-02 certbot[12346]: Attempting to renew cert (www.example.com) from /etc/letsencrypt/renewal/www.example.com.conf produced an unexpected error: Failed to open file /var/log/letsencrypt/letsencrypt.log: [Errno 30] Read-only file system. Skipping.
+May 16 07:30:05 web-02 certbot[12346]: All renewal attempts failed. The following certificates could not be renewed: /etc/letsencrypt/live/www.example.com/fullchain.pem
+May 16 08:00:00 web-01 CRON[13000]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1)
+May 16 08:10:23 web-01 sshd[13100]: Failed password for root from 10.10.10.55 port 45678 ssh2
+May 16 08:10:25 web-01 sshd[13100]: Failed password for root from 10.10.10.55 port 45679 ssh2
+May 16 08:10:27 web-01 sshd[13100]: Failed password for root from 10.10.10.55 port 45680 ssh2
+May 16 08:10:30 web-01 sshd[13100]: Disconnecting authenticating user root 10.10.10.55 port 45680: Too many authentication failures
+May 16 08:15:00 web-01 CRON[13200]: (root) CMD (/usr/local/bin/check_disk.sh)
+May 16 08:15:01 web-01 check_disk.sh[13201]: WARNING: /dev/sda1 usage at 87% on web-01
+May 16 08:30:00 web-01 nginx[2345]: 192.168.1.150 - - [16/May/2026:08:30:00 +0800] "GET /api/health HTTP/1.1" 502 0 "-" "monitoring/1.0"
+May 16 08:30:01 web-01 nginx[2345]: [ERROR] connect() failed (111: Connection refused) while connecting to upstream
+May 16 08:30:02 web-01 nginx[2345]: upstream: "http://192.168.1.70:8080/api/health"
+May 16 08:35:00 web-01 monit[14000]: 'web-01' CPU usage 99.5% matches resource limit [cpu usage > 95%]
+May 16 08:35:01 web-01 monit[14000]: 'web-01' CPU usage check failed
+May 16 08:40:00 db-master mysqld[15234]: [Warning] Aborted connection 452 to db: 'ops_agent' user: 'opsagent' host: '192.168.1.70' (Got timeout reading communication packets)
+May 16 08:40:01 db-master mysqld[15234]: [Warning] Too many connections: 500 active connections, rejecting new connections
+May 16 08:40:02 db-master mysqld[15234]: [ERROR] mysqld: Can't create a new thread (errno 11); if you are not out of available memory, you can consult the manual for a possible OS-dependent bug
+May 16 08:45:00 cache-01 redis[1234]: [WARNING] Memory usage over 80%. RDB snapshotting started
+May 16 08:45:02 cache-01 redis[1234]: [ERROR] Can't save in background: fork: Cannot allocate memory
+May 16 08:50:00 web-03 kernel: [234567.890] INFO: task java:12345 blocked for more than 120 seconds.
+May 16 08:50:01 web-03 kernel: [234567.891] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+May 16 08:50:02 web-03 kernel: [234567.892] java          D ffff88012fc1c000     0 12345      1 0x00000000
+May 16 08:55:00 web-03 monit[14001]: 'web-03' filesystem /dev/sda1 usage 92% matches resource limit [disk usage > 90%]
+May 16 09:00:00 web-01 CRON[15000]: (root) CMD (command -v debian-sa1 > /dev/null && debian-sa1 1 1)
+May 16 09:05:00 web-01 nginx[2345]: [ERROR] Permission denied: '/var/log/nginx/access.log'
+May 16 09:05:00 web-01 nginx[2345]: [ERROR] Permission denied: '/var/log/nginx/error.log'
+May 16 09:10:00 web-01 nginx[2345]: [ERROR] Permission denied: '/var/log/nginx/access.log'
+May 16 09:11:00 web-01 nginx[2345]: [ERROR] Permission denied: '/var/log/nginx/access.log'
+May 16 09:12:00 web-01 nginx[2345]: [ERROR] Permission denied: '/var/log/nginx/access.log'
+May 16 09:12:30 web-01 systemd[1]: Starting Cleanup of Temporary Directories.
+May 16 09:12:31 web-01 systemd[1]: tmpfiles-clean.service: Succeeded.

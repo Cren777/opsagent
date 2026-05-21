@@ -1,0 +1,263 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { ChatMessage } from '@/types/chat'
+import { Marked } from 'marked'
+import { markedHighlight } from 'marked-highlight'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github-dark.css'
+
+const marked = new Marked(
+  markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight(code: string, lang: string) {
+      if (lang && hljs.getLanguage(lang)) {
+        return hljs.highlight(code, { language: lang }).value
+      }
+      return hljs.highlightAuto(code).value
+    },
+  })
+)
+
+const props = defineProps<{ message: ChatMessage }>()
+
+const intentLabel = computed(() => {
+  const map: Record<string, string> = {
+    knowledge_query: '知识查询',
+    data_analysis: '数据分析',
+    fault_troubleshooting: '故障排查',
+  }
+  return map[props.message.intent || ''] || ''
+})
+
+const intentTagType = computed(() => {
+  const map: Record<string, string> = {
+    knowledge_query: 'primary',
+    data_analysis: 'success',
+    fault_troubleshooting: 'warning',
+  }
+  return map[props.message.intent || ''] || 'info'
+})
+
+const renderedMarkdown = computed(() => {
+  if (!props.message.content) return ''
+  return marked.parse(props.message.content) as string
+})
+
+function copySQL() {
+  if (props.message.sql) {
+    navigator.clipboard.writeText(props.message.sql)
+  }
+}
+</script>
+
+<template>
+  <div class="chat-message" :class="message.role">
+    <div v-if="message.role === 'assistant'" class="message-avatar">
+      <el-avatar :size="36" icon="Monitor" />
+    </div>
+
+    <div class="message-body">
+      <div class="message-header" v-if="message.role === 'assistant' && message.intent">
+        <el-tag :type="intentTagType" size="small">{{ intentLabel }}</el-tag>
+      </div>
+
+      <div class="message-bubble" :class="message.role">
+        <div v-if="message.content" class="markdown-body" v-html="renderedMarkdown" />
+        <div v-else-if="message.role === 'assistant'" class="streaming-cursor">
+          <span class="cursor-blink">▊</span>
+        </div>
+      </div>
+
+      <div v-if="message.sql" class="message-sql">
+        <el-collapse>
+          <el-collapse-item title="SQL 查询">
+            <div class="sql-block">
+              <pre><code>{{ message.sql }}</code></pre>
+              <el-button size="small" text :icon="'CopyDocument'" @click="copySQL">复制</el-button>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+
+      <div v-if="message.sources && message.sources.length > 0" class="message-sources">
+        <span class="sources-label">参考来源：</span>
+        <el-tag
+          v-for="(src, i) in message.sources"
+          :key="i"
+          size="small"
+          type="info"
+          class="source-tag"
+        >
+          {{ src.title }}
+        </el-tag>
+      </div>
+
+      <div class="message-time">
+        {{ new Date(message.timestamp).toLocaleTimeString('zh-CN') }}
+      </div>
+    </div>
+
+    <div v-if="message.role === 'user'" class="message-avatar">
+      <el-avatar :size="36" icon="User" />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.chat-message {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.chat-message.user {
+  flex-direction: row-reverse;
+}
+
+.chat-message.assistant {
+  flex-direction: row;
+}
+
+.message-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.message-header {
+  margin-bottom: 6px;
+}
+
+.message-bubble {
+  padding: 12px 16px;
+  border-radius: 12px;
+  line-height: 1.7;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.message-bubble.user {
+  background: #409eff;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.message-bubble.assistant {
+  background: #fff;
+  border: 1px solid #e4e7ed;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.markdown-body :deep(pre) {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 14px 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.markdown-body :deep(code) {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px;
+}
+
+.markdown-body :deep(p) {
+  margin: 0 0 8px;
+}
+
+.markdown-body :deep(p:last-child) {
+  margin-bottom: 0;
+}
+
+.markdown-body :deep(ul),
+.markdown-body :deep(ol) {
+  padding-left: 20px;
+  margin: 6px 0;
+}
+
+.markdown-body :deep(h3) {
+  font-size: 15px;
+  margin: 12px 0 6px;
+}
+
+.markdown-body :deep(h4) {
+  font-size: 14px;
+  margin: 10px 0 4px;
+}
+
+.message-bubble.user .markdown-body :deep(code) {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.message-bubble.assistant .markdown-body :deep(code) {
+  background: #f0f2f5;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: #e74c3c;
+}
+
+.streaming-cursor {
+  display: inline;
+}
+
+.cursor-blink {
+  animation: blink 0.8s infinite;
+  color: #409eff;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.message-sql {
+  margin-top: 8px;
+}
+
+.sql-block {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sql-block pre {
+  flex: 1;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin: 0;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+.message-sources {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+
+.sources-label {
+  color: #909399;
+}
+
+.source-tag {
+  cursor: default;
+}
+
+.message-time {
+  margin-top: 4px;
+  font-size: 11px;
+  color: #c0c4cc;
+}
+</style>

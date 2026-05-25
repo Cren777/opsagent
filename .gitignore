@@ -1,0 +1,37 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Frontend dependencies and build output
+node_modules/
+frontend/node_modules/
+frontend/dist/
+ops_agent/api/static/dist/
+
+# Local IDE/editor settings
+.vscode/sftp.json
+.idea/
+
+# Runtime logs and local databases
+*.log
+logs/
+data/logs/
+data/*.db
+data/**/*.db
+data/*.sqlite
+data/**/*.sqlite
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -108,6 +108,18 @@ export const useChatStore = defineStore('chat', () => {
     return session!
   }
 
+  function _buildRequestHistory(session: ChatSession) {
+    return session.messages
+      .filter((m) => m.id !== 'welcome' && m.content.trim())
+      .slice(-8)
+      .map((m) => ({
+        role: m.role,
+        content: m.content,
+        sql: m.sql || undefined,
+        intent: m.intent || undefined,
+      }))
+  }
+
   // ── Public methods ──
 
   function createSession() {
@@ -177,7 +189,11 @@ export const useChatStore = defineStore('chat', () => {
 
     isLoading.value = true
     try {
-      const { data } = await postChat({ query, datasource_id: selectedDatasourceId.value || undefined })
+      const { data } = await postChat({
+        query,
+        history: _buildRequestHistory(session),
+        datasource_id: selectedDatasourceId.value || undefined,
+      })
       const idx = session.messages.findIndex((m) => m.id === assistantId)
       if (idx !== -1) {
         session.messages[idx].content = data.answer
@@ -214,7 +230,11 @@ export const useChatStore = defineStore('chat', () => {
     abortController = new AbortController()
 
     await postChatStream(
-      { query, datasource_id: selectedDatasourceId.value || undefined },
+      {
+        query,
+        history: _buildRequestHistory(session),
+        datasource_id: selectedDatasourceId.value || undefined,
+      },
       (token) => {
         const idx = session.messages.findIndex((m) => m.id === assistantId)
         if (idx !== -1) session.messages[idx].content += token

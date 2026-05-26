@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ChatMessage } from '@/types/chat'
+import { ElMessage } from 'element-plus'
 import { Marked } from 'marked'
 import { markedHighlight } from 'marked-highlight'
 import hljs from 'highlight.js'
@@ -43,10 +44,39 @@ const renderedMarkdown = computed(() => {
   return marked.parse(props.message.content) as string
 })
 
-function copySQL() {
-  if (props.message.sql) {
-    navigator.clipboard.writeText(props.message.sql)
+async function copySQL() {
+  const sql = props.message.sql
+  if (!sql) return
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(sql)
+    } else {
+      fallbackCopy(sql)
+    }
+    ElMessage.success('SQL 已复制')
+  } catch {
+    try {
+      fallbackCopy(sql)
+      ElMessage.success('SQL 已复制')
+    } catch {
+      ElMessage.error('复制失败，请手动选择 SQL 后复制')
+    }
   }
+}
+
+function fallbackCopy(text: string) {
+  const textarea = document.createElement('textarea')
+  textarea.value = text
+  textarea.setAttribute('readonly', '')
+  textarea.style.position = 'fixed'
+  textarea.style.left = '-9999px'
+  textarea.style.top = '0'
+  document.body.appendChild(textarea)
+  textarea.select()
+  const ok = document.execCommand('copy')
+  document.body.removeChild(textarea)
+  if (!ok) throw new Error('copy command failed')
 }
 </script>
 

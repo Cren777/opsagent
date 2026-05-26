@@ -1,7 +1,9 @@
 """MySQL data source implementation."""
-from typing import List, Dict, Any
-from sqlalchemy import create_engine, text
+from typing import Any, Dict, List
+
 from loguru import logger
+from sqlalchemy import create_engine, text
+from sqlalchemy.engine import URL
 
 from ops_agent.models.tools.base_datasource import BaseDataSource
 
@@ -11,13 +13,25 @@ class MySQLDataSource(BaseDataSource):
 
     def __init__(self, config: dict):
         super().__init__(config)
-        url = (
-            f"mysql+pymysql://{config['user']}:{config['password']}"
-            f"@{config['host']}:{config['port']}/{config['database']}"
-            f"?charset={config.get('charset', 'utf8mb4')}"
+        url = URL.create(
+            "mysql+pymysql",
+            username=config["user"],
+            password=config.get("password", ""),
+            host=config["host"],
+            port=config.get("port", 3306),
+            database=config["database"],
+            query={"charset": config.get("charset", "utf8mb4")},
         )
-        self.engine = create_engine(url, pool_pre_ping=True)
-        logger.info("MySQL 数据源已连接: {}:{}/{}", config['host'], config['port'], config['database'])
+        self.engine = create_engine(
+            url,
+            pool_pre_ping=True,
+            connect_args={
+                "connect_timeout": 10,
+                "read_timeout": 10,
+                "write_timeout": 10,
+            },
+        )
+        logger.info("MySQL datasource configured: {}:{}/{}", config["host"], config.get("port", 3306), config["database"])
 
     def execute_query(self, sql: str) -> List[Dict[str, Any]]:
         with self.engine.connect() as conn:
@@ -37,7 +51,7 @@ class MySQLDataSource(BaseDataSource):
         with self.engine.connect() as conn:
             result = conn.execute(
                 text("SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = :db"),
-                {"db": self.config['database']},
+                {"db": self.config["database"]},
             )
             return [row[0] for row in result]
 
@@ -50,7 +64,7 @@ class MySQLDataSource(BaseDataSource):
                     "WHERE TABLE_SCHEMA = :db AND TABLE_NAME = :tbl "
                     "ORDER BY ORDINAL_POSITION"
                 ),
-                {"db": self.config['database'], "tbl": table_name},
+                {"db": self.config["database"], "tbl": table_name},
             )
             return [
                 {

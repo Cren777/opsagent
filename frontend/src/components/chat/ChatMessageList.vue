@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, onBeforeUnmount } from 'vue'
 import { useChatStore } from '@/stores/chat'
 import ChatMessage from './ChatMessage.vue'
 
 const chatStore = useChatStore()
 const listRef = ref<HTMLElement | null>(null)
+const autoScroll = ref(true)
+let streamingTimer: number | undefined
 
 watch(
   () => chatStore.messages.length,
   () => {
+    autoScroll.value = true
     nextTick(() => scrollToBottom())
   }
 )
@@ -17,28 +20,36 @@ watch(
   () => chatStore.isStreaming,
   (streaming) => {
     if (streaming) {
-      const timer = setInterval(() => {
-        scrollToBottom()
+      streamingTimer = window.setInterval(() => {
+        if (autoScroll.value) scrollToBottom()
       }, 100)
-      watch(
-        () => chatStore.isStreaming,
-        (v) => {
-          if (!v) clearInterval(timer)
-        }
-      )
+    } else if (streamingTimer) {
+      clearInterval(streamingTimer)
+      streamingTimer = undefined
     }
   }
 )
+
+function handleScroll() {
+  const el = listRef.value
+  if (!el) return
+  const distanceToBottom = el.scrollHeight - el.scrollTop - el.clientHeight
+  autoScroll.value = distanceToBottom < 80
+}
 
 function scrollToBottom() {
   if (listRef.value) {
     listRef.value.scrollTop = listRef.value.scrollHeight
   }
 }
+
+onBeforeUnmount(() => {
+  if (streamingTimer) clearInterval(streamingTimer)
+})
 </script>
 
 <template>
-  <div ref="listRef" class="message-list">
+  <div ref="listRef" class="message-list" @scroll="handleScroll">
     <div v-if="chatStore.messages.length === 0" class="empty-state">
       <el-empty description="输入问题开始对话" :image-size="120" />
     </div>

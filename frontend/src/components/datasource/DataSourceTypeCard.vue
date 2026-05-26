@@ -37,7 +37,8 @@ function getSelectedTables(source: DataSourceItem): string[] {
 
 function getTableCount(source: DataSourceItem): { selected: number; total: number } {
   const c = source.config as unknown as Record<string, unknown>
-  const total = (c.total_tables as number) || 0
+  const allTables = c.all_tables as string[] | undefined
+  const total = (c.total_tables as number) || allTables?.length || 0
   const selected = getSelectedTables(source).length
   return { selected, total }
 }

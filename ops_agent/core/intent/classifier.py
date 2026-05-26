@@ -9,6 +9,22 @@ from ops_agent.models.llm.client import get_llm_client, UnifiedLLMClient, LLMErr
 from config.settings import settings
 
 
+_DATA_QUERY_HINT_RE = re.compile(
+    "|".join(
+        [
+            r"\bselect\b",
+            r"\bfrom\b",
+            r"\blimit\b",
+            r"[a-z][a-z0-9]*_[a-z0-9_]+",
+            r"\u8868.*(\u4e00\u6761|\u968f\u673a|\u968f\u4fbf|\u7b5b\u9009|\u5c55\u793a|\u8be6\u7ec6|\u660e\u7ec6|\u6570\u636e)",
+            r"(\u4e00\u6761|\u968f\u673a|\u968f\u4fbf|\u7b5b\u9009|\u5c55\u793a|\u8be6\u7ec6|\u660e\u7ec6).*\u8868",
+            r"(\u67e5\u8be2|\u7edf\u8ba1|\u663e\u793a|\u5217\u51fa).*(\u8868|\u6570\u636e|\u8bb0\u5f55)",
+        ]
+    ),
+    re.IGNORECASE,
+)
+
+
 # 规则匹配模式
 _RULE_PATTERNS = {
     IntentType.DATA_ANALYSIS: [
@@ -90,13 +106,20 @@ class IntentClassifier:
 
     def _rule_classify(self, query_lower: str) -> IntentResult:
         """基于规则的快速分类"""
+        entities = self._extract_entities(query_lower)
+        if _DATA_QUERY_HINT_RE.search(query_lower):
+            return IntentResult(
+                intent=IntentType.DATA_ANALYSIS,
+                confidence=0.95,
+                entities=entities,
+                raw_query=query_lower,
+            )
+
         scores = {intent: 0 for intent in IntentType}
         for intent, patterns in _RULE_PATTERNS.items():
             for pattern in patterns:
                 if re.search(pattern, query_lower):
                     scores[intent] += 1
-
-        entities = self._extract_entities(query_lower)
 
         if max(scores.values()) == 0:
             return IntentResult(

@@ -1,4 +1,5 @@
 """ClickHouse data source implementation."""
+import re
 from typing import List, Dict, Any
 from loguru import logger
 
@@ -25,12 +26,51 @@ class ClickHouseDataSource(BaseDataSource):
             raise ImportError("请安装 clickhouse-connect: pip install clickhouse-connect")
 
     def execute_query(self, sql: str) -> List[Dict[str, Any]]:
+        sql = self._prepare_sql(sql)
         result = self.client.query(sql)
         columns = result.column_names
         rows = []
         for row in result.result_rows:
             rows.append(dict(zip(columns, row)))
         return rows
+
+    def _prepare_sql(self, sql: str) -> str:
+        """Normalize generated SQL for the configured ClickHouse database."""
+        sql = re.sub(
+            r"\bAS\s+(`[^`\x00-\x7f]+`|\"[^\"\x00-\x7f]+\"|[^\s,)\x00-\x7f]+)",
+            "AS value",
+            sql,
+            flags=re.IGNORECASE,
+        )
+
+        db = self.config.get('database', 'default')
+        if not db:
+            return sql
+
+        table_names = set(self.config.get("selected_tables") or [])
+        if not table_names:
+            try:
+                table_names = set(self.get_tables())
+            except Exception:
+                table_names = set()
+
+        for table in sorted(table_names, key=len, reverse=True):
+            quoted_table = re.escape(table)
+            qualified = f"`{db}`.`{table}`"
+            sql = re.sub(
+                rf"(\bFROM\s+)(`?){quoted_table}\2(?!\s*\.)",
+                rf"\1{qualified}",
+                sql,
+                flags=re.IGNORECASE,
+            )
+            sql = re.sub(
+                rf"(\bJOIN\s+)(`?){quoted_table}\2(?!\s*\.)",
+                rf"\1{qualified}",
+                sql,
+                flags=re.IGNORECASE,
+            )
+
+        return sql
 
     def health_check(self) -> bool:
         try:

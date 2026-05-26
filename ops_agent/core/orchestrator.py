@@ -1,5 +1,6 @@
 """核心编排器：意图分类 → 路由分发 → 结果融合 → 流式输出"""
 import asyncio
+import re
 from typing import AsyncGenerator, Dict, Any, Optional
 from loguru import logger
 
@@ -36,7 +37,7 @@ class Orchestrator:
         self.router.register(IntentType.DATA_ANALYSIS, self._handle_data_analysis)
         self.router.register(IntentType.FAULT_TROUBLESHOOTING, self._handle_fault_troubleshooting)
 
-    async def process(self, query: str, datasource_id: str = None) -> Dict[str, Any]:
+    async def process(self, query: str, datasource_id: str = None, history: list[dict] = None) -> Dict[str, Any]:
         """非流式处理用户查询"""
         intent_result = await self.classifier.classify(query)
         result = await self.router.route(
@@ -44,11 +45,17 @@ class Orchestrator:
             query,
             intent_result.entities,
             datasource_id=datasource_id,
+            history=history or [],
         )
         result["intent"] = intent_result.intent.value
         return result
 
-    async def process_stream(self, query: str, datasource_id: str = None) -> AsyncGenerator[Dict[str, Any], None]:
+    async def process_stream(
+        self,
+        query: str,
+        datasource_id: str = None,
+        history: list[dict] = None,
+    ) -> AsyncGenerator[Dict[str, Any], None]:
         """流式处理用户查询，通过 SSE 事件逐步返回"""
         # Step 1: 意图识别
         intent_result = await self.classifier.classify(query)
@@ -60,6 +67,7 @@ class Orchestrator:
             query,
             intent_result.entities,
             datasource_id=datasource_id,
+            history=history or [],
         )
 
         # Step 3: 流式输出响应
@@ -95,7 +103,13 @@ class Orchestrator:
             "sources": [{"title": s["title"], "file": s["source_file"]} for s in sources],
         }
 
-    async def _handle_data_analysis(self, query: str, entities: dict, datasource_id: str = None) -> Dict[str, Any]:
+    async def _handle_data_analysis(
+        self,
+        query: str,
+        entities: dict,
+        datasource_id: str = None,
+        history: list[dict] = None,
+    ) -> Dict[str, Any]:
         """处理数据分析查询"""
         try:
             ds = get_active_datasource()
@@ -107,7 +121,8 @@ class Orchestrator:
                 ds = get_datasource_by_id(datasource_id) or ds
 
             self.text2sql.schema_manager.set_datasource(ds)
-            sql = await self.text2sql.generate(query)
+            effective_query = self._augment_query_with_history_table(query, history or [])
+            sql = await self.text2sql.generate(effective_query)
             rows = ds.execute_query(sql)
             results_text = self._format_rows(rows)
             answer = await self.fusion.fuse_for_data(query, results_text)
@@ -130,6 +145,32 @@ class Orchestrator:
                 "sql": "",
                 "rows": [],
             }
+
+    def _augment_query_with_history_table(self, query: str, history: list[dict]) -> str:
+        """Attach the last referenced table when the user says only 'the table'."""
+        table_names = self.text2sql.schema_manager.get_table_list()
+        if any(table in query for table in table_names):
+            return query
+
+        last_table = self._find_last_table_from_history(history, table_names)
+        if not last_table:
+            return query
+
+        if not re.search(r"\u8868|\u6570\u636e|\u8bb0\u5f55|\u4e00\u6761|\u968f\u673a|\u968f\u4fbf", query):
+            return query
+
+        return f"{query}\nTarget table: {last_table}"
+
+    @staticmethod
+    def _find_last_table_from_history(history: list[dict], table_names: list[str]) -> str:
+        for item in reversed(history):
+            content = str(item.get("content", ""))
+            sql = str(item.get("sql", ""))
+            combined = f"{sql}\n{content}"
+            for table in sorted(table_names, key=len, reverse=True):
+                if table in combined:
+                    return table
+        return ""
 
     async def _handle_fault_troubleshooting(self, query: str, entities: dict, **kwargs) -> Dict[str, Any]:
         """处理故障排查"""

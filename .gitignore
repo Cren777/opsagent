@@ -27,11 +27,4 @@ ops_agent/api/static/dist/
 *.log
 logs/
 data/logs/
-data/*.db
-data/**/*.db
-data/*.sqlite
-data/**/*.sqlite
 
-# OS files
-.DS_Store
-Thumbs.db

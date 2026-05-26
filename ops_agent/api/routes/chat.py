@@ -33,7 +33,11 @@ _orchestrator = Orchestrator(llm_client=get_dynamic_llm_client())
 async def chat(req: ChatRequest):
     """非流式对话接口"""
     try:
-        result = await _orchestrator.process(req.query, datasource_id=req.datasource_id)
+        result = await _orchestrator.process(
+            req.query,
+            datasource_id=req.datasource_id,
+            history=req.history,
+        )
         return ChatResponse(
             answer=result.get("answer", ""),
             intent=result.get("intent", ""),
@@ -53,7 +57,11 @@ async def chat_stream(req: ChatRequest):
     """SSE 流式对话接口"""
     async def event_generator():
         try:
-            async for event in _orchestrator.process_stream(req.query, datasource_id=req.datasource_id):
+            async for event in _orchestrator.process_stream(
+                req.query,
+                datasource_id=req.datasource_id,
+                history=req.history,
+            ):
                 event_type = event.get("event", "message")
                 data = event.get("data", {})
                 yield f"event: {event_type}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"

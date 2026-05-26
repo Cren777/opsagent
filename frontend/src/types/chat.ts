@@ -1,6 +1,6 @@
 export interface ChatRequest {
   query: string
-  history?: { role: string; content: string }[]
+  history?: { role: string; content: string; sql?: string | null; intent?: string }[]
   datasource_id?: string
 }
 

@@ -20,6 +20,7 @@ class DataSourceConfigSchema(BaseModel):
     file_path: Optional[str] = None
     sheet_name: Optional[str] = None
     selected_tables: Optional[list[str]] = None
+    all_tables: Optional[list[str]] = None
     total_tables: Optional[int] = None
 
 
@@ -154,17 +155,23 @@ def _test_connection(ds_type: str, config: dict) -> dict:
     try:
         if ds_type == "mysql":
             import pymysql
-            conn = pymysql.connect(
-                host=config.get("host", "127.0.0.1"),
-                port=config.get("port", 3306),
-                user=config.get("user", ""),
-                password=config.get("password", ""),
-                database=config.get("database", ""),
-                charset=config.get("charset", "utf8mb4"),
-                connect_timeout=5,
-            )
-            conn.ping()
-            conn.close()
+            try:
+                conn = pymysql.connect(
+                    host=config.get("host", "127.0.0.1"),
+                    port=config.get("port", 3306),
+                    user=config.get("user", ""),
+                    password=config.get("password", ""),
+                    database=config.get("database", ""),
+                    charset=config.get("charset", "utf8mb4"),
+                    connect_timeout=10,
+                    read_timeout=10,
+                    write_timeout=10,
+                )
+                with conn.cursor() as cursor:
+                    cursor.execute("SELECT 1")
+                conn.close()
+            except pymysql.err.OperationalError as e:
+                return {"ok": False, "message": _format_mysql_operational_error(e, config)}
         elif ds_type == "clickhouse":
             from clickhouse_connect import get_client
             client = get_client(
@@ -191,6 +198,30 @@ def _test_connection(ds_type: str, config: dict) -> dict:
         return {"ok": False, "message": f"缺少驱动: {e}"}
     except Exception as e:
         return {"ok": False, "message": str(e)}
+
+
+def _format_mysql_operational_error(error: Exception, config: dict) -> str:
+    code = error.args[0] if getattr(error, "args", None) else None
+    host = config.get("host", "127.0.0.1")
+    port = config.get("port", 3306)
+    database = config.get("database", "")
+    raw = str(error)
+
+    messages = {
+        2003: (
+            f"OpsAgent 后端无法连接 MySQL 服务器 {host}:{port}。"
+            "请确认 MySQL 服务器防火墙/安全组已放行 OpsAgent 后端服务器 IP，"
+            "并确认 mysqld 已监听该地址和端口。"
+        ),
+        1045: (
+            f"MySQL 用户认证失败。请确认用户名/密码正确，并确认该用户允许 OpsAgent 后端服务器 IP 登录。"
+        ),
+        1049: f"MySQL 数据库不存在：{database}。",
+        2005: f"MySQL 主机地址无法解析：{host}。",
+        2013: "MySQL 连接已建立但通信中断，请检查网络稳定性或 MySQL 超时配置。",
+    }
+    detail = messages.get(code, "MySQL 连接测试失败。")
+    return f"{detail} 原始错误：{raw}"
 
 
 # ── LLM Provider Endpoints ────────────────────────────────────────

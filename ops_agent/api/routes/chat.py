@@ -16,6 +16,7 @@ class ChatRequest(BaseModel):
     query: str
     history: list[dict] = []
     datasource_id: Optional[str] = None
+    attachments: list[dict] = []
 
 
 class ChatResponse(BaseModel):
@@ -23,6 +24,7 @@ class ChatResponse(BaseModel):
     intent: str = ""
     sources: list[dict] = []
     sql: str = ""
+    diagnostics: dict = {}
 
 
 # 优先使用配置数据库中的 LLM 提供商，回退到 settings 默认
@@ -37,12 +39,14 @@ async def chat(req: ChatRequest):
             req.query,
             datasource_id=req.datasource_id,
             history=req.history,
+            attachments=req.attachments,
         )
         return ChatResponse(
             answer=result.get("answer", ""),
             intent=result.get("intent", ""),
             sources=result.get("sources", []),
             sql=result.get("sql", ""),
+            diagnostics=result.get("diagnostics", {}),
         )
     except Exception as e:
         logger.exception("Chat 处理失败")
@@ -61,6 +65,7 @@ async def chat_stream(req: ChatRequest):
                 req.query,
                 datasource_id=req.datasource_id,
                 history=req.history,
+                attachments=req.attachments,
             ):
                 event_type = event.get("event", "message")
                 data = event.get("data", {})

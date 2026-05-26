@@ -1,14 +1,33 @@
 """Configuration API routes for data sources and LLM providers."""
+import re
+import uuid
+from pathlib import Path
 from typing import Optional
-from fastapi import APIRouter, HTTPException
+
+from fastapi import APIRouter, File, HTTPException, UploadFile
 from pydantic import BaseModel
 
 from ops_agent.api.services import config_service
+from config.settings import PROJECT_ROOT
 
 router = APIRouter(prefix="/api/config", tags=["配置管理"])
 
+DATASOURCE_UPLOAD_DIR = PROJECT_ROOT / "data" / "uploads" / "datasources"
+MAX_DATASOURCE_UPLOAD_BYTES = 100 * 1024 * 1024
+ALLOWED_DATASOURCE_FILE_EXTENSIONS = {".csv", ".xlsx", ".xls"}
+
 
 # ── Pydantic Schemas ──────────────────────────────────────────────
+
+class ExcelCSVFileSchema(BaseModel):
+    file_path: str
+    upload_id: Optional[str] = None
+    original_filename: Optional[str] = None
+    file_type: Optional[str] = None
+    sheet_name: Optional[str] = None
+    sheet_names: Optional[list[str]] = None
+    size_bytes: Optional[int] = None
+
 
 class DataSourceConfigSchema(BaseModel):
     host: Optional[str] = None
@@ -19,6 +38,11 @@ class DataSourceConfigSchema(BaseModel):
     charset: Optional[str] = None
     file_path: Optional[str] = None
     sheet_name: Optional[str] = None
+    upload_id: Optional[str] = None
+    original_filename: Optional[str] = None
+    file_type: Optional[str] = None
+    sheet_names: Optional[list[str]] = None
+    files: Optional[list[ExcelCSVFileSchema]] = None
     selected_tables: Optional[list[str]] = None
     all_tables: Optional[list[str]] = None
     total_tables: Optional[int] = None
@@ -71,6 +95,49 @@ def list_datasources():
 @router.post("/datasources")
 def create_datasource(data: DataSourceCreate):
     return config_service.create_datasource(data.model_dump(exclude_none=True))
+
+
+@router.post("/datasources/upload-file")
+async def upload_datasource_file(file: UploadFile = File(...)):
+    filename = _sanitize_upload_filename(file.filename or "")
+    suffix = Path(filename).suffix.lower()
+    if suffix not in ALLOWED_DATASOURCE_FILE_EXTENSIONS:
+        raise HTTPException(400, "Only Excel and CSV files are supported")
+
+    upload_id = uuid.uuid4().hex
+    upload_dir = DATASOURCE_UPLOAD_DIR / upload_id
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    target_path = upload_dir / filename
+    bytes_written = 0
+
+    try:
+        with target_path.open("wb") as out:
+            while True:
+                chunk = await file.read(1024 * 1024)
+                if not chunk:
+                    break
+                bytes_written += len(chunk)
+                if bytes_written > MAX_DATASOURCE_UPLOAD_BYTES:
+                    raise HTTPException(413, "Uploaded file is too large")
+                out.write(chunk)
+
+        sheet_names = _inspect_uploaded_datasource_file(target_path, suffix)
+        return {
+            "upload_id": upload_id,
+            "file_path": str(target_path),
+            "original_filename": filename,
+            "file_type": suffix.lstrip("."),
+            "size_bytes": bytes_written,
+            "sheet_names": sheet_names,
+        }
+    except HTTPException:
+        if target_path.exists():
+            target_path.unlink()
+        raise
+    except Exception as e:
+        if target_path.exists():
+            target_path.unlink()
+        raise HTTPException(400, f"Failed to read uploaded file: {e}")
 
 
 @router.put("/datasources/{ds_id}")
@@ -134,7 +201,8 @@ def _list_tables(ds_type: str, config: dict) -> dict:
             from ops_agent.models.tools.clickhouse_source import ClickHouseDataSource
             ds = ClickHouseDataSource(config)
         elif ds_type == "excel_csv":
-            return {"tables": []}
+            from ops_agent.models.tools.excel_source import ExcelCSVDataSource
+            ds = ExcelCSVDataSource(config)
         else:
             return {"tables": []}
         tables = ds.get_tables()
@@ -185,10 +253,27 @@ def _test_connection(ds_type: str, config: dict) -> dict:
             client.command("SELECT 1")
         elif ds_type == "excel_csv":
             import os
-            file_path = config.get("file_path", "")
-            if not os.path.exists(file_path):
-                return {"ok": False, "message": f"文件不存在: {file_path}"}
-            return {"ok": True, "message": "文件存在，可读取"}
+            files = config.get("files") or []
+            if not files and config.get("file_path"):
+                files = [config]
+            if not files:
+                return {"ok": False, "message": "请先上传 Excel/CSV 文件"}
+            if len(files) > 5:
+                return {"ok": False, "message": "Excel/CSV 数据源最多支持 5 个文件"}
+            for file_config in files:
+                file_path = file_config.get("file_path", "")
+                if not os.path.exists(file_path):
+                    return {"ok": False, "message": f"文件不存在: {file_path}"}
+            from ops_agent.models.tools.excel_source import ExcelCSVDataSource
+            ds = ExcelCSVDataSource(config)
+            tables = ds.get_tables()
+            latency = (time.time() - start) * 1000
+            table_hint = f": {', '.join(tables)}" if tables else ""
+            return {
+                "ok": True,
+                "message": f"{len(files)} 个文件可读取{table_hint}",
+                "latency_ms": round(latency, 1),
+            }
         else:
             return {"ok": False, "message": f"不支持的数据源类型: {ds_type}"}
 
@@ -198,6 +283,41 @@ def _test_connection(ds_type: str, config: dict) -> dict:
         return {"ok": False, "message": f"缺少驱动: {e}"}
     except Exception as e:
         return {"ok": False, "message": str(e)}
+
+
+def _sanitize_upload_filename(filename: str) -> str:
+    name = Path(filename).name.strip()
+    suffix = Path(name).suffix.lower()
+    stem = Path(name).stem
+    safe_stem = re.sub(r"[^A-Za-z0-9._-]+", "_", stem).strip("._-")
+    if not safe_stem:
+        safe_stem = "uploaded"
+    return f"{safe_stem}{suffix}"
+
+
+def _inspect_uploaded_datasource_file(path: Path, suffix: str) -> list[str]:
+    import pandas as pd
+
+    if suffix == ".csv":
+        _read_csv_preview(path)
+        return []
+
+    excel = pd.ExcelFile(path)
+    return list(excel.sheet_names)
+
+
+def _read_csv_preview(path: Path):
+    import pandas as pd
+
+    last_error = None
+    for encoding in ("utf-8-sig", "utf-8", "gbk"):
+        try:
+            return pd.read_csv(path, nrows=5, encoding=encoding)
+        except UnicodeDecodeError as e:
+            last_error = e
+    if last_error:
+        raise last_error
+    return pd.read_csv(path, nrows=5)
 
 
 def _format_mysql_operational_error(error: Exception, config: dict) -> str:

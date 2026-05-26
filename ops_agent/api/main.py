@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
-from ops_agent.api.routes import chat, health, config
+from ops_agent.api.routes import chat, health, config, uploads, knowledge, incidents, diagnostics, indexes
 from ops_agent.api.middleware.auth import APIKeyMiddleware
 from ops_agent.utils.logging_config import setup_logging
 from config.settings import settings
@@ -60,6 +60,11 @@ if not settings.debug:
 app.include_router(health.router, tags=["系统"])
 app.include_router(chat.router, prefix="/api", tags=["对话"])
 app.include_router(config.router, tags=["配置管理"])
+app.include_router(uploads.router)
+app.include_router(knowledge.router)
+app.include_router(incidents.router)
+app.include_router(diagnostics.router)
+app.include_router(indexes.router)
 
 # 静态文件
 dist_dir = Path(__file__).parent / "static" / "dist"

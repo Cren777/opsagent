@@ -1,5 +1,17 @@
 """Tests for Text2SQL safety and SQL normalization."""
+import sys
+import types
+
 import pytest
+
+sys.modules.setdefault(
+    "loguru",
+    types.SimpleNamespace(logger=types.SimpleNamespace(info=lambda *a, **k: None, warning=lambda *a, **k: None)),
+)
+sys.modules.setdefault(
+    "ops_agent.models.llm.client",
+    types.SimpleNamespace(LLMError=Exception, get_llm_client=lambda: None),
+)
 
 from ops_agent.models.text2sql.generator import Text2SQLGenerator
 from ops_agent.models.text2sql.sql_validator import DangerousSQLError, SQLValidator
@@ -111,6 +123,28 @@ class TestText2SQLGenerator:
         )
 
         assert sql == "SELECT * FROM `hawkeye_dwd_intel_content` ORDER BY rand() LIMIT 1"
+
+    def test_rule_based_detail_query_filters_by_mentioned_sample_value(self):
+        self.generator.schema_manager._datasource.dialect_name = "sqlite"
+        self.generator.schema_manager._cache = [
+            {
+                "table": "ops_metrics",
+                "columns": [
+                    {"name": "采集时间", "type": "TEXT"},
+                    {"name": "服务器", "type": "TEXT"},
+                    {"name": "CPU使用率", "type": "REAL"},
+                ],
+                "sample_rows": [
+                    {"采集时间": "2026-05-26 09:00:00", "服务器": "web-01", "CPU使用率": 72.5},
+                    {"采集时间": "2026-05-26 09:00:00", "服务器": "web-02", "CPU使用率": 48.3},
+                    {"采集时间": "2026-05-26 09:05:00", "服务器": "web-01", "CPU使用率": 75.2},
+                ],
+            }
+        ]
+
+        sql = self.generator._try_generate_rule_based_sql("展示ops_metrics表格中web-01服务器的详细数据")
+
+        assert sql == 'SELECT * FROM "ops_metrics" WHERE "服务器" = \'web-01\' LIMIT 100'
 
 
 class TestClickHouseSource:

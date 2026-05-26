@@ -14,6 +14,26 @@ const router = createRouter({
       component: () => import('@/views/DataSourceView.vue'),
     },
     {
+      path: '/knowledge',
+      name: 'knowledge',
+      component: () => import('@/views/KnowledgeView.vue'),
+    },
+    {
+      path: '/logs-cases',
+      name: 'logs-cases',
+      component: () => import('@/views/LogsCasesView.vue'),
+    },
+    {
+      path: '/diagnostics',
+      name: 'diagnostics',
+      component: () => import('@/views/DiagnosticsView.vue'),
+    },
+    {
+      path: '/indexes',
+      name: 'indexes',
+      component: () => import('@/views/IndexManagementView.vue'),
+    },
+    {
       path: '/llm',
       name: 'llm',
       component: () => import('@/views/LLMConfigView.vue'),

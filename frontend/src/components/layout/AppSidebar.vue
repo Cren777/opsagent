@@ -10,6 +10,10 @@ const route = useRoute()
 
 const navItems = [
   { path: '/', icon: 'ChatDotRound', label: '智能对话' },
+  { path: '/knowledge', icon: 'Collection', label: '知识库管理' },
+  { path: '/logs-cases', icon: 'Document', label: '日志与案例' },
+  { path: '/diagnostics', icon: 'Tools', label: '诊断工具' },
+  { path: '/indexes', icon: 'Operation', label: '索引管理' },
   { path: '/datasources', icon: 'Coin', label: '数据源配置' },
   { path: '/llm', icon: 'Cpu', label: '大模型配置' },
 ]

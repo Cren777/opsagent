@@ -27,4 +27,5 @@ ops_agent/api/static/dist/
 *.log
 logs/
 data/logs/
+data/uploads/
 

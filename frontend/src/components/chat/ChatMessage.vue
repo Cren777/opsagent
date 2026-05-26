@@ -44,6 +44,18 @@ const renderedMarkdown = computed(() => {
   return marked.parse(props.message.content) as string
 })
 
+const hasDiagnostics = computed(() => {
+  const diagnostics = props.message.diagnostics
+  if (props.message.intent !== 'fault_troubleshooting' || !diagnostics) return false
+  return Boolean(
+    diagnostics.case_match ||
+    diagnostics.evidence?.length ||
+    diagnostics.symptoms?.length
+  )
+})
+
+const diagnostics = computed(() => props.message.diagnostics)
+
 async function copySQL() {
   const sql = props.message.sql
   if (!sql) return
@@ -109,6 +121,36 @@ function fallbackCopy(text: string) {
         </el-collapse>
       </div>
 
+      <div v-if="hasDiagnostics" class="message-diagnostics">
+        <el-collapse>
+          <el-collapse-item title="故障排查证据">
+            <div v-if="diagnostics?.case_match" class="diagnostic-block">
+              <strong>命中历史案例：</strong>
+              {{ diagnostics.case_match.case_id }}
+              （{{ Math.round(diagnostics.case_match.score * 100) }}%）
+            </div>
+            <div v-if="diagnostics?.evidence?.length" class="diagnostic-block">
+              <strong>证据：</strong>
+              <ul>
+                <li v-for="item in diagnostics.evidence" :key="item">{{ item }}</li>
+              </ul>
+            </div>
+            <div v-if="diagnostics?.symptoms?.length" class="diagnostic-block">
+              <strong>症状：</strong>
+              <el-tag
+                v-for="item in diagnostics.symptoms"
+                :key="item"
+                size="small"
+                type="info"
+                class="symptom-tag"
+              >
+                {{ item }}
+              </el-tag>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+
       <div v-if="message.sources && message.sources.length > 0" class="message-sources">
         <span class="sources-label">参考来源：</span>
         <el-tag
@@ -119,6 +161,19 @@ function fallbackCopy(text: string) {
           class="source-tag"
         >
           {{ src.title }}
+        </el-tag>
+      </div>
+
+      <div v-if="message.attachments?.length" class="message-sources">
+        <span class="sources-label">附件：</span>
+        <el-tag
+          v-for="item in message.attachments"
+          :key="item.id"
+          size="small"
+          type="warning"
+          class="source-tag"
+        >
+          {{ item.filename }}
         </el-tag>
       </div>
 
@@ -248,6 +303,25 @@ function fallbackCopy(text: string) {
 
 .message-sql {
   margin-top: 8px;
+}
+
+.message-diagnostics {
+  margin-top: 8px;
+}
+
+.diagnostic-block {
+  font-size: 13px;
+  color: #4e5969;
+  margin-bottom: 8px;
+}
+
+.diagnostic-block ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+.symptom-tag {
+  margin: 4px 4px 0 0;
 }
 
 .sql-block {

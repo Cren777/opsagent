@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useChatStore } from '@/stores/chat'
+import { ElMessage } from 'element-plus'
 
 const chatStore = useChatStore()
 const input = ref('')
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
 
 function send() {
-  const query = input.value.trim()
-  if (!query || chatStore.isLoading) return
+  const query = input.value.trim() || '请分析上传的日志并给出故障排查建议'
+  if ((!input.value.trim() && chatStore.pendingAttachments.length === 0) || chatStore.isLoading) return
 
   input.value = ''
   chatStore.sendStreamMessage(query)
@@ -20,11 +22,55 @@ function onKeydown(e: KeyboardEvent) {
     send()
   }
 }
+
+function openFilePicker() {
+  if (!chatStore.isLoading) fileInputRef.value?.click()
+}
+
+async function onFileChange(e: Event) {
+  const target = e.target as HTMLInputElement
+  const files = Array.from(target.files || [])
+  target.value = ''
+  for (const file of files) {
+    try {
+      await chatStore.uploadLogAttachment(file)
+      ElMessage.success(`${file.name} 已上传`)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : '上传失败'
+      ElMessage.error(message)
+    }
+  }
+}
 </script>
 
 <template>
   <div class="chat-input-area">
+    <div v-if="chatStore.pendingAttachments.length" class="attachment-row">
+      <el-tag
+        v-for="item in chatStore.pendingAttachments"
+        :key="item.id"
+        closable
+        type="warning"
+        @close="chatStore.removePendingAttachment(item.id)"
+      >
+        {{ item.filename }}
+      </el-tag>
+    </div>
     <div class="input-wrapper">
+      <input
+        ref="fileInputRef"
+        class="file-input"
+        type="file"
+        accept=".log,.txt,.out,.gz"
+        multiple
+        @change="onFileChange"
+      />
+      <el-button
+        circle
+        :icon="'Paperclip'"
+        :disabled="chatStore.isLoading"
+        @click="openFilePicker"
+      />
       <textarea
         ref="textareaRef"
         v-model="input"
@@ -44,7 +90,7 @@ function onKeydown(e: KeyboardEvent) {
           v-if="!chatStore.isStreaming"
           type="primary"
           :icon="'Promotion'"
-          :disabled="!input.trim() || chatStore.isLoading"
+          :disabled="(!input.trim() && chatStore.pendingAttachments.length === 0) || chatStore.isLoading"
           @click="send"
         >
           发送
@@ -66,6 +112,17 @@ function onKeydown(e: KeyboardEvent) {
 .chat-input-area {
   background: #fff;
   padding: 12px 16px;
+}
+
+.attachment-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.file-input {
+  display: none;
 }
 
 .input-wrapper {

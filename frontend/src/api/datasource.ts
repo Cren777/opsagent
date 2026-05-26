@@ -1,5 +1,10 @@
 import client from './client'
-import type { DataSourceItem, DataSourceFormData, ConnectionTestResult } from '@/types/datasource'
+import type {
+  DataSourceItem,
+  DataSourceFormData,
+  ConnectionTestResult,
+  DataSourceUploadResult,
+} from '@/types/datasource'
 
 export function fetchDataSources() {
   return client.get<DataSourceItem[]>('/api/config/datasources')
@@ -35,4 +40,12 @@ export function fetchTables(id: string) {
 
 export function fetchNewTables(data: DataSourceFormData) {
   return client.post<{ tables: string[] }>('/api/config/datasources/tables', data)
+}
+
+export function uploadExcelCsvFile(file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return client.post<DataSourceUploadResult>('/api/config/datasources/upload-file', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
 }

@@ -8,7 +8,9 @@ import ChatInput from '@/components/chat/ChatInput.vue'
 const chatStore = useChatStore()
 const configStore = useConfigStore()
 
-const hasLLM = computed(() => configStore.llmProviders.length > 0)
+const showLLMWarning = computed(
+  () => configStore.llmProvidersLoaded && configStore.llmProviders.length === 0
+)
 
 const demoQueries = [
   '如何查看磁盘使用率？',
@@ -34,7 +36,7 @@ onMounted(() => {
 <template>
   <div class="chat-view">
     <el-alert
-      v-if="!hasLLM"
+      v-if="showLLMWarning"
       title="未配置 LLM 模型引擎"
       description="Text2SQL 功能需要至少一个 LLM 提供商。请前往「大模型配置」页面添加 OpenAI 兼容接口或 DashScope 提供商。"
       type="warning"

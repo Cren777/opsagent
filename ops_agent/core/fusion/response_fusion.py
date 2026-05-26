@@ -71,6 +71,7 @@ class ResponseFusion:
         return self._llm_client or get_llm_client()
 
     async def fuse_for_troubleshooting(
+        self,
         question: str,
         knowledge_context: str,
         db_results: str,

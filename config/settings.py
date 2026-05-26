@@ -60,6 +60,10 @@ class Settings(BaseSettings):
     script_timeout: int = 30
     script_output_max_chars: int = 5000
 
+    # --- Troubleshooting uploads and memory ---
+    uploaded_logs_dir: str = str(PROJECT_ROOT / "data" / "uploads" / "logs")
+    incident_cases_db_path: str = str(PROJECT_ROOT / "data" / "incident_cases.db")
+
     # --- Server ---
     host: str = "0.0.0.0"
     port: int = 8080

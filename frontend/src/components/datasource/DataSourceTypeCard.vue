@@ -24,7 +24,14 @@ const typeName: Record<string, string> = {
 
 function getSummary(source: DataSourceItem): string {
   const c = source.config as unknown as Record<string, unknown>
-  if (source.type === 'excel_csv') return (c.file_path as string) || ''
+  if (source.type === 'excel_csv') {
+    const files = c.files as Array<{ original_filename?: string; file_path?: string }> | undefined
+    if (files && files.length > 0) {
+      const first = files[0].original_filename || files[0].file_path || ''
+      return files.length === 1 ? first : `${first} 等 ${files.length} 个文件`
+    }
+    return (c.original_filename as string) || (c.file_path as string) || ''
+  }
   return `${c.host || ''}:${c.port || ''}/${c.database || ''}`
 }
 

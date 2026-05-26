@@ -8,7 +8,7 @@ export function postChat(data: ChatRequest): Promise<{ data: ChatResponse }> {
 export function postChatStream(
   data: ChatRequest,
   onToken: (text: string) => void,
-  onDone: (meta: { intent?: string; sources?: ChatResponse['sources']; sql?: string | null }) => void,
+  onDone: (meta: { intent?: string; sources?: ChatResponse['sources']; sql?: string | null; diagnostics?: ChatResponse['diagnostics'] }) => void,
   onError: (err: string) => void,
   signal?: AbortSignal
 ): Promise<void> {
@@ -52,6 +52,7 @@ export function postChatStream(
                 intent: payload.intent,
                 sources: payload.sources,
                 sql: payload.sql,
+                diagnostics: payload.diagnostics,
               })
             } else if (eventType === 'error') {
               onError(payload.error || '未知错误')

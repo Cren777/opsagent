@@ -21,6 +21,8 @@ Rules:
 3. Add LIMIT 100 unless the SQL syntax does not allow it.
 4. Aliases must be ASCII snake_case, such as total_count or alert_count. Never use Chinese aliases.
 5. Use date/time functions supported by the current SQL dialect.
+6. Do not use ORDER BY RANDOM(), RAND(), or rand() unless the user explicitly asks for random/sample/任意/随机 data.
+7. For detail/show/filter questions with mentioned values such as hostnames, server names, IDs, or status values, add a WHERE clause and return all matching rows up to LIMIT 100.
 
 Examples:
 Q: How many rows are in the alerts table?
@@ -56,11 +58,6 @@ _SAMPLE_ROW_QUESTION_RE = re.compile(
             r"\u968f\u673a",  # random
             r"\u968f\u4fbf",  # arbitrary
             r"\u4efb\u610f",  # any
-            r"\u7b5b\u9009",  # filter/select
-            r"\u5c55\u793a",  # show
-            r"\u8be6\u7ec6",  # detail
-            r"\u660e\u7ec6",  # detail
-            r"\u8be6\u60c5",  # detail
             r"\u6837\u4f8b",  # sample
             r"sample",
             r"random",
@@ -158,6 +155,14 @@ class Text2SQLGenerator:
         if _COUNT_QUESTION_RE.search(question):
             return f"SELECT COUNT(*) AS total_count FROM {table} LIMIT 100"
 
+        filters = self._extract_sample_value_filters(question, mentioned[0])
+        if filters:
+            where = " AND ".join(
+                f"{self._quote_identifier(column)} = {self._quote_literal(value)}"
+                for column, value in filters
+            )
+            return f"SELECT * FROM {table} WHERE {where} LIMIT 100"
+
         if _SAMPLE_ROW_QUESTION_RE.search(question):
             order_expr = self._random_order_expression()
             if order_expr:
@@ -198,6 +203,33 @@ class Text2SQLGenerator:
         if dialect == "sqlite":
             return "RANDOM()"
         return ""
+
+    def _extract_sample_value_filters(self, question: str, table_name: str) -> list[tuple[str, str]]:
+        """Find literal filters from values visible in the table sample rows."""
+        table_info = None
+        for item in self.schema_manager._cache or []:
+            if item.get("table") == table_name:
+                table_info = item
+                break
+        if not table_info:
+            return []
+
+        filters: list[tuple[str, str]] = []
+        seen_columns: set[str] = set()
+        for row in table_info.get("sample_rows", []):
+            for column, value in row.items():
+                if column in seen_columns or not isinstance(value, str):
+                    continue
+                value = value.strip()
+                if len(value) < 2:
+                    continue
+                if value in question:
+                    filters.append((column, value))
+                    seen_columns.add(column)
+        return filters
+
+    def _quote_literal(self, value: str) -> str:
+        return "'" + value.replace("'", "''") + "'"
 
     def _normalize_sql(self, sql: str) -> str:
         """Normalize LLM SQL so ClickHouse/MySQL do not receive non-ASCII aliases."""

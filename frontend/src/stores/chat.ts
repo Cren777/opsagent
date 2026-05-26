@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
-import type { ChatMessage, ChatSession } from '@/types/chat'
+import type { ChatAttachment, ChatMessage, ChatSession } from '@/types/chat'
 import { postChat, postChatStream } from '@/api/chat'
+import { uploadLogFile } from '@/api/upload'
 
 const STORAGE_KEY = 'opsagent_sessions'
 
@@ -35,6 +36,13 @@ function getDefaultTitle(query: string): string {
   return cleaned.length > 20 ? cleaned.slice(0, 20) + '…' : cleaned
 }
 
+function hasDiagnosticsPayload(diagnostics: ChatMessage['diagnostics']): boolean {
+  return Boolean(
+    diagnostics &&
+    (diagnostics.case_match || diagnostics.evidence?.length || diagnostics.symptoms?.length)
+  )
+}
+
 export const useChatStore = defineStore('chat', () => {
   // ── State ──
   const sessions = ref<ChatSession[]>(loadSessions())
@@ -42,6 +50,7 @@ export const useChatStore = defineStore('chat', () => {
   const isLoading = ref(false)
   const isStreaming = ref(false)
   const selectedDatasourceId = ref<string | null>(null)
+  const pendingAttachments = ref<ChatAttachment[]>([])
   let abortController: AbortController | null = null
 
   // ── Computed: messages of the active session ──
@@ -173,13 +182,15 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function sendMessage(query: string) {
-    if (!query.trim() || isLoading.value) return
+    if ((!query.trim() && pendingAttachments.value.length === 0) || isLoading.value) return
     const session = _ensureSession(query)
     if (session.title === '新对话' || session.title === '欢迎') {
       session.title = getDefaultTitle(query)
     }
 
-    const userMsg: ChatMessage = { id: `user-${Date.now()}`, role: 'user', content: query, timestamp: Date.now() }
+    const attachments = [...pendingAttachments.value]
+    pendingAttachments.value = []
+    const userMsg: ChatMessage = { id: `user-${Date.now()}`, role: 'user', content: query, attachments, timestamp: Date.now() }
     session.messages.push(userMsg)
     session.updatedAt = Date.now()
 
@@ -193,6 +204,7 @@ export const useChatStore = defineStore('chat', () => {
         query,
         history: _buildRequestHistory(session),
         datasource_id: selectedDatasourceId.value || undefined,
+        attachments,
       })
       const idx = session.messages.findIndex((m) => m.id === assistantId)
       if (idx !== -1) {
@@ -200,6 +212,9 @@ export const useChatStore = defineStore('chat', () => {
         session.messages[idx].intent = data.intent
         session.messages[idx].sources = data.sources
         session.messages[idx].sql = data.sql
+        if (hasDiagnosticsPayload(data.diagnostics)) {
+          session.messages[idx].diagnostics = data.diagnostics
+        }
       }
     } catch {
       const idx = session.messages.findIndex((m) => m.id === assistantId)
@@ -211,13 +226,15 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function sendStreamMessage(query: string) {
-    if (!query.trim() || isLoading.value) return
+    if ((!query.trim() && pendingAttachments.value.length === 0) || isLoading.value) return
     const session = _ensureSession(query)
     if (session.title === '新对话' || session.title === '欢迎') {
       session.title = getDefaultTitle(query)
     }
 
-    const userMsg: ChatMessage = { id: `user-${Date.now()}`, role: 'user', content: query, timestamp: Date.now() }
+    const attachments = [...pendingAttachments.value]
+    pendingAttachments.value = []
+    const userMsg: ChatMessage = { id: `user-${Date.now()}`, role: 'user', content: query, attachments, timestamp: Date.now() }
     session.messages.push(userMsg)
     session.updatedAt = Date.now()
 
@@ -234,6 +251,7 @@ export const useChatStore = defineStore('chat', () => {
         query,
         history: _buildRequestHistory(session),
         datasource_id: selectedDatasourceId.value || undefined,
+        attachments,
       },
       (token) => {
         const idx = session.messages.findIndex((m) => m.id === assistantId)
@@ -245,6 +263,9 @@ export const useChatStore = defineStore('chat', () => {
           if (meta.intent) session.messages[idx].intent = meta.intent
           if (meta.sources) session.messages[idx].sources = meta.sources
           if (meta.sql) session.messages[idx].sql = meta.sql
+          if (hasDiagnosticsPayload(meta.diagnostics)) {
+            session.messages[idx].diagnostics = meta.diagnostics
+          }
         }
       },
       (err) => {
@@ -271,6 +292,20 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
+  async function uploadLogAttachment(file: File) {
+    const { data } = await uploadLogFile(file)
+    pendingAttachments.value.push({
+      id: data.file_id,
+      type: 'log',
+      filename: data.filename,
+      size: data.size,
+    })
+  }
+
+  function removePendingAttachment(id: string) {
+    pendingAttachments.value = pendingAttachments.value.filter((item) => item.id !== id)
+  }
+
   return {
     sessions,
     displaySessions,
@@ -279,6 +314,7 @@ export const useChatStore = defineStore('chat', () => {
     isLoading,
     isStreaming,
     selectedDatasourceId,
+    pendingAttachments,
     createSession,
     switchSession,
     deleteSession,
@@ -286,5 +322,7 @@ export const useChatStore = defineStore('chat', () => {
     sendMessage,
     sendStreamMessage,
     stopStreaming,
+    uploadLogAttachment,
+    removePendingAttachment,
   }
 })

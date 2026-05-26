@@ -56,11 +56,16 @@ export const useConfigStore = defineStore('config', () => {
   // LLM providers
   const llmProviders = ref<LLMProviderItem[]>([])
   const primaryLLM = ref<LLMProviderItem | null>(null)
+  const llmProvidersLoaded = ref(false)
 
   async function fetchLLMProviders() {
-    const { data } = await llmApi.fetchLLMProviders()
-    llmProviders.value = data
-    primaryLLM.value = data.find((p) => p.is_primary) || null
+    try {
+      const { data } = await llmApi.fetchLLMProviders()
+      llmProviders.value = data
+      primaryLLM.value = data.find((p) => p.is_primary) || null
+    } finally {
+      llmProvidersLoaded.value = true
+    }
   }
 
   async function saveLLMProvider(form: LLMProviderFormData, id?: string) {
@@ -111,6 +116,7 @@ export const useConfigStore = defineStore('config', () => {
     activateSource,
     llmProviders,
     primaryLLM,
+    llmProvidersLoaded,
     fetchLLMProviders,
     saveLLMProvider,
     removeLLMProvider,

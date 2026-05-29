@@ -26,6 +26,11 @@ async def rebuild_log_index(payload: LogRebuildRequest):
     return IndexService().rebuild_logs(path=payload.path)
 
 
+@router.post("/cases/rebuild")
+async def rebuild_case_index():
+    return IndexService().rebuild_cases()
+
+
 @router.post("/{collection}/clear")
 async def clear_index_collection(collection: str):
     return IndexService().clear_collection(collection)

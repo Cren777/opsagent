@@ -192,8 +192,8 @@ function fallbackCopy(text: string) {
 .chat-message {
   display: flex;
   gap: 12px;
-  padding: 16px 20px;
-  max-width: 900px;
+  padding: 14px 22px;
+  max-width: 1280px;
   margin: 0 auto;
   width: 100%;
 }
@@ -206,6 +206,15 @@ function fallbackCopy(text: string) {
   flex-direction: row;
 }
 
+.message-avatar :deep(.el-avatar) {
+  background: #c7d0dd;
+}
+
+.chat-message.assistant .message-avatar :deep(.el-avatar) {
+  background: var(--ops-sidebar-active);
+  color: #d7e8ff;
+}
+
 .message-body {
   flex: 1;
   min-width: 0;
@@ -216,37 +225,41 @@ function fallbackCopy(text: string) {
 }
 
 .message-bubble {
-  padding: 12px 16px;
-  border-radius: 12px;
-  line-height: 1.7;
+  padding: 13px 16px;
+  border-radius: 10px;
+  line-height: 1.72;
   font-size: 14px;
   word-break: break-word;
 }
 
 .message-bubble.user {
-  background: #409eff;
+  max-width: 62%;
+  margin-left: auto;
+  background: linear-gradient(135deg, var(--ops-primary), #4f94ff);
   color: #fff;
   border-bottom-right-radius: 4px;
+  box-shadow: 0 8px 20px rgba(47, 125, 246, 0.2);
 }
 
 .message-bubble.assistant {
   background: #fff;
-  border: 1px solid #e4e7ed;
+  border: 1px solid var(--ops-border);
   border-bottom-left-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--ops-shadow-sm);
 }
 
 .markdown-body :deep(pre) {
-  background: #1e1e1e;
-  color: #d4d4d4;
-  padding: 14px 16px;
+  background: #fff4f2;
+  color: #c0342b;
+  padding: 12px 14px;
   border-radius: 8px;
   overflow-x: auto;
-  margin: 8px 0;
+  margin: 10px 0;
+  border: 1px solid #ffd8d2;
 }
 
 .markdown-body :deep(code) {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: var(--ops-font-mono);
   font-size: 13px;
 }
 
@@ -261,30 +274,32 @@ function fallbackCopy(text: string) {
 .markdown-body :deep(ul),
 .markdown-body :deep(ol) {
   padding-left: 20px;
-  margin: 6px 0;
+  margin: 8px 0;
 }
 
 .markdown-body :deep(h3) {
   font-size: 15px;
-  margin: 12px 0 6px;
+  margin: 14px 0 8px;
+  color: var(--ops-text);
 }
 
 .markdown-body :deep(h4) {
   font-size: 14px;
-  margin: 10px 0 4px;
+  margin: 12px 0 6px;
+  color: var(--ops-text);
 }
 
 .message-bubble.user .markdown-body :deep(code) {
   background: rgba(255, 255, 255, 0.2);
-  padding: 1px 4px;
-  border-radius: 3px;
+  padding: 1px 5px;
+  border-radius: 4px;
 }
 
 .message-bubble.assistant .markdown-body :deep(code) {
-  background: #f0f2f5;
-  padding: 1px 4px;
-  border-radius: 3px;
-  color: #e74c3c;
+  background: #fff4f2;
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: #c0342b;
 }
 
 .streaming-cursor {
@@ -293,7 +308,7 @@ function fallbackCopy(text: string) {
 
 .cursor-blink {
   animation: blink 0.8s infinite;
-  color: #409eff;
+  color: var(--ops-primary);
 }
 
 @keyframes blink {
@@ -311,7 +326,7 @@ function fallbackCopy(text: string) {
 
 .diagnostic-block {
   font-size: 13px;
-  color: #4e5969;
+  color: var(--ops-text-secondary);
   margin-bottom: 8px;
 }
 
@@ -333,11 +348,12 @@ function fallbackCopy(text: string) {
 
 .sql-block pre {
   flex: 1;
-  background: #1e1e1e;
-  color: #d4d4d4;
+  background: #fff4f2;
+  color: #c0342b;
   padding: 10px 14px;
-  border-radius: 6px;
+  border-radius: 8px;
   margin: 0;
+  border: 1px solid #ffd8d2;
   overflow-x: auto;
   font-size: 13px;
 }
@@ -352,7 +368,7 @@ function fallbackCopy(text: string) {
 }
 
 .sources-label {
-  color: #909399;
+  color: var(--ops-text-muted);
 }
 
 .source-tag {
@@ -360,8 +376,18 @@ function fallbackCopy(text: string) {
 }
 
 .message-time {
-  margin-top: 4px;
+  margin-top: 5px;
   font-size: 11px;
-  color: #c0c4cc;
+  color: var(--ops-text-muted);
+}
+
+@media (max-width: 900px) {
+  .chat-message {
+    padding: 12px 14px;
+  }
+
+  .message-bubble.user {
+    max-width: 100%;
+  }
 }
 </style>

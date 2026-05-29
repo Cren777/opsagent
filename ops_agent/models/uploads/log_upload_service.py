@@ -63,6 +63,7 @@ class LogUploadService:
             "file_id": file_id,
             "filename": safe_name,
             "size": len(content),
+            "category": "",
             "stored_path": str(stored_path),
             "uploaded_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
             "analysis": analysis,
@@ -82,8 +83,32 @@ class LogUploadService:
     def list_logs(self) -> list[dict[str, Any]]:
         logs = []
         for meta_path in sorted(self.meta_dir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True):
-            logs.append(json.loads(meta_path.read_text(encoding="utf-8")))
+            metadata = json.loads(meta_path.read_text(encoding="utf-8"))
+            metadata.setdefault("category", "")
+            logs.append(metadata)
         return logs
+
+    def update_category(self, file_id: str, category: str) -> bool:
+        metadata = self.get_metadata(file_id)
+        if not metadata:
+            return False
+        metadata["category"] = self._safe_category(category)
+        (self.meta_dir / f"{file_id}.json").write_text(
+            json.dumps(metadata, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        return True
+
+    def preview_log(self, file_id: str, max_chars: int = 5000) -> dict[str, Any]:
+        metadata = self.get_metadata(file_id)
+        if not metadata:
+            raise FileNotFoundError(file_id)
+        stored_path = Path(metadata.get("stored_path", ""))
+        content = ""
+        if stored_path.exists():
+            raw = stored_path.read_bytes()
+            content = self._redact(self._decode_content(metadata.get("filename", stored_path.name), raw))
+        return {**metadata, "category": metadata.get("category", ""), "content": content[:max_chars]}
 
     def delete_log(self, file_id: str) -> bool:
         metadata = self.get_metadata(file_id)
@@ -148,6 +173,14 @@ class LogUploadService:
     def _safe_filename(filename: str) -> str:
         name = Path(filename or "uploaded.log").name
         return re.sub(r"[^A-Za-z0-9._-]+", "_", name)[:160] or "uploaded.log"
+
+    @staticmethod
+    def _safe_category(category: str) -> str:
+        normalized = str(category or "").replace("\\", "/").strip("/")
+        if ".." in Path(normalized).parts:
+            raise ValueError("非法的分类路径")
+        parts = [re.sub(r"[^A-Za-z0-9._\-\u4e00-\u9fff]+", "_", part) for part in normalized.split("/") if part]
+        return "/".join(parts)
 
     @staticmethod
     def _decode_content(filename: str, content: bytes) -> str:

@@ -91,7 +91,7 @@ class LogParser:
 
     def _detect_level(self, text: str) -> str:
         text_upper = text.upper()
-        for level, keywords in _LEVEL_KEYWORDS.items():
+        for level, keywords in self._LEVEL_KEYWORDS.items():
             for kw in keywords:
                 if kw.upper() in text_upper:
                     return level

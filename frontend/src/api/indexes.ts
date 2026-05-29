@@ -13,6 +13,10 @@ export function rebuildLogIndex(path?: string) {
   return client.post('/api/indexes/logs/rebuild', { path: path || null })
 }
 
+export function rebuildCaseIndex() {
+  return client.post('/api/indexes/cases/rebuild')
+}
+
 export function clearIndexCollection(collection: string) {
   return client.post(`/api/indexes/${encodeURIComponent(collection)}/clear`)
 }

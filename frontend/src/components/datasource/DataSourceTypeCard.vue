@@ -97,45 +97,49 @@ function getTableCount(source: DataSourceItem): { selected: number; total: numbe
 
 <style scoped>
 .source-card {
-  width: 360px;
-  flex-shrink: 0;
+  width: 100%;
+  min-height: 178px;
+  border: 1px solid var(--ops-border);
+  border-radius: var(--ops-radius);
 }
 
 .source-card.active {
-  border-color: #67c23a;
-  box-shadow: 0 0 0 1px rgba(103, 194, 58, 0.2);
+  border-color: rgba(24, 160, 88, 0.55);
+  box-shadow: 0 0 0 3px rgba(24, 160, 88, 0.1);
 }
 
 .card-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .card-type {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
 }
 
 .card-name {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 800;
+  color: var(--ops-text);
 }
 
 .card-type-name {
   font-size: 12px;
-  color: #909399;
+  color: var(--ops-text-muted);
 }
 
 .card-summary {
   font-size: 13px;
-  color: #606266;
-  font-family: monospace;
-  padding: 8px;
-  background: #f5f7fa;
-  border-radius: 6px;
+  color: var(--ops-text-secondary);
+  font-family: var(--ops-font-mono);
+  padding: 9px 10px;
+  background: var(--ops-surface-muted);
+  border: 1px solid var(--ops-border-soft);
+  border-radius: 7px;
   margin-bottom: 10px;
   word-break: break-all;
 }
@@ -151,13 +155,13 @@ function getTableCount(source: DataSourceItem): { selected: number; total: numbe
 .table-count-badge {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  background: #f0f2f5;
-  border-radius: 4px;
+  gap: 5px;
+  padding: 3px 8px;
+  background: var(--ops-primary-soft);
+  border-radius: 5px;
   font-size: 12px;
-  font-weight: 600;
-  color: #606266;
+  font-weight: 700;
+  color: var(--ops-primary-strong);
   flex-shrink: 0;
 }
 

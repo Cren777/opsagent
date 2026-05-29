@@ -66,7 +66,7 @@ onBeforeUnmount(() => {
 .message-list {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 0;
+  padding: 18px 0 22px;
 }
 
 .empty-state {
@@ -74,5 +74,6 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   height: 100%;
+  color: var(--ops-text-muted);
 }
 </style>

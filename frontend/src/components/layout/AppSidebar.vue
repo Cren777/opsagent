@@ -53,24 +53,28 @@ function navigateTo(path: string) {
 <style scoped>
 .app-sidebar {
   width: 260px;
-  background: #1a1a2e;
+  background:
+    linear-gradient(180deg, rgba(47, 125, 246, 0.08), transparent 220px),
+    var(--ops-sidebar);
   color: #fff;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s;
+  transition: width 0.24s ease;
   flex-shrink: 0;
   overflow: hidden;
+  box-shadow: 8px 0 24px rgba(16, 24, 40, 0.12);
 }
 
 .app-sidebar.collapsed {
-  width: 64px;
+  width: 72px;
 }
 
 .sidebar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  height: 58px;
+  padding: 0 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -78,28 +82,31 @@ function navigateTo(path: string) {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
   color: #fff;
 }
 
 .logo-text {
   font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: 800;
+  letter-spacing: 0;
 }
 
 .sidebar-nav {
-  padding: 12px 8px;
+  padding: 14px 8px 12px;
 }
 
 .nav-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
+  min-height: 42px;
+  padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.7);
-  transition: all 0.2s;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
   margin-bottom: 4px;
 }
 
@@ -109,11 +116,14 @@ function navigateTo(path: string) {
 }
 
 .nav-item.active {
-  background: rgba(64, 158, 255, 0.2);
-  color: #409eff;
+  background: var(--ops-sidebar-active);
+  color: #8fc1ff;
+  box-shadow: inset 3px 0 0 var(--ops-primary);
 }
 
 .nav-label {
   font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 </style>

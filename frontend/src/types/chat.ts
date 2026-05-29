@@ -48,4 +48,5 @@ export interface ChatSession {
   messages: ChatMessage[]
   createdAt: number
   updatedAt: number
+  pinnedAt?: number
 }

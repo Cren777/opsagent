@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useConfigStore } from '@/stores/config'
 import DataSourceTypeCard from '@/components/datasource/DataSourceTypeCard.vue'
@@ -9,6 +9,13 @@ const configStore = useConfigStore()
 const formRef = ref<InstanceType<typeof DataSourceForm> | null>(null)
 const editingId = ref<string | undefined>()
 const testingId = ref<string | null>(null)
+const activeSource = computed(() => configStore.dataSources.find((source) => source.is_active))
+const relationalCount = computed(() =>
+  configStore.dataSources.filter((source) => source.type === 'mysql' || source.type === 'clickhouse').length
+)
+const fileSourceCount = computed(() =>
+  configStore.dataSources.filter((source) => source.type === 'excel_csv').length
+)
 
 onMounted(() => {
   configStore.fetchDataSources()
@@ -66,6 +73,37 @@ function handleSaved() {
       <el-button type="primary" :icon="'Plus'" @click="handleAdd">添加数据源</el-button>
     </div>
 
+    <div class="config-overview">
+      <div class="overview-card primary">
+        <div class="overview-icon"><el-icon><Coin /></el-icon></div>
+        <div>
+          <div class="overview-label">数据源总数</div>
+          <div class="overview-value">{{ configStore.dataSources.length }}</div>
+        </div>
+      </div>
+      <div class="overview-card success">
+        <div class="overview-icon"><el-icon><CircleCheck /></el-icon></div>
+        <div>
+          <div class="overview-label">当前活跃</div>
+          <div class="overview-value text">{{ activeSource?.name || '未设置' }}</div>
+        </div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-icon"><el-icon><DataAnalysis /></el-icon></div>
+        <div>
+          <div class="overview-label">关系型连接</div>
+          <div class="overview-value">{{ relationalCount }}</div>
+        </div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-icon"><el-icon><Document /></el-icon></div>
+        <div>
+          <div class="overview-label">文件数据源</div>
+          <div class="overview-value">{{ fileSourceCount }}</div>
+        </div>
+      </div>
+    </div>
+
     <div v-if="configStore.dataSources.length === 0" class="empty-wrap">
       <el-empty description="尚未配置数据源" :image-size="100">
         <el-button type="primary" @click="handleAdd">添加第一个数据源</el-button>
@@ -91,39 +129,132 @@ function handleSaved() {
 
 <style scoped>
 .datasource-view {
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 28px 36px;
+  width: 100%;
 }
 
 .page-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 24px;
+  gap: 16px;
+  margin-bottom: 22px;
 }
 
 .page-header h2 {
   margin: 0 0 6px;
-  font-size: 20px;
-  color: #1a1a2e;
+  font-size: 22px;
+  color: var(--ops-text);
+  font-weight: 800;
 }
 
 .page-desc {
   margin: 0;
   font-size: 14px;
-  color: #909399;
+  color: var(--ops-text-secondary);
+}
+
+.config-overview {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.overview-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 78px;
+  padding: 15px 16px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--ops-border);
+  border-radius: var(--ops-radius-lg);
+  box-shadow: var(--ops-shadow-sm);
+}
+
+.overview-card.primary .overview-icon {
+  color: var(--ops-primary);
+  background: var(--ops-primary-soft);
+}
+
+.overview-card.success .overview-icon {
+  color: var(--ops-success);
+  background: rgba(24, 160, 88, 0.1);
+}
+
+.overview-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  color: var(--ops-text-secondary);
+  background: var(--ops-surface-muted);
+  font-size: 18px;
+  flex: 0 0 auto;
+}
+
+.overview-label {
+  font-size: 12px;
+  color: var(--ops-text-muted);
+  margin-bottom: 3px;
+}
+
+.overview-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ops-text);
+}
+
+.overview-value.text {
+  max-width: 220px;
+  font-size: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .source-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .empty-wrap {
   display: flex;
   justify-content: center;
-  padding: 60px 0;
+  padding: 70px 0;
+  background: var(--ops-surface);
+  border: 1px dashed var(--ops-border);
+  border-radius: var(--ops-radius-lg);
+}
+
+@media (max-width: 900px) {
+  .datasource-view {
+    padding: 16px;
+  }
+
+  .page-header {
+    flex-direction: column;
+  }
+
+  .config-overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .source-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .config-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .source-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

@@ -133,6 +133,7 @@ class Orchestrator:
         entities: dict,
         datasource_id: str = None,
         history: list[dict] = None,
+        **kwargs,
     ) -> Dict[str, Any]:
         """处理数据分析查询"""
         try:

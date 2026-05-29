@@ -111,7 +111,7 @@ async function onFileChange(e: Event) {
 <style scoped>
 .chat-input-area {
   background: #fff;
-  padding: 12px 16px;
+  padding: 12px 14px;
 }
 
 .attachment-row {
@@ -129,16 +129,17 @@ async function onFileChange(e: Event) {
   display: flex;
   align-items: flex-end;
   gap: 12px;
-  background: #f5f7fa;
-  border-radius: 12px;
-  padding: 10px 14px;
-  border: 1px solid #e5e6eb;
-  transition: border-color 0.2s, background 0.2s;
+  background: var(--ops-surface-muted);
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--ops-border);
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input-wrapper:focus-within {
-  border-color: #409eff;
+  border-color: rgba(47, 125, 246, 0.62);
   background: #fff;
+  box-shadow: 0 0 0 3px rgba(47, 125, 246, 0.1);
 }
 
 .input-textarea {
@@ -151,10 +152,11 @@ async function onFileChange(e: Event) {
   background: transparent;
   font-family: inherit;
   max-height: 150px;
+  color: var(--ops-text);
 }
 
 .input-textarea::placeholder {
-  color: #c9cdd4;
+  color: var(--ops-text-muted);
 }
 
 .input-actions {

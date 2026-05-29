@@ -12,6 +12,10 @@ class CaseStatusUpdate(BaseModel):
     status: str
 
 
+class CategoryUpdate(BaseModel):
+    category: str
+
+
 @router.get("/logs")
 async def list_uploaded_logs():
     return LogUploadService().list_logs()
@@ -23,6 +27,22 @@ async def get_uploaded_log(file_id: str):
     if not metadata:
         raise HTTPException(status_code=404, detail="日志不存在")
     return metadata
+
+
+@router.get("/logs/{file_id}/preview")
+async def preview_uploaded_log(file_id: str):
+    try:
+        return LogUploadService().preview_log(file_id)
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail="日志不存在") from e
+
+
+@router.put("/logs/{file_id}/category")
+async def update_uploaded_log_category(file_id: str, payload: CategoryUpdate):
+    try:
+        return {"updated": LogUploadService().update_category(file_id, payload.category)}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.delete("/logs/{file_id}")
@@ -46,6 +66,11 @@ async def get_incident_case(case_id: str):
 @router.put("/incidents/{case_id}/status")
 async def update_incident_status(case_id: str, payload: CaseStatusUpdate):
     return {"updated": IncidentCaseMemory().update_status(case_id, payload.status)}
+
+
+@router.put("/incidents/{case_id}/category")
+async def update_incident_category(case_id: str, payload: CategoryUpdate):
+    return {"updated": IncidentCaseMemory().update_category(case_id, payload.category)}
 
 
 @router.delete("/incidents/{case_id}")

@@ -2,6 +2,7 @@ export interface UploadedLogItem {
   file_id: string
   filename: string
   size: number
+  category?: string
   uploaded_at: string
   analysis: {
     line_count: number
@@ -10,6 +11,7 @@ export interface UploadedLogItem {
     patterns: string[]
     summary: string
   }
+  content?: string
 }
 
 export interface IncidentCaseItem {
@@ -21,6 +23,7 @@ export interface IncidentCaseItem {
   solution: string
   evidence: string[]
   status: string
+  category?: string
   created_at: string
   updated_at: string
 }

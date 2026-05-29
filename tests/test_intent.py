@@ -1,5 +1,33 @@
 """意图分类器测试"""
+import sys
+import types
+from pathlib import Path
+
 import pytest
+
+if "loguru" not in sys.modules:
+    logger = types.SimpleNamespace(
+        info=lambda *args, **kwargs: None,
+        warning=lambda *args, **kwargs: None,
+        exception=lambda *args, **kwargs: None,
+    )
+    sys.modules["loguru"] = types.SimpleNamespace(logger=logger)
+
+if "openai" not in sys.modules:
+    sys.modules["openai"] = types.SimpleNamespace(AsyncOpenAI=object)
+
+settings_stub = types.SimpleNamespace(
+    deepseek_api_key="",
+    deepseek_base_url="",
+    deepseek_model="",
+    dashscope_api_key="",
+    bailian_model="",
+    llm_temperature=0.1,
+    llm_max_tokens=256,
+)
+settings_module = types.SimpleNamespace(settings=settings_stub, PROJECT_ROOT=Path(__file__).resolve().parents[1])
+sys.modules.setdefault("config.settings", settings_module)
+
 from tests.conftest import TEST_QUERIES
 from ops_agent.core.intent.classifier import IntentClassifier
 from ops_agent.core.intent.types import IntentType
@@ -40,3 +68,9 @@ class TestIntentClassifier:
         """测试置信度范围"""
         result = self.classifier._rule_classify("如何重启nginx")
         assert 0 <= result.confidence <= 1.0
+
+    def test_log_filename_analysis_is_fault_troubleshooting(self):
+        """日志文件分析请求不应被下划线文件名误判为数据分析"""
+        result = self.classifier._rule_classify("帮我分析一下ops_agent_2026-05-25.log文件")
+
+        assert result.intent == IntentType.FAULT_TROUBLESHOOTING

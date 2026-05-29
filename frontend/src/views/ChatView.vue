@@ -93,26 +93,30 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(47, 125, 246, 0.12), transparent 36rem),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.85), rgba(232, 238, 246, 0.72)),
+    var(--ops-bg);
 }
 
 .llm-warning {
   flex-shrink: 0;
-  margin: 0;
-  border-radius: 0;
+  margin: 12px 18px 0;
+  border-radius: var(--ops-radius);
 }
 
 .chat-footer {
   flex-shrink: 0;
-  padding: 0 16px 16px;
+  padding: 0 18px 18px;
 }
 
 .footer-card {
-  max-width: 900px;
+  max-width: 1280px;
   margin: 0 auto;
-  background: #fff;
-  border-radius: 16px;
-  border: 1px solid #e8eaed;
-  box-shadow: 0 -1px 12px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.04);
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 12px;
+  border: 1px solid var(--ops-border);
+  box-shadow: var(--ops-shadow-md);
   overflow: hidden;
 }
 
@@ -120,9 +124,9 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 16px;
-  background: #fafbfc;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 10px 14px;
+  background: var(--ops-surface-muted);
+  border-bottom: 1px solid var(--ops-border-soft);
 }
 
 .ds-select {
@@ -130,18 +134,18 @@ onMounted(() => {
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
-  color: #86909c;
+  color: var(--ops-text-secondary);
   font-size: 13px;
 }
 
 .ds-select-el {
-  width: 180px;
+  width: 190px;
 }
 
 .toolbar-divider {
   width: 1px;
-  height: 20px;
-  background: #e5e6eb;
+  height: 22px;
+  background: var(--ops-border);
   flex-shrink: 0;
 }
 
@@ -156,7 +160,7 @@ onMounted(() => {
 
 .prompts-label {
   font-size: 12px;
-  color: #c9cdd4;
+  color: var(--ops-text-muted);
   white-space: nowrap;
   margin-right: 2px;
   flex-shrink: 0;
@@ -164,16 +168,27 @@ onMounted(() => {
 
 .prompt-tag {
   cursor: pointer;
-  transition: all 0.15s;
-  border: 1px solid #e5e6eb;
-  color: #86909c;
+  transition: all 0.15s ease;
+  border: 1px solid var(--ops-border);
+  color: var(--ops-text-secondary);
   background: #fff;
   white-space: nowrap;
 }
 
 .prompt-tag:hover {
-  color: #409eff;
-  border-color: #409eff;
-  background: #ecf5ff;
+  color: var(--ops-primary);
+  border-color: rgba(47, 125, 246, 0.38);
+  background: var(--ops-primary-soft);
+}
+
+@media (max-width: 900px) {
+  .toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .toolbar-divider {
+    display: none;
+  }
 }
 </style>

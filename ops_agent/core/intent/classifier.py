@@ -24,6 +24,11 @@ _DATA_QUERY_HINT_RE = re.compile(
     re.IGNORECASE,
 )
 
+_LOG_ANALYSIS_HINT_RE = re.compile(
+    r"(\.log(?:$|[^a-z0-9_])|日志文件|分析.*日志|日志.*分析|error\.log|access\.log)",
+    re.IGNORECASE,
+)
+
 
 # 规则匹配模式
 _RULE_PATTERNS = {
@@ -107,6 +112,13 @@ class IntentClassifier:
     def _rule_classify(self, query_lower: str) -> IntentResult:
         """基于规则的快速分类"""
         entities = self._extract_entities(query_lower)
+        if _LOG_ANALYSIS_HINT_RE.search(query_lower):
+            return IntentResult(
+                intent=IntentType.FAULT_TROUBLESHOOTING,
+                confidence=0.95,
+                entities=entities,
+                raw_query=query_lower,
+            )
         if _DATA_QUERY_HINT_RE.search(query_lower):
             return IntentResult(
                 intent=IntentType.DATA_ANALYSIS,

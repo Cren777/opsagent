@@ -1,4 +1,5 @@
 import pytest
+import inspect
 
 pytest.importorskip("fastapi")
 
@@ -24,3 +25,11 @@ def test_log_attachment_forces_fault_troubleshooting_intent():
     )
 
     assert intent == IntentType.FAULT_TROUBLESHOOTING
+
+
+def test_data_analysis_handler_accepts_router_extra_kwargs():
+    from ops_agent.core.orchestrator import Orchestrator
+
+    signature = inspect.signature(Orchestrator._handle_data_analysis)
+
+    assert any(param.kind == inspect.Parameter.VAR_KEYWORD for param in signature.parameters.values())

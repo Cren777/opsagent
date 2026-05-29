@@ -72,6 +72,10 @@ export const useChatStore = defineStore('chat', () => {
   // ── Computed: only sessions with actual user messages (excludes placeholders) ──
   const displaySessions = computed(() =>
     sessions.value.filter((s) => s.messages.some((m) => m.role === 'user'))
+      .sort((left, right) => {
+        const pinDiff = (right.pinnedAt || 0) - (left.pinnedAt || 0)
+        return pinDiff || right.updatedAt - left.updatedAt
+      })
   )
 
   // ── Persist on change ──
@@ -166,6 +170,21 @@ export const useChatStore = defineStore('chat', () => {
         createSession()
       }
     }
+  }
+
+  function renameSession(id: string, title: string) {
+    const session = sessions.value.find((s) => s.id === id)
+    const nextTitle = title.trim()
+    if (!session || !nextTitle) return
+    session.title = nextTitle.length > 40 ? `${nextTitle.slice(0, 40)}…` : nextTitle
+    session.updatedAt = Date.now()
+  }
+
+  function togglePinSession(id: string) {
+    const session = sessions.value.find((s) => s.id === id)
+    if (!session) return
+    session.pinnedAt = session.pinnedAt ? undefined : Date.now()
+    session.updatedAt = Date.now()
   }
 
   function clearSession() {
@@ -318,6 +337,8 @@ export const useChatStore = defineStore('chat', () => {
     createSession,
     switchSession,
     deleteSession,
+    renameSession,
+    togglePinSession,
     clearSession,
     sendMessage,
     sendStreamMessage,

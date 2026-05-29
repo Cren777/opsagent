@@ -5,6 +5,7 @@ import type { IndexStatus } from '@/types/indexes'
 import {
   clearIndexCollection,
   fetchIndexStatus,
+  rebuildCaseIndex,
   rebuildKnowledgeIndex,
   rebuildLogIndex,
 } from '@/api/indexes'
@@ -67,6 +68,12 @@ async function runAction(name: string, fn: () => Promise<unknown>) {
       >
         重建日志索引
       </el-button>
+      <el-button
+        :loading="action === 'cases'"
+        @click="runAction('cases', rebuildCaseIndex)"
+      >
+        重建案例索引
+      </el-button>
     </div>
 
     <el-table v-loading="loading" :data="status?.collections || []" border>
@@ -87,36 +94,15 @@ async function runAction(name: string, fn: () => Promise<unknown>) {
 </template>
 
 <style scoped>
-.ops-page {
-  padding: 24px;
-}
-
-.page-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.page-header h2 {
-  margin: 0 0 6px;
-  font-size: 20px;
-  color: #1a1a2e;
-}
-
-.page-desc {
-  margin: 0;
-  color: #909399;
-  font-size: 14px;
-}
-
 .status-box {
   margin-bottom: 16px;
+  overflow: hidden;
 }
 
 .actions {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
   margin-bottom: 16px;
 }
 </style>

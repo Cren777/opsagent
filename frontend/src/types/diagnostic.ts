@@ -3,6 +3,8 @@ export interface DiagnosticScript {
   size: number
   description: string
   timeout: number
+  status?: string
+  content?: string
 }
 
 export interface DiagnosticRunResult {

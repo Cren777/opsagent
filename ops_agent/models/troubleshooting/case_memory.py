@@ -25,6 +25,7 @@ class IncidentCaseMemory:
         solution: str = "",
         evidence: list[str] | None = None,
         status: str = "pending",
+        category: str = "",
     ) -> dict[str, Any]:
         case_id = f"case_{uuid.uuid4().hex}"
         now = datetime.utcnow().isoformat(timespec="seconds") + "Z"
@@ -33,8 +34,8 @@ class IncidentCaseMemory:
             conn.execute(
                 """
                 INSERT INTO incident_cases
-                    (case_id, query, answer, symptoms, root_cause, solution, evidence, status, tokens, created_at, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    (case_id, query, answer, symptoms, root_cause, solution, evidence, status, category, tokens, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     case_id,
@@ -45,6 +46,7 @@ class IncidentCaseMemory:
                     solution,
                     json.dumps(evidence or [], ensure_ascii=False),
                     status,
+                    category,
                     json.dumps(tokens, ensure_ascii=False),
                     now,
                     now,
@@ -115,6 +117,15 @@ class IncidentCaseMemory:
             )
             return result.rowcount > 0
 
+    def update_category(self, case_id: str, category: str) -> bool:
+        now = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+        with self._connect() as conn:
+            result = conn.execute(
+                "UPDATE incident_cases SET category = ?, updated_at = ? WHERE case_id = ?",
+                (category, now, case_id),
+            )
+            return result.rowcount > 0
+
     def delete_case(self, case_id: str) -> bool:
         with self._connect() as conn:
             result = conn.execute("DELETE FROM incident_cases WHERE case_id = ?", (case_id,))
@@ -133,12 +144,16 @@ class IncidentCaseMemory:
                     solution TEXT NOT NULL DEFAULT '',
                     evidence TEXT NOT NULL DEFAULT '[]',
                     status TEXT NOT NULL DEFAULT 'pending',
+                    category TEXT NOT NULL DEFAULT '',
                     tokens TEXT NOT NULL DEFAULT '[]',
                     created_at TEXT NOT NULL,
                     updated_at TEXT NOT NULL
                 )
                 """
             )
+            columns = [row[1] for row in conn.execute("PRAGMA table_info(incident_cases)").fetchall()]
+            if "category" not in columns:
+                conn.execute("ALTER TABLE incident_cases ADD COLUMN category TEXT NOT NULL DEFAULT ''")
 
     def _connect(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.db_path)

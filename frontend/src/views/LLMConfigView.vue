@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import type { LLMProviderItem, LLMProviderFormData, LLMTestResult } from '@/types/llm'
 import { useConfigStore } from '@/stores/config'
 
@@ -15,6 +15,13 @@ const testMsg = ref('')
 const testResult = ref<LLMTestResult | null>(null)
 const testing = ref(false)
 const saving = ref(false)
+const primaryProvider = computed(() => configStore.llmProviders.find((provider) => provider.is_primary))
+const dashScopeCount = computed(() =>
+  configStore.llmProviders.filter((provider) => provider.provider_type === 'dashscope').length
+)
+const compatibleCount = computed(() =>
+  configStore.llmProviders.filter((provider) => provider.provider_type !== 'dashscope').length
+)
 
 const defaultForm = (): LLMProviderFormData => ({
   name: '',
@@ -106,6 +113,37 @@ async function handleSetPrimary(id: string) {
       <el-button type="primary" :icon="'Plus'" @click="openForm()">添加提供商</el-button>
     </div>
 
+    <div class="config-overview">
+      <div class="overview-card primary">
+        <div class="overview-icon"><el-icon><Cpu /></el-icon></div>
+        <div>
+          <div class="overview-label">提供商总数</div>
+          <div class="overview-value">{{ configStore.llmProviders.length }}</div>
+        </div>
+      </div>
+      <div class="overview-card success">
+        <div class="overview-icon"><el-icon><CircleCheck /></el-icon></div>
+        <div>
+          <div class="overview-label">主力模型</div>
+          <div class="overview-value text">{{ primaryProvider?.name || '未设置' }}</div>
+        </div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-icon"><el-icon><Connection /></el-icon></div>
+        <div>
+          <div class="overview-label">OpenAI 兼容</div>
+          <div class="overview-value">{{ compatibleCount }}</div>
+        </div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-icon"><el-icon><Switch /></el-icon></div>
+        <div>
+          <div class="overview-label">DashScope</div>
+          <div class="overview-value">{{ dashScopeCount }}</div>
+        </div>
+      </div>
+    </div>
+
     <div v-if="configStore.llmProviders.length === 0" class="empty-wrap">
       <el-empty description="尚未配置大模型提供商" :image-size="100">
         <el-button type="primary" @click="openForm()">添加第一个提供商</el-button>
@@ -121,31 +159,29 @@ async function handleSetPrimary(id: string) {
         shadow="hover"
       >
         <div class="provider-header">
-          <div>
-            <div class="provider-name">
-              {{ provider.name }}
-              <el-tag v-if="provider.is_primary" size="small" type="success">主力</el-tag>
+          <div class="provider-title">
+            <el-icon class="provider-icon" :size="28"><Cpu /></el-icon>
+            <div>
+              <div class="provider-name">
+                {{ provider.name }}
+                <el-tag v-if="provider.is_primary" size="small" type="success">主力</el-tag>
+              </div>
+              <div class="provider-model">{{ provider.model }}</div>
             </div>
-            <div class="provider-model">{{ provider.model }}</div>
           </div>
-          <div class="provider-type-tag">
-            <el-tag size="small">{{ provider.provider_type === 'dashscope' ? 'DashScope' : 'OpenAI兼容' }}</el-tag>
+          <div class="provider-status">
+            <span class="status-dot" />
+            <el-tag size="small" type="info">
+              {{ provider.provider_type === 'dashscope' ? 'DashScope' : 'OpenAI兼容' }}
+            </el-tag>
           </div>
         </div>
 
-        <div class="provider-info">
-          <div class="info-row">
-            <span class="info-label">API 地址</span>
-            <span class="info-value">{{ provider.base_url }}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">温度</span>
-            <span class="info-value">{{ provider.temperature }}</span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">最大 Token</span>
-            <span class="info-value">{{ provider.max_tokens }}</span>
-          </div>
+        <div class="provider-summary">{{ provider.base_url }}</div>
+
+        <div class="provider-metrics">
+          <span class="metric-badge">温度 {{ provider.temperature }}</span>
+          <span class="metric-badge">Token {{ provider.max_tokens }}</span>
         </div>
 
         <!-- Test Chat Area -->
@@ -280,42 +316,107 @@ async function handleSetPrimary(id: string) {
 
 <style scoped>
 .llm-view {
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 28px 36px;
+  width: 100%;
 }
 
 .page-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 24px;
+  gap: 16px;
+  margin-bottom: 22px;
 }
 
 .page-header h2 {
   margin: 0 0 6px;
-  font-size: 20px;
-  color: #1a1a2e;
+  font-size: 22px;
+  color: var(--ops-text);
+  font-weight: 800;
 }
 
 .page-desc {
   margin: 0;
   font-size: 14px;
-  color: #909399;
+  color: var(--ops-text-secondary);
+}
+
+.config-overview {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.overview-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 78px;
+  padding: 15px 16px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--ops-border);
+  border-radius: var(--ops-radius-lg);
+  box-shadow: var(--ops-shadow-sm);
+}
+
+.overview-card.primary .overview-icon {
+  color: var(--ops-primary);
+  background: var(--ops-primary-soft);
+}
+
+.overview-card.success .overview-icon {
+  color: var(--ops-success);
+  background: rgba(24, 160, 88, 0.1);
+}
+
+.overview-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  color: var(--ops-text-secondary);
+  background: var(--ops-surface-muted);
+  font-size: 18px;
+  flex: 0 0 auto;
+}
+
+.overview-label {
+  font-size: 12px;
+  color: var(--ops-text-muted);
+  margin-bottom: 3px;
+}
+
+.overview-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ops-text);
+}
+
+.overview-value.text {
+  max-width: 220px;
+  font-size: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .provider-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .provider-card {
-  border: 2px solid transparent;
+  min-height: 178px;
+  border: 1px solid var(--ops-border);
+  border-radius: var(--ops-radius);
 }
 
 .provider-card.primary {
-  border-color: #67c23a;
+  border-color: rgba(24, 160, 88, 0.55);
+  box-shadow: 0 0 0 3px rgba(24, 160, 88, 0.1);
 }
 
 .provider-header {
@@ -323,11 +424,25 @@ async function handleSetPrimary(id: string) {
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 12px;
+  gap: 12px;
+}
+
+.provider-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.provider-icon {
+  color: var(--ops-primary);
+  flex: 0 0 auto;
 }
 
 .provider-name {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 800;
+  color: var(--ops-text);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -335,34 +450,58 @@ async function handleSetPrimary(id: string) {
 
 .provider-model {
   font-size: 12px;
-  color: #909399;
-  font-family: monospace;
+  color: var(--ops-text-muted);
+  font-family: var(--ops-font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 190px;
 }
 
-.provider-info {
-  background: #f5f7fa;
-  border-radius: 8px;
-  padding: 10px 14px;
+.provider-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #98a2b3;
+}
+
+.provider-summary {
+  font-size: 13px;
+  color: var(--ops-text-secondary);
+  font-family: var(--ops-font-mono);
+  background: var(--ops-surface-muted);
+  border: 1px solid var(--ops-border-soft);
+  border-radius: 7px;
+  padding: 9px 10px;
+  margin-bottom: 10px;
+  word-break: break-all;
+}
+
+.provider-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 12px;
 }
 
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 3px 0;
-  font-size: 13px;
-}
-
-.info-label {
-  color: #909399;
-}
-
-.info-value {
-  font-family: monospace;
-  color: #606266;
-  word-break: break-all;
-  text-align: right;
-  max-width: 60%;
+.metric-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: var(--ops-primary-soft);
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ops-primary-strong);
 }
 
 .provider-actions {
@@ -374,9 +513,9 @@ async function handleSetPrimary(id: string) {
 .test-chat-area {
   margin: 12px 0;
   padding: 12px;
-  background: #fafafa;
+  background: var(--ops-surface-muted);
   border-radius: 8px;
-  border: 1px solid #e4e7ed;
+  border: 1px solid var(--ops-border);
 }
 
 .test-actions {
@@ -390,13 +529,13 @@ async function handleSetPrimary(id: string) {
   margin-top: 10px;
   padding: 10px;
   background: #fff;
-  border-radius: 6px;
-  border: 1px solid #e4e7ed;
+  border-radius: 7px;
+  border: 1px solid var(--ops-border);
 }
 
 .test-latency {
   font-size: 12px;
-  color: #909399;
+  color: var(--ops-text-muted);
   margin-bottom: 6px;
 }
 
@@ -409,7 +548,7 @@ async function handleSetPrimary(id: string) {
 
 .form-hint {
   font-size: 12px;
-  color: #909399;
+  color: var(--ops-text-muted);
   margin-top: 4px;
 }
 
@@ -423,6 +562,37 @@ async function handleSetPrimary(id: string) {
 .empty-wrap {
   display: flex;
   justify-content: center;
-  padding: 60px 0;
+  padding: 70px 0;
+  background: var(--ops-surface);
+  border: 1px dashed var(--ops-border);
+  border-radius: var(--ops-radius-lg);
+}
+
+@media (max-width: 900px) {
+  .llm-view {
+    padding: 16px;
+  }
+
+  .page-header {
+    flex-direction: column;
+  }
+
+  .config-overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .provider-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .config-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .provider-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

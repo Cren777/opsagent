@@ -7,3 +7,10 @@ export interface KnowledgeFile {
   indexed: boolean
   content?: string
 }
+
+export interface KnowledgeTreeNode {
+  name: string
+  relative_path: string
+  children: KnowledgeTreeNode[]
+  files: KnowledgeFile[]
+}

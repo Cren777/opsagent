@@ -26,6 +26,7 @@ class VectorStore:
         """确保 Collection 存在"""
         if self.client.has_collection(self.collection_name):
             logger.info("Collection '{}' 已存在", self.collection_name)
+            self._load_collection()
             return
 
         schema = MilvusClient.create_schema(
@@ -52,8 +53,12 @@ class VectorStore:
             schema=schema,
             index_params=index_params,
         )
-        self.client.load_collection(self.collection_name)
+        self._load_collection()
         logger.info("Collection '{}' 创建成功，维度: {}", self.collection_name, self.dim)
+
+    def _load_collection(self):
+        """Ensure the collection is loaded before query/search operations."""
+        self.client.load_collection(self.collection_name)
 
     def insert(self, vectors: List[List[float]], chunks: List) -> int:
         """批量插入向量和文档块
@@ -99,11 +104,12 @@ class VectorStore:
         Returns:
             检索结果列表，每条包含 content, source_file, title, score
         """
+        self._load_collection()
         if not self._has_data():
             return []
 
         # 确保 Collection 已加载
-        self.client.load_collection(self.collection_name)
+        self._load_collection()
 
         results = self.client.search(
             collection_name=self.collection_name,
@@ -130,6 +136,7 @@ class VectorStore:
     def _has_data(self) -> bool:
         """检查 Collection 是否有数据"""
         try:
+            self._load_collection()
             results = self.client.query(
                 collection_name=self.collection_name,
                 filter="id > 0",
@@ -137,7 +144,8 @@ class VectorStore:
                 output_fields=["id"],
             )
             return len(results) > 0
-        except Exception:
+        except Exception as e:
+            logger.warning("Milvus collection '{}' data probe failed after load: {}", self.collection_name, e)
             return True  # 有异常时假定有数据，正常走 search 流程
 
     def clear(self):

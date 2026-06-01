@@ -11,13 +11,14 @@ router = APIRouter(prefix="/api/uploads", tags=["上传"])
 async def upload_log(
     request: Request,
     filename: str = Query(default="uploaded.log", description="Original log filename"),
+    category: str = Query(default="", description="Log category path"),
 ):
     """Upload a log file as raw request body and return its analysis metadata."""
     try:
         content = await request.body()
         if not content:
             raise HTTPException(status_code=400, detail="日志文件为空")
-        return LogUploadService().save_log_file(filename, content)
+        return LogUploadService().save_log_file(filename, content, category=category)
     except HTTPException:
         raise
     except ValueError as e:

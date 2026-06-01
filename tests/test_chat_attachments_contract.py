@@ -27,6 +27,20 @@ def test_log_attachment_forces_fault_troubleshooting_intent():
     assert intent == IntentType.FAULT_TROUBLESHOOTING
 
 
+def test_merge_auto_resolved_log_attachments_deduplicates():
+    from ops_agent.core.orchestrator import Orchestrator
+
+    merged = Orchestrator._merge_log_attachments(
+        [{"id": "log_123", "type": "log", "filename": "error.log"}],
+        [
+            {"id": "log_123", "type": "log", "filename": "error.log"},
+            {"id": "local_456", "type": "log", "filename": "ops_agent_2026-05-25.log"},
+        ],
+    )
+
+    assert [item["id"] for item in merged] == ["log_123", "local_456"]
+
+
 def test_data_analysis_handler_accepts_router_extra_kwargs():
     from ops_agent.core.orchestrator import Orchestrator
 

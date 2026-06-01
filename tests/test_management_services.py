@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from ops_agent.models.knowledge.knowledge_service import KnowledgeService
+from ops_agent.models.indexing.index_service import IndexService
 from ops_agent.models.tools.diagnostic_service import DiagnosticService
 from ops_agent.models.troubleshooting.case_memory import IncidentCaseMemory
 from ops_agent.models.uploads.log_upload_service import LogUploadService
@@ -99,6 +100,34 @@ def test_log_upload_service_preview_and_category(tmp_path: Path):
     assert preview["category"] == "nginx/web"
     assert "secret-token" not in preview["content"]
     assert "password=<redacted>" in preview["content"]
+
+
+def test_rebuild_logs_uses_catalog_sources(monkeypatch, tmp_path: Path):
+    log_path = tmp_path / "ops_agent_2026-05-25.log"
+    log_path.write_text("ERROR runtime failure\n", encoding="utf-8")
+    called = []
+
+    class FakeLogService:
+        def iter_indexable_paths(self):
+            return [log_path]
+
+    class FakeStore:
+        def count(self):
+            return 3
+
+    class FakeIndexer:
+        store = FakeStore()
+
+        def build_index(self, target):
+            called.append(target)
+
+    monkeypatch.setattr("ops_agent.models.indexing.index_service.LogUploadService", FakeLogService)
+    monkeypatch.setattr("ops_agent.models.indexing.index_service.LogIndexer", FakeIndexer)
+
+    result = IndexService().rebuild_logs()
+
+    assert result["status"] == "completed"
+    assert called == [str(log_path)]
 
 
 def test_case_memory_lists_updates_and_deletes_cases(tmp_path: Path):

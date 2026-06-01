@@ -61,6 +61,8 @@ class Settings(BaseSettings):
     script_output_max_chars: int = 5000
 
     # --- Troubleshooting uploads and memory ---
+    runtime_logs_dir: str = str(PROJECT_ROOT / "logs")
+    seed_logs_dir: str = str(PROJECT_ROOT / "data" / "logs")
     uploaded_logs_dir: str = str(PROJECT_ROOT / "data" / "uploads" / "logs")
     incident_cases_db_path: str = str(PROJECT_ROOT / "data" / "incident_cases.db")
 

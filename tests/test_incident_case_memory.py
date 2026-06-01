@@ -43,3 +43,50 @@ def test_case_memory_ignores_low_confidence_match(tmp_path: Path):
     )
 
     assert match is None
+
+
+def test_case_memory_filters_by_query_category_status_and_symptom(tmp_path: Path):
+    memory = IncidentCaseMemory(db_path=tmp_path / "cases.db")
+    memory.save_case(
+        query="nginx 502 upstream refused",
+        answer="restart upstream",
+        symptoms=["nginx", "502", "Connection refused"],
+        status="resolved",
+        category="Nginx/错误日志",
+    )
+    memory.save_case(
+        query="mysql too many connections",
+        answer="increase max connections",
+        symptoms=["mysql", "connections"],
+        status="auto_saved",
+        category="MySQL/连接",
+    )
+
+    result = memory.list_cases(
+        query="upstream",
+        category="Nginx/错误日志",
+        status="resolved",
+        symptom="Connection refused",
+    )
+
+    assert len(result) == 1
+    assert result[0]["query"] == "nginx 502 upstream refused"
+
+
+def test_case_categories_can_be_managed_and_delete_uncategorizes_cases(tmp_path: Path):
+    memory = IncidentCaseMemory(db_path=tmp_path / "cases.db")
+    saved = memory.save_case(
+        query="nginx 502",
+        answer="restart upstream",
+        symptoms=["nginx", "502"],
+        status="resolved",
+        category="Nginx/错误日志",
+    )
+
+    memory.create_category("Nginx/错误日志")
+    memory.set_category_pinned("Nginx/错误日志", True)
+    deleted = memory.delete_category("Nginx/错误日志")
+    item = memory.get_case(saved["case_id"])
+
+    assert deleted is True
+    assert item["category"] == ""

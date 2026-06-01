@@ -16,9 +16,74 @@ class CategoryUpdate(BaseModel):
     category: str
 
 
+class CategoryCreate(BaseModel):
+    name: str
+
+
+class CategoryRename(BaseModel):
+    old_name: str
+    new_name: str
+
+
+class CategoryPinUpdate(BaseModel):
+    name: str
+    pinned: bool
+
+
+class CategoryDelete(BaseModel):
+    name: str
+
+
 @router.get("/logs")
-async def list_uploaded_logs():
-    return LogUploadService().list_logs()
+async def list_uploaded_logs(
+    query: str = "",
+    category: str = "",
+    source: str = "",
+    severity: str = "",
+):
+    return LogUploadService().list_logs(
+        query=query,
+        category=category,
+        source=source,
+        severity=severity,
+    )
+
+
+@router.get("/logs/categories")
+async def list_log_categories():
+    return LogUploadService().category_summary()
+
+
+@router.post("/logs/categories")
+async def create_log_category(payload: CategoryCreate):
+    try:
+        return LogUploadService().create_category(payload.name)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+
+@router.put("/logs/categories/rename")
+async def rename_log_category(payload: CategoryRename):
+    try:
+        return LogUploadService().rename_category(payload.old_name, payload.new_name)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+
+@router.put("/logs/categories/pin")
+async def pin_log_category(payload: CategoryPinUpdate):
+    try:
+        return LogUploadService().set_category_pinned(payload.name, payload.pinned)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+
+@router.delete("/logs/categories")
+async def delete_log_category(payload: CategoryDelete):
+    try:
+        return {"deleted": LogUploadService().delete_category(payload.name)}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.get("/logs/{file_id}")
@@ -51,8 +116,55 @@ async def delete_uploaded_log(file_id: str):
 
 
 @router.get("/incidents")
-async def list_incident_cases(status: str | None = None):
-    return IncidentCaseMemory().list_cases(status=status)
+async def list_incident_cases(
+    status: str | None = None,
+    query: str = "",
+    category: str = "",
+    symptom: str = "",
+):
+    return IncidentCaseMemory().list_cases(
+        status=status,
+        query=query,
+        category=category,
+        symptom=symptom,
+    )
+
+
+@router.get("/incidents/categories")
+async def list_incident_categories():
+    return IncidentCaseMemory().category_summary()
+
+
+@router.post("/incidents/categories")
+async def create_incident_category(payload: CategoryCreate):
+    try:
+        return IncidentCaseMemory().create_category(payload.name)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+
+@router.put("/incidents/categories/rename")
+async def rename_incident_category(payload: CategoryRename):
+    try:
+        return IncidentCaseMemory().rename_category(payload.old_name, payload.new_name)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+
+@router.put("/incidents/categories/pin")
+async def pin_incident_category(payload: CategoryPinUpdate):
+    try:
+        return IncidentCaseMemory().set_category_pinned(payload.name, payload.pinned)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+
+
+@router.delete("/incidents/categories")
+async def delete_incident_category(payload: CategoryDelete):
+    try:
+        return {"deleted": IncidentCaseMemory().delete_category(payload.name)}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.get("/incidents/{case_id}")

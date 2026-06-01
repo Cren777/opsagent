@@ -49,7 +49,10 @@ class Orchestrator:
         attachments: list[dict] = None,
     ) -> Dict[str, Any]:
         """非流式处理用户查询"""
-        attachments = attachments or []
+        attachments = self._merge_log_attachments(
+            attachments or [],
+            self.log_uploads.resolve_mentioned_logs(query),
+        )
         intent_result = await self.classifier.classify(query)
         intent = self._resolve_intent_for_attachments(intent_result.intent, attachments)
         result = await self.router.route(
@@ -71,7 +74,10 @@ class Orchestrator:
         attachments: list[dict] = None,
     ) -> AsyncGenerator[Dict[str, Any], None]:
         """流式处理用户查询，通过 SSE 事件逐步返回"""
-        attachments = attachments or []
+        attachments = self._merge_log_attachments(
+            attachments or [],
+            self.log_uploads.resolve_mentioned_logs(query),
+        )
         # Step 1: 意图识别
         intent_result = await self.classifier.classify(query)
         intent = self._resolve_intent_for_attachments(intent_result.intent, attachments)
@@ -116,6 +122,16 @@ class Orchestrator:
         if any(item.get("type") == "log" for item in attachments or []):
             return IntentType.FAULT_TROUBLESHOOTING
         return intent
+
+    @staticmethod
+    def _merge_log_attachments(explicit: list[dict], resolved: list[dict]) -> list[dict]:
+        seen = {item.get("id") for item in explicit}
+        merged = list(explicit)
+        for item in resolved:
+            if item.get("id") not in seen:
+                merged.append(item)
+                seen.add(item.get("id"))
+        return merged
 
     async def _handle_knowledge(self, query: str, entities: dict, **kwargs) -> Dict[str, Any]:
         """处理知识查询"""

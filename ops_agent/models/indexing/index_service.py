@@ -2,6 +2,9 @@
 from pathlib import Path
 from typing import Any
 
+LogIndexer = None
+LogUploadService = None
+
 
 class IndexService:
     """Coordinates status and rebuild operations for local indexes."""
@@ -39,16 +42,30 @@ class IndexService:
         return KnowledgeService(PROJECT_ROOT / "data" / "knowledge").rebuild_index()
 
     def rebuild_logs(self, path: str | None = None) -> dict[str, Any]:
-        from config.settings import PROJECT_ROOT, settings
-        from ops_agent.models.rag.log_parser import LogIndexer
+        try:
+            from config.settings import settings
+            collection = settings.milvus_logs_collection
+        except Exception:
+            collection = "ops_logs"
+        global LogIndexer, LogUploadService
+        if LogIndexer is None:
+            from ops_agent.models.rag.log_parser import LogIndexer as _LogIndexer
 
-        target = Path(path) if path else PROJECT_ROOT / "data" / "logs"
+            LogIndexer = _LogIndexer
+        if LogUploadService is None:
+            from ops_agent.models.uploads.log_upload_service import LogUploadService as _LogUploadService
+
+            LogUploadService = _LogUploadService
+
         indexer = LogIndexer()
-        indexer.build_index(str(target))
+        targets = [Path(path)] if path else LogUploadService().iter_indexable_paths()
+        for target in targets:
+            indexer.build_index(str(target))
         return {
             "status": "completed",
-            "collection": settings.milvus_logs_collection,
-            "target": str(target),
+            "collection": collection,
+            "target": str(targets[0]) if len(targets) == 1 else "",
+            "targets": [str(target) for target in targets],
             "count": indexer.store.count(),
         }
 

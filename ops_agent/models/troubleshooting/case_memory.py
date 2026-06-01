@@ -7,6 +7,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from ops_agent.models.category_registry import CategoryRegistry
+
 
 class IncidentCaseMemory:
     """Stores compact incident cases and retrieves similar resolved cases."""
@@ -14,6 +16,7 @@ class IncidentCaseMemory:
     def __init__(self, db_path: str | Path | None = None):
         self.db_path = Path(db_path or self._default_db_path())
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        self.category_registry = CategoryRegistry(self.db_path.parent / "case_categories.json")
         self._ensure_schema()
 
     def save_case(
@@ -91,7 +94,14 @@ class IncidentCaseMemory:
 
         return best
 
-    def list_cases(self, status: str | None = None, limit: int = 200) -> list[dict[str, Any]]:
+    def list_cases(
+        self,
+        status: str | None = None,
+        limit: int = 200,
+        query: str = "",
+        category: str = "",
+        symptom: str = "",
+    ) -> list[dict[str, Any]]:
         sql = "SELECT * FROM incident_cases"
         params: list[Any] = []
         if status:
@@ -101,7 +111,8 @@ class IncidentCaseMemory:
         params.append(limit)
         with self._connect() as conn:
             rows = conn.execute(sql, params).fetchall()
-        return [self._row_to_dict(row) for row in rows]
+        items = [self._row_to_dict(row) for row in rows]
+        return self._filter_cases(items, query=query, category=category, symptom=symptom)
 
     def get_case(self, case_id: str) -> dict[str, Any] | None:
         with self._connect() as conn:
@@ -125,6 +136,47 @@ class IncidentCaseMemory:
                 (category, now, case_id),
             )
             return result.rowcount > 0
+
+    def category_summary(self) -> list[dict[str, Any]]:
+        groups: dict[str, dict[str, Any]] = {}
+        for item in self.list_cases(limit=1000):
+            name = item.get("category") or "未分类"
+            group = groups.setdefault(name, {"name": name, "count": 0})
+            group["count"] += 1
+        for item in self.category_registry.list_categories():
+            group = groups.setdefault(item["name"], {"name": item["name"], "count": 0})
+            group["pinned"] = item.get("pinned", False)
+            group["user_defined"] = True
+        for group in groups.values():
+            group.setdefault("pinned", False)
+            group.setdefault("user_defined", False)
+        return sorted(groups.values(), key=lambda item: (not item.get("pinned", False), -item["count"], item["name"]))
+
+    def create_category(self, name: str) -> dict[str, Any]:
+        return self.category_registry.create(name)
+
+    def rename_category(self, old_name: str, new_name: str) -> dict[str, Any]:
+        item = self.category_registry.rename(old_name, new_name)
+        now = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+        with self._connect() as conn:
+            conn.execute(
+                "UPDATE incident_cases SET category = ?, updated_at = ? WHERE category = ?",
+                (item["name"], now, old_name),
+            )
+        return item
+
+    def set_category_pinned(self, name: str, pinned: bool) -> dict[str, Any]:
+        return self.category_registry.set_pinned(name, pinned)
+
+    def delete_category(self, name: str) -> bool:
+        deleted = self.category_registry.delete(name)
+        now = datetime.utcnow().isoformat(timespec="seconds") + "Z"
+        with self._connect() as conn:
+            conn.execute(
+                "UPDATE incident_cases SET category = '', updated_at = ? WHERE category = ?",
+                (now, name),
+            )
+        return deleted
 
     def delete_case(self, case_id: str) -> bool:
         with self._connect() as conn:
@@ -167,6 +219,34 @@ class IncidentCaseMemory:
         item["evidence"] = json.loads(item["evidence"] or "[]")
         item["tokens"] = json.loads(item["tokens"] or "[]")
         return item
+
+    @staticmethod
+    def _filter_cases(
+        items: list[dict[str, Any]],
+        query: str = "",
+        category: str = "",
+        symptom: str = "",
+    ) -> list[dict[str, Any]]:
+        query_lower = query.strip().lower()
+        symptom_lower = symptom.strip().lower()
+        filtered = []
+        for item in items:
+            if category and item.get("category") != category:
+                continue
+            if query_lower:
+                haystack = " ".join([
+                    item.get("query", ""),
+                    item.get("answer", ""),
+                    item.get("root_cause", ""),
+                    item.get("solution", ""),
+                    " ".join(item.get("symptoms", [])),
+                ]).lower()
+                if query_lower not in haystack:
+                    continue
+            if symptom_lower and not any(symptom_lower in value.lower() for value in item.get("symptoms", [])):
+                continue
+            filtered.append(item)
+        return filtered
 
     @staticmethod
     def _tokens(text: str) -> set[str]:

@@ -74,3 +74,13 @@ class TestIntentClassifier:
         result = self.classifier._rule_classify("帮我分析一下ops_agent_2026-05-25.log文件")
 
         assert result.intent == IntentType.FAULT_TROUBLESHOOTING
+
+    @pytest.mark.parametrize("query", [
+        "please analyze ops_agent_2026-05-25.log file",
+        "check error.log errors",
+        "analyze /var/log/nginx/access.log",
+    ])
+    def test_log_file_questions_are_fault_troubleshooting(self, query):
+        result = self.classifier._rule_classify(query.lower())
+
+        assert result.intent == IntentType.FAULT_TROUBLESHOOTING

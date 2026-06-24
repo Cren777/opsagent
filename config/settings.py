@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
@@ -73,6 +74,12 @@ class Settings(BaseSettings):
 
     # --- Security ---
     api_key: str = os.getenv("OPSAGENT_API_KEY", "demo-key")
+    auth_jwt_secret: str = os.getenv(
+        "OPSAGENT_AUTH_JWT_SECRET", os.getenv("OPSAGENT_API_KEY", "demo-key")
+    )
+    auth_token_expire_minutes: int = int(
+        os.getenv("OPSAGENT_AUTH_TOKEN_EXPIRE_MINUTES", "1440")
+    )
 
     model_config = {
         "env_file": ".env",

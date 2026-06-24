@@ -1,6 +1,6 @@
-"""SQLAlchemy ORM models for runtime configuration storage."""
+﻿"""SQLAlchemy ORM models for runtime configuration storage."""
 from datetime import datetime, timezone
-from sqlalchemy import create_engine, Column, String, Boolean, Float, Integer, Text, DateTime
+from sqlalchemy import create_engine, Column, String, Boolean, Float, Integer, Text, DateTime, UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase, Session
 from config.settings import settings
 
@@ -35,6 +35,20 @@ class LLMProviderConfigModel(Base):
     is_primary = Column(Boolean, default=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+
+
+class UserModel(Base):
+    __tablename__ = "users"
+    __table_args__ = (UniqueConstraint("username", name="uq_users_username"),)
+
+    id = Column(String(36), primary_key=True)
+    username = Column(String(32), nullable=False, index=True)
+    password_hash = Column(Text, nullable=False)
+    role = Column(String(32), nullable=False, default="admin")
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    last_login_at = Column(DateTime, nullable=True)
 
 
 def init_config_db():

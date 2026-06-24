@@ -1,4 +1,4 @@
-# Python caches
+﻿# Python caches
 __pycache__/
 *.py[cod]
 *$py.class
@@ -22,6 +22,7 @@ ops_agent/api/static/dist/
 # Local IDE/editor settings
 .vscode/sftp.json
 .idea/
+.worktrees/
 
 # Runtime logs and local databases
 *.log

@@ -1,3 +1,4 @@
+import { authFetch } from './authFetch'
 import client from './client'
 import type { ChatRequest, ChatResponse } from '@/types/chat'
 
@@ -12,7 +13,7 @@ export function postChatStream(
   onError: (err: string) => void,
   signal?: AbortSignal
 ): Promise<void> {
-  return fetch('/api/chat/stream', {
+  return authFetch('/api/chat/stream', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),

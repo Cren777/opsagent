@@ -1,4 +1,4 @@
-﻿# OpsAgent Authentication Implementation Plan
+# OpsAgent Authentication Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -328,7 +328,7 @@ class AuthService:
         self._validate_password(username, password)
         with self._session() as session:
             if session.query(UserModel).count() > 0:
-                raise RegistrationClosedError("娉ㄥ唽宸插叧闂?)
+                raise RegistrationClosedError("注册已关闭")
             user = self._create_user(session, username, password, role="admin")
             session.commit()
             return self._auth_response(user)
@@ -338,7 +338,7 @@ class AuthService:
         with self._session() as session:
             user = session.query(UserModel).filter_by(username=username, is_active=True).first()
             if not user or not self._verify_password(password, user.password_hash):
-                raise AuthError("鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒")
+                raise AuthError("用户名或密码错误")
             user.last_login_at = datetime.now(timezone.utc)
             user.updated_at = datetime.now(timezone.utc)
             session.commit()
@@ -348,10 +348,10 @@ class AuthService:
         payload = self._decode_token(token)
         user_id = payload.get("sub")
         if not user_id:
-            raise AuthError("鏃犳晥鐧诲綍鐘舵€?)
+            raise AuthError("无效登录状态")
         user = self.get_user_by_id(user_id)
         if not user or not user["is_active"]:
-            raise AuthError("鏃犳晥鐧诲綍鐘舵€?)
+            raise AuthError("无效登录状态")
         return user
 
     def get_user_by_id(self, user_id: str) -> Optional[dict]:
@@ -364,10 +364,10 @@ class AuthService:
         with self._session() as session:
             user = session.query(UserModel).filter_by(id=user_id, is_active=True).first()
             if not user:
-                raise AuthError("鐢ㄦ埛涓嶅瓨鍦?)
+                raise AuthError("用户不存在")
             existing = session.query(UserModel).filter(UserModel.username == username, UserModel.id != user_id).first()
             if existing:
-                raise UsernameTakenError("鐢ㄦ埛鍚嶅凡瀛樺湪")
+                raise UsernameTakenError("用户名已存在")
             user.username = username
             user.updated_at = datetime.now(timezone.utc)
             session.commit()
@@ -379,7 +379,7 @@ class AuthService:
         with self._session() as session:
             user = session.query(UserModel).filter_by(username=username, is_active=True).first()
             if not user or not self._verify_password(current_password, user.password_hash):
-                raise AuthError("褰撳墠瀵嗙爜閿欒")
+                raise AuthError("当前密码错误")
             user.password_hash = self._hash_password(new_password)
             user.updated_at = datetime.now(timezone.utc)
             session.commit()
@@ -396,7 +396,7 @@ class AuthService:
 
     def _create_user(self, session: Session, username: str, password: str, role: str) -> UserModel:
         if session.query(UserModel).filter_by(username=username).first():
-            raise UsernameTakenError("鐢ㄦ埛鍚嶅凡瀛樺湪")
+            raise UsernameTakenError("用户名已存在")
         now = datetime.now(timezone.utc)
         user = UserModel(
             id=str(uuid.uuid4()),
@@ -432,15 +432,15 @@ class AuthService:
             signing_input = f"{header_b64}.{payload_b64}"
             expected = self._b64(hmac.new(self.jwt_secret.encode(), signing_input.encode(), hashlib.sha256).digest())
             if not hmac.compare_digest(expected, signature_b64):
-                raise AuthError("鏃犳晥鐧诲綍鐘舵€?)
+                raise AuthError("无效登录状态")
             payload = json.loads(self._b64_decode(payload_b64))
             if int(payload.get("exp", 0)) < int(datetime.now(timezone.utc).timestamp()):
-                raise AuthError("鐧诲綍宸茶繃鏈?)
+                raise AuthError("登录已过期")
             return payload
         except AuthError:
             raise
         except Exception as exc:
-            raise AuthError("鏃犳晥鐧诲綍鐘舵€?) from exc
+            raise AuthError("无效登录状态") from exc
 
     def _hash_password(self, password: str) -> str:
         salt = secrets.token_bytes(16)
@@ -462,16 +462,16 @@ class AuthService:
     def _normalize_username(self, username: str) -> str:
         value = username.strip()
         if not 3 <= len(value) <= 32:
-            raise AuthError("鐢ㄦ埛鍚嶉暱搴﹂渶涓?3-32 涓瓧绗?)
+            raise AuthError("用户名长度需为 3-32 个字符")
         if not all(ch.isalnum() or ch in {"_", "-"} for ch in value):
-            raise AuthError("鐢ㄦ埛鍚嶄粎鏀寔瀛楁瘝銆佹暟瀛椼€佷笅鍒掔嚎鍜岀煭妯嚎")
+            raise AuthError("用户名仅支持字母、数字、下划线和短横线")
         return value
 
     def _validate_password(self, username: str, password: str) -> None:
         if not 8 <= len(password) <= 128:
-            raise AuthError("瀵嗙爜闀垮害闇€涓?8-128 涓瓧绗?)
+            raise AuthError("密码长度需为 8-128 个字符")
         if password.lower() == username.lower():
-            raise AuthError("瀵嗙爜涓嶈兘涓庣敤鎴峰悕鐩稿悓")
+            raise AuthError("密码不能与用户名相同")
 
     def _user_to_dict(self, user: UserModel) -> dict:
         return {
@@ -662,7 +662,7 @@ from pydantic import BaseModel
 from ops_agent.api.dependencies.auth import get_current_user
 from ops_agent.api.services.auth_service import AuthError, AuthService, RegistrationClosedError, UsernameTakenError
 
-router = APIRouter(prefix="/api/auth", tags=["璁よ瘉"])
+router = APIRouter(prefix="/api/auth", tags=["认证"])
 
 
 def get_auth_service() -> AuthService:
@@ -703,7 +703,7 @@ def login(data: AuthCredentials, service: AuthService = Depends(get_auth_service
     try:
         return service.login(data.username, data.password)
     except AuthError as exc:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="鐢ㄦ埛鍚嶆垨瀵嗙爜閿欒") from exc
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="用户名或密码错误") from exc
 
 
 @router.get("/me")
@@ -752,7 +752,7 @@ Register routes in this shape:
 ```python
 app.include_router(health.router, tags=["绯荤粺"])
 app.include_router(auth.router)
-app.include_router(chat.router, prefix="/api", tags=["瀵硅瘽"], dependencies=[require_current_user])
+app.include_router(chat.router, prefix="/api", tags=["对话"], dependencies=[Depends(get_current_user)])
 app.include_router(config.router, dependencies=[require_current_user])
 app.include_router(uploads.router, dependencies=[require_current_user])
 app.include_router(knowledge.router, dependencies=[require_current_user])
@@ -924,7 +924,7 @@ Update the response error branch:
 ```typescript
   (error) => {
     const status = error.response?.status
-    const msg = error.response?.data?.detail || error.message || '璇锋眰澶辫触'
+    const msg = error.response?.data?.detail || error.message || '请求失败'
     if (status === 401 && window.location.pathname !== '/login') {
       clearStoredToken()
       window.location.href = '/login'
@@ -945,15 +945,13 @@ import { defineStore } from 'pinia'
 import { ElMessage } from 'element-plus'
 import {
   changePassword as changePasswordApi,
-  clearStoredToken,
   fetchCurrentUser,
   getAuthBootstrap,
-  getStoredToken,
   login as loginApi,
   registerFirstUser as registerFirstUserApi,
-  setStoredToken,
   updateProfile,
 } from '@/api/auth'
+import { clearStoredToken, getStoredToken, setStoredToken } from '@/api/authToken'
 import type { AuthUser, ChangePasswordRequest, LoginRequest, RegisterRequest } from '@/types/auth'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -1013,19 +1011,19 @@ export const useAuthStore = defineStore('auth', () => {
   async function updateUsername(username: string) {
     const { data } = await updateProfile({ username })
     user.value = data
-    ElMessage.success('鐢ㄦ埛鍚嶅凡鏇存柊')
+    ElMessage.success('用户名已更新')
   }
 
   async function changePassword(payload: ChangePasswordRequest) {
     await changePasswordApi(payload)
-    ElMessage.success('瀵嗙爜宸叉洿鏂?)
+    ElMessage.success('密码已更新')
   }
 
   function logout(showMessage = true) {
     token.value = null
     user.value = null
     clearStoredToken()
-    if (showMessage) ElMessage.success('宸查€€鍑虹櫥褰?)
+    if (showMessage) ElMessage.success('已退出登录')
   }
 
   return {
@@ -1117,10 +1115,9 @@ Create `frontend/src/views/LoginView.vue`:
 
 ```vue
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
-import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
@@ -1128,17 +1125,18 @@ const authStore = useAuthStore()
 const formRef = ref<FormInstance>()
 const form = reactive({ username: '', password: '' })
 
-const title = computed(() => authStore.registrationOpen ? '鍒涘缓棣栦釜绠＄悊鍛樿处鍙? : '鐧诲綍 OpsAgent')
-const buttonText = computed(() => authStore.registrationOpen ? '鍒涘缓骞惰繘鍏? : '鐧诲綍')
+const title = computed(() => authStore.registrationOpen ? '创建首个管理员账号' : '登录 OpsAgent')
+const buttonText = computed(() => authStore.registrationOpen ? '创建并进入' : '登录')
+const passwordAutocomplete = computed(() => authStore.registrationOpen ? 'new-password' : 'current-password')
 
 const rules: FormRules = {
   username: [
-    { required: true, message: '璇疯緭鍏ョ敤鎴峰悕', trigger: 'blur' },
-    { min: 3, max: 32, message: '鐢ㄦ埛鍚嶉暱搴﹂渶涓?3-32 涓瓧绗?, trigger: 'blur' },
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 3, max: 32, message: '用户名长度需为 3-32 个字符', trigger: 'blur' },
   ],
   password: [
-    { required: true, message: '璇疯緭鍏ュ瘑鐮?, trigger: 'blur' },
-    { min: 8, max: 128, message: '瀵嗙爜闀垮害闇€涓?8-128 涓瓧绗?, trigger: 'blur' },
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 8, max: 128, message: '密码长度需为 8-128 个字符', trigger: 'blur' },
   ],
 }
 
@@ -1152,7 +1150,7 @@ async function submit() {
     }
     router.push('/')
   } catch (error: any) {
-    ElMessage.error(error.response?.data?.detail || '璁よ瘉澶辫触')
+    ElMessage.error(error.response?.data?.detail || '认证失败')
   }
 }
 </script>
@@ -1165,14 +1163,20 @@ async function submit() {
         <span>OpsAgent</span>
       </div>
       <h1>{{ title }}</h1>
-      <p class="subtitle">鏅鸿兘杩愮淮鍔╂墜璁块棶鍏ュ彛</p>
+      <p class="subtitle">智能运维助手访问入口</p>
 
       <el-form ref="formRef" :model="form" :rules="rules" label-position="top" @submit.prevent="submit">
-        <el-form-item label="鐢ㄦ埛鍚? prop="username">
+        <el-form-item label="用户名" prop="username">
           <el-input v-model.trim="form.username" autocomplete="username" size="large" />
         </el-form-item>
-        <el-form-item label="瀵嗙爜" prop="password">
-          <el-input v-model="form.password" type="password" autocomplete="current-password" show-password size="large" />
+        <el-form-item label="密码" prop="password">
+          <el-input
+            v-model="form.password"
+            type="password"
+            :autocomplete="passwordAutocomplete"
+            show-password
+            size="large"
+          />
         </el-form-item>
         <el-button type="primary" size="large" :loading="authStore.isLoading" class="submit-btn" @click="submit">
           {{ buttonText }}
@@ -1276,8 +1280,8 @@ const isSaving = ref(false)
 
 const rules: FormRules = {
   username: [
-    { required: true, message: '璇疯緭鍏ョ敤鎴峰悕', trigger: 'blur' },
-    { min: 3, max: 32, message: '鐢ㄦ埛鍚嶉暱搴﹂渶涓?3-32 涓瓧绗?, trigger: 'blur' },
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 3, max: 32, message: '用户名长度需为 3-32 个字符', trigger: 'blur' },
   ],
 }
 
@@ -1292,7 +1296,7 @@ async function submit() {
     await authStore.updateUsername(form.username)
     emit('update:modelValue', false)
   } catch (error: any) {
-    ElMessage.error(error.response?.data?.detail || '鏇存柊澶辫触')
+    ElMessage.error(error.response?.data?.detail || '更新失败')
   } finally {
     isSaving.value = false
   }
@@ -1300,15 +1304,15 @@ async function submit() {
 </script>
 
 <template>
-  <el-dialog :model-value="modelValue" title="淇敼鐢ㄦ埛鍚? width="420px" @update:model-value="emit('update:modelValue', $event)">
+  <el-dialog :model-value="modelValue" title="修改用户名" width="420px" @update:model-value="emit('update:modelValue', $event)">
     <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
-      <el-form-item label="鐢ㄦ埛鍚? prop="username">
+      <el-form-item label="用户名" prop="username">
         <el-input v-model.trim="form.username" maxlength="32" />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="emit('update:modelValue', false)">鍙栨秷</el-button>
-      <el-button type="primary" :loading="isSaving" @click="submit">淇濆瓨</el-button>
+      <el-button @click="emit('update:modelValue', false)">取消</el-button>
+      <el-button type="primary" :loading="isSaving" @click="submit">保存</el-button>
     </template>
   </el-dialog>
 </template>
@@ -1332,16 +1336,16 @@ const isSaving = ref(false)
 const form = reactive({ current_password: '', new_password: '', confirm_password: '' })
 
 const rules: FormRules = {
-  current_password: [{ required: true, message: '璇疯緭鍏ュ綋鍓嶅瘑鐮?, trigger: 'blur' }],
+  current_password: [{ required: true, message: '请输入当前密码', trigger: 'blur' }],
   new_password: [
-    { required: true, message: '璇疯緭鍏ユ柊瀵嗙爜', trigger: 'blur' },
-    { min: 8, max: 128, message: '瀵嗙爜闀垮害闇€涓?8-128 涓瓧绗?, trigger: 'blur' },
+    { required: true, message: '请输入新密码', trigger: 'blur' },
+    { min: 8, max: 128, message: '密码长度需为 8-128 个字符', trigger: 'blur' },
   ],
   confirm_password: [
-    { required: true, message: '璇峰啀娆¤緭鍏ユ柊瀵嗙爜', trigger: 'blur' },
+    { required: true, message: '请再次输入新密码', trigger: 'blur' },
     {
       validator: (_rule, value, callback) => {
-        value === form.new_password ? callback() : callback(new Error('涓ゆ杈撳叆鐨勬柊瀵嗙爜涓嶄竴鑷?))
+        value === form.new_password ? callback() : callback(new Error('两次输入的新密码不一致'))
       },
       trigger: 'blur',
     },
@@ -1366,7 +1370,7 @@ async function submit() {
     })
     emit('update:modelValue', false)
   } catch (error: any) {
-    ElMessage.error(error.response?.data?.detail || '淇敼澶辫触')
+    ElMessage.error(error.response?.data?.detail || '修改失败')
   } finally {
     isSaving.value = false
   }
@@ -1374,21 +1378,21 @@ async function submit() {
 </script>
 
 <template>
-  <el-dialog :model-value="modelValue" title="淇敼瀵嗙爜" width="420px" @update:model-value="emit('update:modelValue', $event)">
+  <el-dialog :model-value="modelValue" title="修改密码" width="420px" @update:model-value="emit('update:modelValue', $event)">
     <el-form ref="formRef" :model="form" :rules="rules" label-position="top">
-      <el-form-item label="褰撳墠瀵嗙爜" prop="current_password">
+      <el-form-item label="当前密码" prop="current_password">
         <el-input v-model="form.current_password" type="password" show-password />
       </el-form-item>
-      <el-form-item label="鏂板瘑鐮? prop="new_password">
+      <el-form-item label="新密码" prop="new_password">
         <el-input v-model="form.new_password" type="password" show-password />
       </el-form-item>
-      <el-form-item label="纭鏂板瘑鐮? prop="confirm_password">
+      <el-form-item label="确认新密码" prop="confirm_password">
         <el-input v-model="form.confirm_password" type="password" show-password />
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button @click="emit('update:modelValue', false)">鍙栨秷</el-button>
-      <el-button type="primary" :loading="isSaving" @click="submit">淇濆瓨</el-button>
+      <el-button @click="emit('update:modelValue', false)">取消</el-button>
+      <el-button type="primary" :loading="isSaving" @click="submit">保存</el-button>
     </template>
   </el-dialog>
 </template>
@@ -1436,9 +1440,9 @@ Add this block after `<SessionList v-show="!collapsed" />`:
         </button>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item @click="profileDialogVisible = true">淇敼鐢ㄦ埛鍚?/el-dropdown-item>
-            <el-dropdown-item @click="passwordDialogVisible = true">淇敼瀵嗙爜</el-dropdown-item>
-            <el-dropdown-item divided @click="logout">閫€鍑虹櫥褰?/el-dropdown-item>
+            <el-dropdown-item @click="profileDialogVisible = true">修改用户名</el-dropdown-item>
+            <el-dropdown-item @click="passwordDialogVisible = true">修改密码</el-dropdown-item>
+            <el-dropdown-item divided @click="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -1616,16 +1620,16 @@ Check these flows:
 
 ```text
 Open / and verify redirect to /login.
-When no user exists, verify login page says 鍒涘缓棣栦釜绠＄悊鍛樿处鍙?
+When no user exists, verify login page says 创建首个管理员账号.
 Create first user admin / strong-password and verify redirect to /.
 Refresh / and verify session persists.
 Verify lower-left sidebar shows username and role.
-Open 淇敼鐢ㄦ埛鍚? change admin to ops-admin, verify sidebar updates.
-Open 淇敼瀵嗙爜, change strong-password to new-strong-password.
+Open 修改用户名, change admin to ops-admin, verify sidebar updates.
+Open 修改密码, change strong-password to new-strong-password.
 Logout and verify redirect to /login.
 Verify old password fails and new password succeeds.
 Verify direct access to /knowledge redirects to /login when logged out.
-Verify after first user exists, /login shows 鐧诲綍 OpsAgent rather than registration mode.
+Verify after first user exists, /login shows 登录 OpsAgent rather than registration mode.
 ```
 
 - [ ] **Step 7: Inspect diff**

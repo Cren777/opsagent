@@ -1,4 +1,4 @@
-﻿# Python caches
+# Python caches
 __pycache__/
 *.py[cod]
 *$py.class
@@ -13,11 +13,12 @@ htmlcov/
 venv/
 env/
 
-# Frontend dependencies and build output
+# Frontend dependencies and temporary build output
 node_modules/
 frontend/node_modules/
 frontend/dist/
-ops_agent/api/static/dist/
+
+# FastAPI serves ops_agent/api/static/dist; keep deployment assets versioned.
 
 # Local IDE/editor settings
 .vscode/sftp.json

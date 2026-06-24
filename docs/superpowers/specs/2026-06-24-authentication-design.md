@@ -1,4 +1,4 @@
-﻿# OpsAgent Authentication Design
+# OpsAgent Authentication Design
 
 ## Goal
 
@@ -179,8 +179,8 @@ Router behavior:
 The login page should be a functional, restrained internal operations screen rather than a marketing page:
 
 - Show brand name `OpsAgent`.
-- If `registrationOpen` is true, show "鍒涘缓棣栦釜绠＄悊鍛樿处鍙?.
-- If false, show "鐧诲綍 OpsAgent".
+- If `registrationOpen` is true, show "创建首个管理员账号".
+- If false, show "登录 OpsAgent".
 - Use Element Plus form validation.
 - Include username and password fields.
 - Disable submit while loading.
@@ -194,8 +194,9 @@ Update `frontend/src/components/layout/AppSidebar.vue` to add a bottom user pane
 - Username.
 - Role label.
 - Dropdown/menu actions:
-  - 淇敼鐢ㄦ埛鍚?  - 淇敼瀵嗙爜
-  - 閫€鍑虹櫥褰?
+  - 修改用户名
+  - 修改密码
+  - 退出登录
 When the sidebar is collapsed, show only the avatar icon with a tooltip/dropdown. Do not let the user area overlap session history; the sidebar should remain a vertical flex layout with the user panel pinned to the bottom.
 
 ### Profile Dialogs

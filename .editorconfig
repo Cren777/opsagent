@@ -1,0 +1,9 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+[*.{py,ts,tsx,vue,js,jsx,css,scss,html,json,md,yml,yaml,toml,ini,txt}]
+charset = utf-8

@@ -1,4 +1,4 @@
-﻿"""Local user authentication service."""
+"""Local user authentication service."""
 from __future__ import annotations
 
 import base64

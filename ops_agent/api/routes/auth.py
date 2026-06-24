@@ -1,4 +1,4 @@
-﻿"""Authentication API routes."""
+"""Authentication API routes."""
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 

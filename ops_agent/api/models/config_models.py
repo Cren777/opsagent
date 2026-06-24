@@ -1,4 +1,4 @@
-﻿"""SQLAlchemy ORM models for runtime configuration storage."""
+"""SQLAlchemy ORM models for runtime configuration storage."""
 from datetime import datetime, timezone
 from sqlalchemy import create_engine, Column, String, Boolean, Float, Integer, Text, DateTime, UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase, Session

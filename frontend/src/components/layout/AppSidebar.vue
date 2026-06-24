@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import SessionList from '@/components/chat/SessionList.vue'
@@ -17,13 +17,13 @@ const passwordDialogVisible = ref(false)
 const avatarLetter = computed(() => (authStore.user?.username || 'U').slice(0, 1).toUpperCase())
 
 const navItems = [
-  { path: '/', icon: 'ChatDotRound', label: '鏅鸿兘瀵硅瘽' },
-  { path: '/knowledge', icon: 'Collection', label: '鐭ヨ瘑搴撶鐞?' },
-  { path: '/logs-cases', icon: 'Document', label: '鏃ュ織涓庢渚?' },
-  { path: '/diagnostics', icon: 'Tools', label: '璇婃柇宸ュ叿' },
-  { path: '/indexes', icon: 'Operation', label: '绱㈠紩绠＄悊' },
-  { path: '/datasources', icon: 'Coin', label: '鏁版嵁婧愰厤缃?' },
-  { path: '/llm', icon: 'Cpu', label: '澶фā鍨嬮厤缃?' },
+  { path: '/', icon: 'ChatDotRound', label: '智能对话' },
+  { path: '/knowledge', icon: 'Collection', label: '知识库管理' },
+  { path: '/logs-cases', icon: 'Document', label: '日志与案例' },
+  { path: '/diagnostics', icon: 'Tools', label: '诊断工具' },
+  { path: '/indexes', icon: 'Operation', label: '索引管理' },
+  { path: '/datasources', icon: 'Coin', label: '数据源配置' },
+  { path: '/llm', icon: 'Cpu', label: '大模型配置' },
 ]
 
 function navigateTo(path: string) {
@@ -43,7 +43,7 @@ function logout() {
         <el-icon :size="24"><Monitor /></el-icon>
         <span v-show="!collapsed" class="logo-text">OpsAgent</span>
       </div>
-      <el-tag v-show="!collapsed" size="small" type="info">杩愮淮瀹㈡湇</el-tag>
+      <el-tag v-show="!collapsed" size="small" type="info">运维客服</el-tag>
     </div>
 
     <nav class="sidebar-nav">

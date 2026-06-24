@@ -1,4 +1,4 @@
-﻿const TOKEN_KEY = 'opsagent_auth_token'
+const TOKEN_KEY = 'opsagent_auth_token'
 
 export function getStoredToken() {
   return localStorage.getItem(TOKEN_KEY)

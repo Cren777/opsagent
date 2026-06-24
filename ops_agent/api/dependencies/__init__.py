@@ -1,1 +1,1 @@
-﻿"""FastAPI dependency helpers."""
+"""FastAPI dependency helpers."""

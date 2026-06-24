@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 8086",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:auth-fetch": "node --test tests/authFetch.test.cjs"
   },
   "dependencies": {
     "@anthropic-ai/claude-code": "^2.1.143",

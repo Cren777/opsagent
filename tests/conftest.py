@@ -1,6 +1,20 @@
 """Pytest fixtures"""
 import sys
 import os
+import types
+
+
+class _NoopLogger:
+    def __getattr__(self, _name):
+        return lambda *args, **kwargs: None
+
+
+try:
+    import loguru  # noqa: F401
+except ModuleNotFoundError:
+    loguru_stub = types.ModuleType("loguru")
+    loguru_stub.logger = _NoopLogger()
+    sys.modules["loguru"] = loguru_stub
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 

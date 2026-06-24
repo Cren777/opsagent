@@ -5,23 +5,21 @@ from typing import AsyncGenerator, Dict, Any, Optional
 from loguru import logger
 
 from ops_agent.core.intent.types import IntentType
-from ops_agent.core.intent.classifier import IntentClassifier
-from ops_agent.core.scheduler.task_router import TaskRouter
-from ops_agent.core.fusion.response_fusion import ResponseFusion
-from ops_agent.models.llm.client import get_llm_client, UnifiedLLMClient
-from ops_agent.models.rag.knowledge_base import get_knowledge_base
-from ops_agent.models.rag.log_parser import LogIndexer
-from ops_agent.models.text2sql.generator import Text2SQLGenerator
-from ops_agent.models.tools.datasource_factory import get_active_datasource
-from ops_agent.models.tools.script_executor import ScriptExecutor
-from ops_agent.models.uploads.log_upload_service import LogUploadService
-from ops_agent.models.troubleshooting.case_memory import IncidentCaseMemory
 
 
 class Orchestrator:
     """系统核心编排器"""
 
-    def __init__(self, llm_client: Optional[UnifiedLLMClient] = None):
+    def __init__(self, llm_client: Optional[Any] = None):
+        from ops_agent.core.fusion.response_fusion import ResponseFusion
+        from ops_agent.core.intent.classifier import IntentClassifier
+        from ops_agent.core.scheduler.task_router import TaskRouter
+        from ops_agent.models.rag.knowledge_base import get_knowledge_base
+        from ops_agent.models.rag.log_parser import LogIndexer
+        from ops_agent.models.text2sql.generator import Text2SQLGenerator
+        from ops_agent.models.tools.script_executor import ScriptExecutor
+        from ops_agent.models.troubleshooting.case_memory import IncidentCaseMemory
+        from ops_agent.models.uploads.log_upload_service import LogUploadService
         self.classifier = IntentClassifier(llm_client)
         self.router = TaskRouter()
         self.fusion = ResponseFusion(llm_client)
@@ -153,6 +151,7 @@ class Orchestrator:
     ) -> Dict[str, Any]:
         """处理数据分析查询"""
         try:
+            from ops_agent.models.tools.datasource_factory import get_active_datasource
             ds = get_active_datasource()
             if ds is None:
                 return {"answer": "错误：数据源未配置或连接失败，请在数据源配置页面检查。", "rows": []}

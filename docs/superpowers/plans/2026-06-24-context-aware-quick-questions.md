@@ -1,6 +1,6 @@
 # 上下文感知快捷提问 Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** 将聊天页的固定快捷问题替换为按当前用户、会话、数据源、附件和输入草稿动态生成的上下文追问与输入联想，并在 LLM 不可用时可靠降级。
 
@@ -34,7 +34,7 @@
 - Create: `ops_agent/core/question_suggestions.py`
 - Create: `tests/test_question_suggestions.py`
 
-- [ ] **Step 1: 写失败的解析、降级和 LLM 调用测试**
+- [x] **Step 1: 写失败的解析、降级和 LLM 调用测试**
 
 创建 `tests/test_question_suggestions.py`：
 
@@ -133,13 +133,13 @@ def test_service_falls_back_when_llm_fails():
     assert result["suggestions"][0] == "nginx 无法启动？"
 ```
 
-- [ ] **Step 2: 运行测试并确认因模块不存在而失败**
+- [x] **Step 2: 运行测试并确认因模块不存在而失败**
 
 Run: `pytest tests/test_question_suggestions.py -q`
 
 Expected: FAIL，错误包含 `ModuleNotFoundError: No module named 'ops_agent.core.question_suggestions'`。
 
-- [ ] **Step 3: 实现最小推荐服务**
+- [x] **Step 3: 实现最小推荐服务**
 
 创建 `ops_agent/core/question_suggestions.py`：
 
@@ -318,13 +318,13 @@ class QuestionSuggestionService:
         ]
 ```
 
-- [ ] **Step 4: 运行服务测试并确认通过**
+- [x] **Step 4: 运行服务测试并确认通过**
 
 Run: `pytest tests/test_question_suggestions.py -q`
 
 Expected: `6 passed`。
 
-- [ ] **Step 5: 提交后端服务**
+- [x] **Step 5: 提交后端服务**
 
 ```bash
 git add ops_agent/core/question_suggestions.py tests/test_question_suggestions.py
@@ -338,7 +338,7 @@ git commit -m "feat: add question suggestion service"
 - Modify: `ops_agent/api/routes/chat.py:34-85`
 - Create: `tests/test_chat_suggestions_api.py`
 
-- [ ] **Step 1: 写失败的 API 契约测试**
+- [x] **Step 1: 写失败的 API 契约测试**
 
 创建 `tests/test_chat_suggestions_api.py`：
 
@@ -397,13 +397,13 @@ def test_context_mode_rejects_non_empty_draft():
     assert response.status_code == 422
 ```
 
-- [ ] **Step 2: 运行 API 测试并确认路由尚不存在**
+- [x] **Step 2: 运行 API 测试并确认路由尚不存在**
 
 Run: `pytest tests/test_chat_suggestions_api.py -q`
 
 Expected: FAIL，错误包含 `get_question_suggestion_service` 不存在或接口返回 404。
 
-- [ ] **Step 3: 增加 Pydantic 模型、依赖和路由**
+- [x] **Step 3: 增加 Pydantic 模型、依赖和路由**
 
 在 `ops_agent/api/routes/chat.py` 更新导入：
 
@@ -481,19 +481,19 @@ async def question_suggestions(
 
 同时删除未使用的 `HTTPException` 导入；不要修改现有 `/chat` 和 `/chat/stream` 行为。
 
-- [ ] **Step 4: 运行后端推荐和路由测试**
+- [x] **Step 4: 运行后端推荐和路由测试**
 
 Run: `pytest tests/test_question_suggestions.py tests/test_chat_suggestions_api.py tests/test_api_main_contract.py -q`
 
 Expected: 全部 PASS。
 
-- [ ] **Step 5: 检查 Python 语法**
+- [x] **Step 5: 检查 Python 语法**
 
 Run: `python -m py_compile ops_agent/core/question_suggestions.py ops_agent/api/routes/chat.py`
 
 Expected: exit code 0，无输出。
 
-- [ ] **Step 6: 提交推荐 API**
+- [x] **Step 6: 提交推荐 API**
 
 ```bash
 git add ops_agent/api/routes/chat.py tests/test_chat_suggestions_api.py
@@ -507,7 +507,7 @@ git commit -m "feat: expose authenticated question suggestions"
 - Create: `frontend/tests/questionSuggestionsCore.test.cjs`
 - Modify: `frontend/package.json:6-12`
 
-- [ ] **Step 1: 写失败的缓存、降级和并发测试**
+- [x] **Step 1: 写失败的缓存、降级和并发测试**
 
 创建 `frontend/tests/questionSuggestionsCore.test.cjs`，先写入完整加载器：
 
@@ -579,7 +579,7 @@ test('fallback puts normalized draft first in completion mode', () => {
 })
 ```
 
-- [ ] **Step 2: 增加测试脚本并确认失败**
+- [x] **Step 2: 增加测试脚本并确认失败**
 
 在 `frontend/package.json` 的 `scripts` 中增加：
 
@@ -591,7 +591,7 @@ Run: `cd frontend && npm run test:question-suggestions`
 
 Expected: FAIL，提示 `questionSuggestionsCore.ts must exist`。
 
-- [ ] **Step 3: 实现纯 TypeScript 核心**
+- [x] **Step 3: 实现纯 TypeScript 核心**
 
 创建 `frontend/src/composables/questionSuggestionsCore.ts`：
 
@@ -706,13 +706,13 @@ export function buildFrontendFallback(input: {
 }
 ```
 
-- [ ] **Step 4: 运行前端核心测试**
+- [x] **Step 4: 运行前端核心测试**
 
 Run: `cd frontend && npm run test:question-suggestions`
 
 Expected: `4 passed`。
 
-- [ ] **Step 5: 提交前端核心**
+- [x] **Step 5: 提交前端核心**
 
 ```bash
 git add frontend/package.json frontend/src/composables/questionSuggestionsCore.ts frontend/tests/questionSuggestionsCore.test.cjs
@@ -726,7 +726,7 @@ git commit -m "feat: add question suggestion frontend core"
 - Create: `frontend/src/api/chatSuggestions.ts`
 - Modify: `frontend/tests/questionSuggestionsCore.test.cjs`
 
-- [ ] **Step 1: 写失败的 API 源码契约测试**
+- [x] **Step 1: 写失败的 API 源码契约测试**
 
 在 `frontend/tests/questionSuggestionsCore.test.cjs` 增加：
 
@@ -739,13 +739,13 @@ test('suggestion API uses authenticated fetch and supports cancellation', () => 
 })
 ```
 
-- [ ] **Step 2: 运行测试并确认 API 文件不存在**
+- [x] **Step 2: 运行测试并确认 API 文件不存在**
 
 Run: `cd frontend && npm run test:question-suggestions`
 
 Expected: FAIL，错误包含 `ENOENT` 和 `chatSuggestions.ts`。
 
-- [ ] **Step 3: 增加共享类型**
+- [x] **Step 3: 增加共享类型**
 
 在 `frontend/src/types/chat.ts` 的 `ChatAttachment` 后增加并让 `ChatRequest.history` 复用 `ChatHistoryItem[]`：
 
@@ -775,7 +775,7 @@ export interface QuestionSuggestionResponse {
 }
 ```
 
-- [ ] **Step 4: 实现静默、可取消的认证请求**
+- [x] **Step 4: 实现静默、可取消的认证请求**
 
 创建 `frontend/src/api/chatSuggestions.ts`：
 
@@ -808,7 +808,7 @@ export async function postQuestionSuggestions(
 }
 ```
 
-- [ ] **Step 5: 运行前端测试和类型检查**
+- [x] **Step 5: 运行前端测试和类型检查**
 
 Run: `cd frontend && npm run test:question-suggestions`
 
@@ -818,7 +818,7 @@ Run: `cd frontend && npx vue-tsc -p tsconfig.app.json --noEmit`
 
 Expected: exit code 0。
 
-- [ ] **Step 6: 提交前端 API**
+- [x] **Step 6: 提交前端 API**
 
 ```bash
 git add frontend/src/types/chat.ts frontend/src/api/chatSuggestions.ts frontend/tests/questionSuggestionsCore.test.cjs
@@ -833,7 +833,7 @@ git commit -m "feat: add question suggestion api client"
 - Modify: `frontend/package.json:6-13`
 - Modify: `frontend/src/stores/chat.ts:1-153`
 
-- [ ] **Step 1: 写失败的存储隔离测试**
+- [x] **Step 1: 写失败的存储隔离测试**
 
 创建 `frontend/tests/chatSessionStorage.test.cjs`：
 
@@ -881,13 +881,13 @@ test('stores sessions under a user-specific key', () => {
 "test:chat-storage": "node --test tests/chatSessionStorage.test.cjs"
 ```
 
-- [ ] **Step 2: 运行测试并确认模块不存在**
+- [x] **Step 2: 运行测试并确认模块不存在**
 
 Run: `cd frontend && npm run test:chat-storage`
 
 Expected: FAIL，提示 `chatSessionStorage.ts must exist`。
 
-- [ ] **Step 3: 实现用户会话存储模块**
+- [x] **Step 3: 实现用户会话存储模块**
 
 创建 `frontend/src/stores/chatSessionStorage.ts`：
 
@@ -922,7 +922,7 @@ export function saveUserSessions(storage: StorageLike, userId: string, sessions:
 }
 ```
 
-- [ ] **Step 4: 重构聊天 store 的初始化与历史快照**
+- [x] **Step 4: 重构聊天 store 的初始化与历史快照**
 
 在 `frontend/src/stores/chat.ts`：
 
@@ -982,13 +982,13 @@ const activeSession = computed(() =>
 5. 在 store 返回对象中导出 `requestHistory` 和 `activeSession`。
 6. 保持 `_buildRequestHistory` 的最近 8 条、排除欢迎消息和空内容规则不变。
 
-- [ ] **Step 5: 运行隔离测试和类型检查**
+- [x] **Step 5: 运行隔离测试和类型检查**
 
 Run: `cd frontend && npm run test:chat-storage && npx vue-tsc -p tsconfig.app.json --noEmit`
 
 Expected: 全部 PASS；类型检查 exit code 0。
 
-- [ ] **Step 6: 提交会话隔离**
+- [x] **Step 6: 提交会话隔离**
 
 ```bash
 git add frontend/package.json frontend/src/stores/chatSessionStorage.ts frontend/src/stores/chat.ts frontend/tests/chatSessionStorage.test.cjs
@@ -1001,7 +1001,7 @@ git commit -m "fix: isolate chat sessions by user"
 - Create: `frontend/src/composables/useQuestionSuggestions.ts`
 - Modify: `frontend/tests/questionSuggestionsCore.test.cjs`
 
-- [ ] **Step 1: 增加 composable 源码契约测试**
+- [x] **Step 1: 增加 composable 源码契约测试**
 
 在 `frontend/tests/questionSuggestionsCore.test.cjs` 增加：
 
@@ -1015,13 +1015,13 @@ test('vue composable debounces completion requests and uses the core runner', ()
 })
 ```
 
-- [ ] **Step 2: 运行测试并确认 composable 不存在**
+- [x] **Step 2: 运行测试并确认 composable 不存在**
 
 Run: `cd frontend && npm run test:question-suggestions`
 
 Expected: FAIL，错误包含 `ENOENT` 和 `useQuestionSuggestions.ts`。
 
-- [ ] **Step 3: 实现 Vue 组合式逻辑**
+- [x] **Step 3: 实现 Vue 组合式逻辑**
 
 创建 `frontend/src/composables/useQuestionSuggestions.ts`，文件顶部使用以下导入：
 
@@ -1158,13 +1158,13 @@ onScopeDispose(() => {
 
 文件顶部导入上述接口需要的 Vue 类型、聊天类型、`postQuestionSuggestions` 和核心模块；函数末尾返回 `{ suggestions, isLoading, refresh }`。
 
-- [ ] **Step 4: 运行核心测试和类型检查**
+- [x] **Step 4: 运行核心测试和类型检查**
 
 Run: `cd frontend && npm run test:question-suggestions && npx vue-tsc -p tsconfig.app.json --noEmit`
 
 Expected: 全部 PASS。
 
-- [ ] **Step 5: 提交 composable**
+- [x] **Step 5: 提交 composable**
 
 ```bash
 git add frontend/src/composables/useQuestionSuggestions.ts frontend/tests/questionSuggestionsCore.test.cjs
@@ -1178,7 +1178,7 @@ git commit -m "feat: add contextual suggestion composable"
 - Modify: `frontend/src/components/chat/ChatInput.vue:1-109`
 - Modify: `frontend/src/views/ChatView.vue:1-194`
 
-- [ ] **Step 1: 先改 ChatInput 为受控草稿并通过类型检查暴露问题**
+- [x] **Step 1: 先改 ChatInput 为受控草稿并通过类型检查暴露问题**
 
 将 `ChatInput.vue` 中的本地 `const input = ref('')` 替换为：
 
@@ -1198,7 +1198,7 @@ Run: `cd frontend && npx vue-tsc -p tsconfig.app.json --noEmit`
 
 Expected: PASS，证明 `ChatInput` 的新接口本身完整；页面尚未使用动态建议。
 
-- [ ] **Step 2: 创建动态标签组件**
+- [x] **Step 2: 创建动态标签组件**
 
 创建 `frontend/src/components/chat/QuickQuestions.vue`：
 
@@ -1242,7 +1242,7 @@ const emit = defineEmits<{
 </style>
 ```
 
-- [ ] **Step 3: 在 ChatView 组装动态推荐**
+- [x] **Step 3: 在 ChatView 组装动态推荐**
 
 在 `ChatView.vue`：
 
@@ -1302,13 +1302,13 @@ watch(() => chatStore.activeSessionId, () => { draft.value = '' })
 <ChatInput ref="chatInputRef" v-model="draft" />
 ```
 
-- [ ] **Step 4: 运行类型检查和全部前端单测**
+- [x] **Step 4: 运行类型检查和全部前端单测**
 
 Run: `cd frontend && npm run test:auth-fetch && npm run test:question-suggestions && npm run test:chat-storage && npx vue-tsc -p tsconfig.app.json --noEmit`
 
 Expected: 全部 PASS，类型检查 exit code 0。
 
-- [ ] **Step 5: 提交 UI 联动**
+- [x] **Step 5: 提交 UI 联动**
 
 ```bash
 git add frontend/src/components/chat/QuickQuestions.vue frontend/src/components/chat/ChatInput.vue frontend/src/views/ChatView.vue
@@ -1322,25 +1322,25 @@ git commit -m "feat: show contextual quick questions"
 - Modify/Create/Delete: `ops_agent/api/static/dist/assets/*`（仅 Vite 构建产物）
 - Modify: `docs/superpowers/plans/2026-06-24-context-aware-quick-questions.md`（勾选已执行步骤）
 
-- [ ] **Step 1: 运行后端推荐与认证回归**
+- [x] **Step 1: 运行后端推荐与认证回归**
 
 Run: `pytest tests/test_question_suggestions.py tests/test_chat_suggestions_api.py tests/test_auth_routes.py tests/test_api_main_contract.py tests/test_intent.py tests/test_orchestrator_contract.py -q`
 
 Expected: 全部 PASS，0 failures。
 
-- [ ] **Step 2: 运行全部前端测试和类型检查**
+- [x] **Step 2: 运行全部前端测试和类型检查**
 
 Run: `cd frontend && npm run test:auth-fetch && npm run test:question-suggestions && npm run test:chat-storage && npx vue-tsc -p tsconfig.app.json --noEmit`
 
 Expected: 全部 PASS，所有命令 exit code 0。
 
-- [ ] **Step 3: 生成生产静态资源**
+- [x] **Step 3: 生成生产静态资源**
 
 Run: `cd frontend && npm run build`
 
 Expected: `vue-tsc -b && vite build` 成功，输出目录为 `ops_agent/api/static/dist/`。
 
-- [ ] **Step 4: 检查构建入口引用的资源存在**
+- [x] **Step 4: 检查构建入口引用的资源存在**
 
 Run:
 
@@ -1366,7 +1366,7 @@ Expected: exit code 0，无缺失资源输出。
 7. 退出后使用另一用户登录，看不到前一用户的会话和推荐缓存。
 8. 窄屏下标签换行且不覆盖数据源选择或输入框。
 
-- [ ] **Step 6: 检查提交范围并提交构建产物**
+- [x] **Step 6: 检查提交范围并提交构建产物**
 
 Run: `git status --short`
 

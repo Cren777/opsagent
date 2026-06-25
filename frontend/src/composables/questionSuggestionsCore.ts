@@ -135,6 +135,7 @@ export class LatestSuggestionRequest {
     if (this.controller) {
       this.controller.abort()
       this.controller = undefined
+      this.requestId += 1
     }
   }
 }

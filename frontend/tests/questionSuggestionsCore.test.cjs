@@ -176,6 +176,12 @@ test('LatestSuggestionRequest aborts earlier requests, ignores stale completion,
   latest.cancel()
   assert.equal(cancelSignal.aborted, true)
   assert.equal(await cancelled, undefined)
+
+  const nonAbortRejectedAfterCancel = latest.run(() => new Promise((resolve, reject) => {
+    setTimeout(() => reject(new Error('late failure')), 0)
+  }))
+  latest.cancel()
+  assert.equal(await nonAbortRejectedAfterCancel, undefined)
 })
 
 test('questionSuggestionsCore.ts does not import vue', () => {

@@ -1,31 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
-import type { ChatAttachment, ChatMessage, ChatSession } from '@/types/chat'
+import type { ChatAttachment, ChatHistoryItem, ChatMessage, ChatSession } from '@/types/chat'
 import { postChat, postChatStream } from '@/api/chat'
 import { uploadLogFile } from '@/api/upload'
-
-const STORAGE_KEY = 'opsagent_sessions'
-
-function loadSessions(): ChatSession[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch {
-    return []
-  }
-}
-
-function saveSessions(sessions: ChatSession[]) {
-  try {
-    // Only persist sessions with actual user messages — skip sessions that
-    // only contain the auto-generated welcome message (avoid saving empty
-    // conversations from users who just browsed and left).
-    const persisted = sessions.filter((s) => s.messages.some((m) => m.role === 'user'))
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(persisted))
-  } catch {
-    // localStorage full or unavailable
-  }
-}
+import { useAuthStore } from '@/stores/auth'
+import { loadUserSessions, saveUserSessions } from '@/stores/chatSessionStorage'
 
 function generateId(): string {
   return `session-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
@@ -45,26 +24,30 @@ function hasDiagnosticsPayload(diagnostics: ChatMessage['diagnostics']): boolean
 
 export const useChatStore = defineStore('chat', () => {
   // ── State ──
-  const sessions = ref<ChatSession[]>(loadSessions())
+  const authStore = useAuthStore()
+  const sessions = ref<ChatSession[]>([])
   const activeSessionId = ref<string | null>(null)
   const isLoading = ref(false)
   const isStreaming = ref(false)
   const selectedDatasourceId = ref<string | null>(null)
   const pendingAttachments = ref<ChatAttachment[]>([])
   let abortController: AbortController | null = null
+  let isHydrating = false
 
   // ── Computed: messages of the active session ──
+  const activeSession = computed<ChatSession | null>(() =>
+    sessions.value.find((s) => s.id === activeSessionId.value) || null
+  )
+
   const messages = computed<ChatMessage[]>({
     get() {
-      const session = sessions.value.find((s) => s.id === activeSessionId.value)
-      return session ? session.messages : []
+      return activeSession.value ? activeSession.value.messages : []
     },
     set(newMessages: ChatMessage[]) {
-      const session = sessions.value.find((s) => s.id === activeSessionId.value)
+      const session = activeSession.value
       if (session) {
         session.messages = newMessages
         session.updatedAt = Date.now()
-        saveSessions(sessions.value)
       }
     },
   })
@@ -78,36 +61,24 @@ export const useChatStore = defineStore('chat', () => {
       })
   )
 
-  // ── Persist on change ──
-  watch(sessions, (val) => saveSessions(val), { deep: true })
+  const requestHistory = computed<ChatHistoryItem[]>(() => (
+    activeSession.value ? _buildRequestHistory(activeSession.value) : []
+  ))
 
-  // ── Init: create a session if none exists ──
-  const hasActive = activeSessionId.value && sessions.value.find((s) => s.id === activeSessionId.value)
-  if (!hasActive) {
-    const id = generateId()
-    sessions.value.unshift({
-      id,
-      title: '欢迎',
-      messages: [],
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    })
-    activeSessionId.value = id
-  }
-  // Add welcome message to the active session if it's empty
-  const active = sessions.value.find((s) => s.id === activeSessionId.value)
-  if (active && active.messages.length === 0) {
-    active.messages.push({
-      id: 'welcome',
-      role: 'assistant',
-      content: '你好！我是 OpsAgent 智能运维助手。我可以帮你查询运维知识、分析数据库数据、排查系统故障。请随时输入你的问题。',
-      timestamp: Date.now(),
-    })
-  }
+  // ── Persist on change ──
+  watch(sessions, (val) => {
+    const userId = authStore.user?.id
+    if (!userId || isHydrating) return
+    saveUserSessions(localStorage, userId, val)
+  }, { deep: true, flush: 'sync' })
+
+  watch(() => authStore.user?.id || null, (userId) => {
+    hydrateUserSessions(userId)
+  }, { immediate: true })
 
   // ── Internal helpers ──
   function _getSession() {
-    return sessions.value.find((s) => s.id === activeSessionId.value)
+    return activeSession.value
   }
 
   function _ensureSession(query: string) {
@@ -133,9 +104,43 @@ export const useChatStore = defineStore('chat', () => {
       }))
   }
 
+  function _ensureActiveSession() {
+    if (activeSession.value) return
+    if (sessions.value.length > 0) {
+      activeSessionId.value = sessions.value[0].id
+      return
+    }
+    createSession()
+  }
+
+  function hydrateUserSessions(userId: string | null) {
+    isHydrating = true
+    try {
+      if (!userId) {
+        sessions.value = []
+        activeSessionId.value = null
+        return
+      }
+      sessions.value = loadUserSessions(localStorage, userId)
+      activeSessionId.value = null
+      _ensureActiveSession()
+    } finally {
+      isHydrating = false
+    }
+  }
+
+  function _resetUnauthenticatedSessionState() {
+    sessions.value = []
+    activeSessionId.value = null
+  }
+
   // ── Public methods ──
 
   function createSession() {
+    if (!authStore.user?.id) {
+      _resetUnauthenticatedSessionState()
+      return
+    }
     const id = generateId()
     const now = Date.now()
     sessions.value.unshift({
@@ -201,6 +206,10 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function sendMessage(query: string) {
+    if (!authStore.user?.id) {
+      _resetUnauthenticatedSessionState()
+      return
+    }
     if ((!query.trim() && pendingAttachments.value.length === 0) || isLoading.value) return
     const session = _ensureSession(query)
     if (session.title === '新对话' || session.title === '欢迎') {
@@ -245,6 +254,10 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function sendStreamMessage(query: string) {
+    if (!authStore.user?.id) {
+      _resetUnauthenticatedSessionState()
+      return
+    }
     if ((!query.trim() && pendingAttachments.value.length === 0) || isLoading.value) return
     const session = _ensureSession(query)
     if (session.title === '新对话' || session.title === '欢迎') {
@@ -328,8 +341,10 @@ export const useChatStore = defineStore('chat', () => {
   return {
     sessions,
     displaySessions,
+    activeSession,
     activeSessionId,
     messages,
+    requestHistory,
     isLoading,
     isStreaming,
     selectedDatasourceId,

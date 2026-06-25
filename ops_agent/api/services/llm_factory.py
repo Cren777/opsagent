@@ -18,7 +18,7 @@ def get_dynamic_llm_client():
         return get_llm_client()
 
     # Build engines from config
-    from ops_agent.models.llm.client import UnifiedLLMClient, DeepSeekEngine, BailianEngine
+    from ops_agent.models.llm.client import UnifiedLLMClient, DeepSeekEngine
 
     primary = next((p for p in providers if p.get("is_primary")), providers[0])
     engines = []
@@ -31,7 +31,11 @@ def get_dynamic_llm_client():
         provider_type = prov.get("provider_type", "openai_compatible")
 
         if provider_type == "dashscope":
-            engine = BailianEngine(api_key=pk, model_name=prov.get("model", "qwen-plus"))
+            engine = DeepSeekEngine(
+                api_key=pk,
+                base_url=prov.get("base_url") or "https://dashscope.aliyuncs.com/compatible-mode/v1",
+                model_name=prov.get("model", "qwen-plus"),
+            )
         else:
             engine = DeepSeekEngine(
                 api_key=pk,

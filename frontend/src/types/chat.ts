@@ -5,9 +5,33 @@ export interface ChatAttachment {
   size?: number
 }
 
+export interface ChatHistoryItem {
+  role: 'user' | 'assistant'
+  content: string
+  sql?: string | null
+  intent?: string
+}
+
+export type SuggestionMode = 'context' | 'completion'
+
+export interface QuestionSuggestionRequest {
+  mode: SuggestionMode
+  draft: string
+  history: ChatHistoryItem[]
+  datasource_id?: string
+  attachments: ChatAttachment[]
+  limit: number
+}
+
+export interface QuestionSuggestionResponse {
+  mode: SuggestionMode
+  source: 'llm' | 'fallback'
+  suggestions: string[]
+}
+
 export interface ChatRequest {
   query: string
-  history?: { role: string; content: string; sql?: string | null; intent?: string }[]
+  history?: ChatHistoryItem[]
   datasource_id?: string
   attachments?: ChatAttachment[]
 }

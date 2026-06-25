@@ -190,3 +190,10 @@ test('questionSuggestionsCore.ts does not import vue', () => {
   assert.doesNotMatch(source, /from\s+['"]vue['"]/)
   assert.doesNotMatch(source, /require\(['"]vue['"]\)/)
 })
+
+test('suggestion API uses authenticated fetch and supports cancellation', () => {
+  const apiSource = fs.readFileSync(path.join(frontendRoot, 'src/api/chatSuggestions.ts'), 'utf8')
+  assert.match(apiSource, /authFetch\('\/api\/chat\/suggestions'/)
+  assert.match(apiSource, /signal/)
+  assert.match(apiSource, /setTimeout\(\(\) => controller\.abort\(\), 5000\)/)
+})

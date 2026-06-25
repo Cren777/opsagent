@@ -4,10 +4,15 @@ import { useChatStore } from '@/stores/chat'
 import { ElMessage } from 'element-plus'
 
 const chatStore = useChatStore()
-const input = ref('')
+const input = defineModel<string>({ default: '' })
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
 const fileInputRef = ref<HTMLInputElement | null>(null)
 
+function focus() {
+  textareaRef.value?.focus()
+}
+
+defineExpose({ focus })
 function send() {
   const query = input.value.trim() || '请分析上传的日志并给出故障排查建议'
   if ((!input.value.trim() && chatStore.pendingAttachments.length === 0) || chatStore.isLoading) return
